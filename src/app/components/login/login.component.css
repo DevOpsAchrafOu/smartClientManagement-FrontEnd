@@ -1,0 +1,125 @@
+/* start login section */
+
+/*--------- start contient ---------*/
+img.logo{
+
+  width: 85px;
+  height: auto;
+}
+
+img.ministry-logo{
+
+  width: 100%;
+  height: auto;
+}
+
+img.school-img{
+  width: 100%;
+  height: 400px;
+}
+
+.login-rigth{
+  background: #eef0f86b;/* #F3F6F9; */
+  color: var(--third-color-dis);
+}
+
+.title-rigth{
+  color: var(--second-color-dis);
+}
+
+.text-rigth{
+  color: var(--third-color-dis);
+}
+
+.card-title{
+  color: var(--second-color-dis);
+}
+
+.card-sub-title{
+  line-height: 10px;
+  font-size: 0.7rem;
+}
+
+.title-forgot-password,.title-inscrit{
+  font-size: 0.8rem;
+}
+
+/* .w-50 {
+  width: 30%!important;
+} */
+
+
+#dis .rounded-circle {
+  border: 1px solid var(--third-color-dis);
+}
+
+
+
+@media (min-width: 576px)
+{
+  .col-sm-4 {
+      flex: 0 0 40%;
+      max-width: 40%;
+  }
+  .col-sm-8 {
+      flex: 0 0 60%;
+      max-width: 60%;
+  }
+}
+
+.msgError{
+  font-size: small;
+  padding: 3px;
+}
+/* end login section */
+
+
+/*------------------- i18n-arabe -----------------------*/
+/* .i18n-arb */
+.title-rigth{
+color: var(--main-color-dis);
+}
+
+.i18n-ar .title-rigth {
+font-size: xxx-large;
+}
+
+.text-rigth{
+color: var(--third-color-dis);
+}
+
+.i18n-ar .text-rigth {
+font-size: x-large;
+}
+
+.navLang ul li {
+font-size: 0.8rem;
+line-height: 1rem;
+text-transform: uppercase;
+display: inline-block;
+vertical-align: middle;
+}
+
+.i18n-ar .navLang ul li {
+font-size: 1rem;
+}
+.navLang ul li:last-child:before {
+content: "";
+display: inline-block;
+vertical-align: middle;
+height: 1rem;
+width: .5px;
+background: #abb5ce;
+margin: .5rem;
+}
+
+.navLang ul li span {
+display: inline-block;
+vertical-align: middle;
+color: #abb5ce;
+}
+
+.navLang ul li span.currentLang {
+font-weight: 700;
+color: var(--third-color-dis);
+}

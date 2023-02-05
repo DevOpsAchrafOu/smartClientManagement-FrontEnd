@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
+  //client_mng_
   apiUrl: "http://localhost:3000",
-  api_cm_bo: "http://localhost:8081/api/mang/v1", //private
+  api_client_mng_bo: "http://localhost:8081/api/mang/v1", //private
+  api_client_mng_bo_login: "http://localhost:8084", // public
 };
 
 /*

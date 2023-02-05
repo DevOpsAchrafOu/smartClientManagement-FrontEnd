@@ -14,14 +14,14 @@ export class CurrentLangService {
 
   currentLang(lang : string){
     this.transtale.use(lang);
-    localStorage.setItem('currentLang',lang);
+    localStorage.setItem('currentLang_client_mng',lang);
     return lang;
   }
 
   isRTL(){
 
       // get current lang
-      this.currentLangStr = localStorage.getItem('currentLang') || 'fr';
+      this.currentLangStr = localStorage.getItem('currentLang_client_mng') || 'fr';
       this.currentLangStr = this.currentLang(this.currentLangStr);
 
       if(this.currentLangStr == 'ar')

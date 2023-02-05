@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+
+  --main-color-dis: #1e1e2d;/*#9e1211;*/
+  --first-color-dis: #3445E5;
+  --second-color-dis: #9e1211;
+  --third-color-dis: #3699FF;
+  --fourth-color-dis: #EEF0F8;/* bg for body */
+  --fifth-color-dis: #181824; /*#1b1b28;*/
+  --sixth-color-dis: #B5B5C2;/* #6c757d; */
+  --seventh-color-dis: #E1F0FF;/* bg btn */
+
+}
+
+
+body{
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  background: var(--fourth-color-dis);
+  font-family: "Open Sans";/*, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;*/
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--sixth-color-dis);
+}
+
+
+/*---- strat style tag a -----*/
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+    color: var(--first-color-dis);
+}
+
+a {
+    color: var(--third-color-dis);
+    text-decoration: none;
+    background-color: transparent;
+}
+
+
+/*---- strat style form-control -----*/
+.form-control:focus {
+  background-color: var(--fourth-color-dis);
+  border-color: var(--first-color-dis);
+  border-radius: 6px;
+  box-shadow:none;
+}
+
+.form-control {
+  height: 35px;
+  font-size: 12px;
+  color: var(--first-color-dis);
+  padding: 0px 15px;
+  box-shadow: none;
+  border-width: 1px;
+  background-color: var(--bg-fifth-color);
+  border-color: rgba(125, 173, 179, 0.3);
+  border-radius: 6px;
+}

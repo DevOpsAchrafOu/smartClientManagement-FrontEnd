@@ -4,6 +4,7 @@ import { LayoutComponent } from './components/base/layout/layout.component';
 import { HomeComponent } from './components/home/home.component';
 
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuardService } from './services/security/auth-guard.service';
 
 
 const routes: Routes = [
@@ -17,7 +18,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
 
     ]
-    // , canActivate: [AuthGuardService]
+    , canActivate: [AuthGuardService]
   }
 
 ];

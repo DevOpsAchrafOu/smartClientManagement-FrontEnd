@@ -1,1 +1,88 @@
 <p>login works!</p>
+<!-- Start Login Section -->
+<div class="contient " id="dis">
+  <div dir="{{ currentLang == 'ar' ? 'rtl' : 'ltr' }}" [ngClass]="{' i18n-ar ' : currentLang == 'ar' }">
+    <div class="vh-100 ">
+      <!-- d-flex justify-content-center align-items-center -->
+      <div class="row h-100 m-0 ">
+        <div class="col-sm-4 col-12 bg-white h-100  m-0 p-0 d-flex align-items-center">
+          <div class=" card border-0 w-100  p-0 rounded-0 ">
+            <div class="card-body  py-1 px-3 text-center ">
+              <div>
+                <img src="./assets/images/ministry-logo.png" role="button" [routerLink]="['/']"
+                  class="mb-3 ministry-logo  ">
+              </div>
+              <img src="./assets/images/logo.png" role="button" [routerLink]="['/']"
+                class=" my-3 logo rounded-circle shadow">
+              <h4 class="card-title d-flex justify-content-center" role="button" [routerLink]="['/']"> {{"LOGIN-TITLE" | translate}}</h4>
+              <p class="card-text text-center">{{"LOGIN-SUBTITLE" | translate}}</p>
+              <!-- Start form -->
+              <form [formGroup]="formLogin" (ngSubmit)="onFormSubmit(formLogin)" [ngClass]="{' i18n-ar ' : currentLang == 'ar' }">
+
+                <!-- Start message error -->
+                <div class="alert alert-danger msgError" *ngIf="messageError">{{messageError}}</div>
+                <!-- End message error-->
+
+                <!-- Start login input-->
+                <div class="form-group">
+                  <label class="col-form-label d-block" [ngClass]="currentLang == 'ar' ? ' text-right ' : ' text-left ' " for="login">{{'INPUT-USERNAME-PLACEHOLDER' | translate}} : </label>
+                  <input dir="ltr" type="text" class="form-control" id="login" formControlName="username" name="username" required
+                    placeholder="{{'INPUT-USERNAME-PLACEHOLDER' | translate}}">
+                  <section
+                    *ngIf="formLogin.get('username')?.invalid && ( formLogin.get('username')?.dirty || formLogin.get('username')?.touched)">
+                    <div class="invalid-feedback d-block " *ngIf="formLogin.get('username')?.errors?.required ">
+                      <i class="fa fa-exclamation-triangle"></i> {{"VALIDATION-USERNAME-REQUIRED" | translate}}
+                    </div>
+                  </section>
+                </div>
+
+                <!-- Start password input-->
+                <div class="form-group">
+                  <label class="col-form-label d-block"  [ngClass]="currentLang == 'ar' ? ' text-right ' : ' text-left ' " for="password">{{'INPUT-PASSWORD-PLACEHOLDER' | translate}} : </label>
+                  <input dir="ltr" type="password" class="form-control" id="password" formControlName="password" name="password"
+                    required placeholder="{{'INPUT-PASSWORD-PLACEHOLDER' | translate}}">
+                  <section
+                    *ngIf="formLogin.get('password')?.invalid && ( formLogin.get('password')?.dirty || formLogin.get('password')?.touched)">
+                    <div class="invalid-feedback d-block" *ngIf="formLogin.get('password')?.errors?.required ">
+                      <i class="fa fa-exclamation-triangle"></i>  {{"VALIDATION-PASSWORD-REQUIRED" | translate}}
+                    </div>
+                  </section>
+                </div>
+                <div>
+                  <a href="javascript: void(0);" [routerLink]="['/forgot-password']"
+                    class="title-forgot-password d-flex justify-content-start"> {{'LOGIN-URL-LABEL-FORGOT-PASSWORD' | translate}}</a>
+                </div>
+                <button type="submit" class="btn my-btn btn-primary  p-2 my-3 w-100" [disabled]="formLogin.invalid">
+                  <i class="fa fa-unlock" aria-hidden="true"></i> {{'LOGIN-BTN-LABEL-CONNXION' | translate}}</button>
+              </form>
+              <nav *ngIf="false" class="mt-3 mb-2 text-left navLang float-r">
+                <ul class="p-0 m-0">
+                  <li>
+                    <span role="button"  (click)="changeCurrentLang('ar')" [ngClass]="{'currentLang' : currentLang == 'ar'}">{{'langAr' | translate}}</span>
+                  </li>
+                  <li>
+                    <span role="button" (click)="changeCurrentLang('fr')" [ngClass]="{'currentLang' : currentLang == 'fr'}">{{'langFr' | translate}}</span>
+                  </li>
+                </ul>
+              </nav>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8 m-0 p-0 d-flex justify-content-center align-items-center ">
+          <div class=" px-3">
+            <h1 class="pb-3 title-rigth"><span class=""> {{'LOGIN-RIGHT-TITLE' | translate}}</span> </h1>
+            <p class="text-rigth text-center">{{'LOGIN-RIGHT-SUBTITLE' | translate}}</p>
+            <div class="mt-5 pt-2">
+              <img src="./assets/images/school-blue.svg" role="button" [routerLink]="['/']" class=" school-img  ">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End Login Section -->
