@@ -13,10 +13,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NgSelect2Module } from 'ng-select2';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TestComponent } from './tests/test/test.component';
+import { UtilisateurComponent } from './components/administration/utilisateur/utilisateur.component';
+import { RoleComponent } from './components/administration/role/role.component';
+import { PaysComponent } from './components/parametres/pays/pays.component';
+import { VilleComponent } from './components/parametres/ville/ville.component';
+import { DatePipe } from '@angular/common';
+import { TokenHtppInterceptorService } from './services/security/token-htpp-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +34,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
     LayoutComponent,
     FooterComponent,
     HomeComponent,
+    TestComponent,
+    UtilisateurComponent,
+    RoleComponent,
+    PaysComponent,
+    VilleComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -46,7 +58,14 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
       }
     }),//Translate for i18n internationalization
   ],
-  providers: [],
+  providers: [
+    DatePipe,// for date pipe
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenHtppInterceptorService, // for Token Htpp Interceptor
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

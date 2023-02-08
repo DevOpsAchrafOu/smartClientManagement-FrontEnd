@@ -1,0 +1,29 @@
+.fixed-bottom{
+  left: 250px;
+  z-index: 3;
+  transition: all 0.3s;
+  color: var(--third-color-dis);
+}
+
+.l-60{
+  left: 60px;
+  transition: all 0.3s;
+}
+
+@media (max-width:576px) {
+.fixed-bottom.i18n-arb,
+.fixed-bottom{
+  left: 0 !important;
+  right: 0 !important;
+}
+}
+/*------------------- i18n-arabe -----------------------*/
+
+.fixed-bottom.i18n-arb{
+left: 0px;
+right: 250px;
+}
+
+.l-60.i18n-arb{
+right: 60px !important;
+}

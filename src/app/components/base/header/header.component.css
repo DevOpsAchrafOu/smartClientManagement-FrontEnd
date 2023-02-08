@@ -1,0 +1,133 @@
+/*--------- start navbar section -----------*/
+.navbar-expand-lg {
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+.bg-gradient-navbar{
+background: white;
+color: var(--main-color-dis);
+/* linear-gradient(90deg, var(--main-color-dis)  0%, var(--first-color-dis) 100%); */
+}
+
+.nav .nav-item .nav-link {
+padding-left: 5px;
+padding-right: 5px;
+}
+
+
+
+#sidebarCollapse{
+  color: inherit;
+}
+
+#dis .fa-angle-double-left:hover,
+#dis .fa-angle-double-right:hover{
+color: var(--third-color-dis);
+}
+
+.dropdown-item {
+padding: 0.25rem 0rem;
+padding-right: 10px;
+}
+
+.dropdown-item .fa{
+padding-left: 10px;
+padding-right: 10px;
+color: var(--sixth-color-dis);
+}
+
+.dropdown-item.active,
+.dropdown-item:active,
+.dropdown-item:hover,
+.dropdown-item:hover .fa {
+color: var(--third-color-dis);
+background: #F3F6F9;
+}
+
+.circle {
+  background-color: #740b60 ;
+  color: white;
+  border-radius: 50%;
+  height: 37px;
+  text-align: center;
+  width: 37px;
+  line-height: 37px;
+  float: left;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.initials {
+  line-height: 2.1;
+  font-size: medium;
+  position: relative;
+  font-weight: 500;
+}
+
+.NumNatification1{
+  position: absolute;
+  right: 45%;
+  top: -22%;
+  z-index: 99;
+  font-size: 48%;
+  padding: 0.4em;
+  border-radius: 999px;
+  line-height: 0.75em;
+  color: white;
+  background: red;
+  text-align: center;
+  min-width: 0em;
+  font-weight: bold;
+}
+.fa-stack {
+  line-height: 25px;
+  font-size: 20px;
+}
+
+#nat1{
+  font-size: 8px;
+
+}
+.icon1{
+  color: var(--sixth-color-dis);
+}
+
+#nat1 span{
+  /* width: 44px; */
+  height: 15px;
+}
+
+
+.currentUserName {
+font-size: 12px;
+line-height: 36px;
+padding-right: 10px;
+padding-left: 10px;
+color:  var(--third-color-dis);
+
+}
+
+.w-30{
+  width: 30%!important;
+}
+
+
+
+/*------------------- i18n-arabe -----------------------*/
+.i18n-arb .dropdown-item {
+text-align: right;
+padding-right: 0px;
+padding-left: 10px;
+}
+
+
+.i18n-arb #notification  .icon-star{
+float: left;
+}
+
+/*--------- start navbar section -----------*/

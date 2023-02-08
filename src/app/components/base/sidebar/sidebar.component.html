@@ -1,1 +1,125 @@
-<p>sidebar works!</p>
+<nav
+  id="sidebar"
+  [ngClass]="{' i18n-arb ' : rtl, 'active': data.menu == true,'fixed-top':isfixed, 'margin-left': data.menu != true}"
+  class="bg-gradient-sidebar sidebar"
+>
+  <!-- start logo -->
+  <div class="sidebar-header">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link" style="white-space: nowrap">
+      <img
+        src="./assets/images/logo-home.png"
+        alt="Logo"
+        class="brand-image rounded-circle shadow"
+        height="35"
+      />
+      <span  class="brand-text font-weight-light text-white" id="brand-name"
+      [ngClass]="rtl == true ? ' mr-3 ' : ' ml-3 ' "
+        >{{'SADBAR-TITLE' | translate}}</span
+      >
+    </a>
+
+    <span *ngIf="data.menu == true"
+      role="button"
+      id="closeSidebar"
+      (click)="closeSidebar()"
+    >
+      <i class="fa " [ngClass]="rtl == true ? ' fa-chevron-circle-right ' : ' fa-chevron-circle-left ' "></i>
+    </span>
+  </div>
+
+  <!-- Start navBar SideMain -->
+  <ul class="list-unstyled components">
+    <!-- table bord -->
+    <li>
+      <a
+        href="javascript: void(0);"
+        [routerLink]="['/']"
+        style="white-space: nowrap"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="fa fa-bar-chart"></i>
+        <span class="item-side">{{'SADBAR-TITLE-HOME' | translate}}</span>
+      </a>
+    </li>
+    <!-- Administration -->
+    <li>
+      <a
+        href="#administration"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        style="white-space: nowrap"
+      >
+        <i class="fa fa-cogs"></i>
+        <span class="item-side">{{'SADBAR-TITLE-ADMIN' | translate}}</span>
+      </a>
+      <ul class="collapse list-unstyled" id="administration">
+        <li>
+          <a href="javascript: void(0);" [routerLink]="['/list-user']"
+            ><span class="nav-icon"><i class="fa fa-users px-1"></i></span
+            ><span
+              class="item-submenu"
+              [ngClass]="{ hide: isActiveInChild == true }"
+              >{{'SADBAR-TITLE-USER' | translate}}</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href="javascript: void(0);" [routerLink]="['/list-role']"
+            ><span class="nav-icon"><i class="fa fa-id-card px-1"></i></span
+            ><span
+              class="item-submenu"
+              [ngClass]="{ hide: isActiveInChild == true }"
+              >{{'SADBAR-TITLE-ROLE' | translate}}</span
+            ></a>
+        </li>
+
+      </ul>
+    </li>
+
+    <!-- Parametres -->
+    <li>
+      <a
+        href="#parametres"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        style="white-space: nowrap"
+      >
+        <i class="fa fa-database"></i>
+        <span class="item-side">{{'SADBAR-TITLE-REFE' | translate}}</span>
+      </a>
+      <ul class="collapse list-unstyled" id="parametres">
+         <li>
+          <a href="javascript: void(0);" [routerLink]="['/list-pays']"
+            ><span class="nav-icon"><i class="fa fa-globe px-1"></i></span
+            ><span
+              class="item-submenu"
+              [ngClass]="{ hide: isActiveInChild == true }"
+              >{{'SADBAR-TITLE-PAYS' | translate}}</span
+            ></a
+          >
+        </li>
+         <li>
+          <a href="javascript: void(0);" [routerLink]="['/list-ville']"
+            ><span class="nav-icon"><i class="fa fa-building-o px-1"></i></span
+            ><span
+              class="item-submenu"
+              [ngClass]="{ hide: isActiveInChild == true }"
+              >{{'SADBAR-TITLE-VILLES' | translate}}</span
+            ></a
+          >
+        </li>
+
+      </ul>
+    </li>
+  </ul>
+  <!-- End navBar SideMain -->
+
+</nav>
+<div
+  id="overFlowSideBar"
+  [ngClass]="{ overFlowSideBar: !isSideBarCloseChild }"
+></div>

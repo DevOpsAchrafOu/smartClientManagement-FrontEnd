@@ -1,0 +1,90 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.content{
+  width: 100%;
+}
+
+.main{
+  padding: 1rem;
+}
+
+.ml-60{
+  margin-left: 60px;
+}
+
+/*------------ mediaqueries --------------*/
+@media (max-width: 768px) {
+.ml-60{
+    margin-left: 0px;
+}
+
+.i18n-arb .ml-60{
+  margin-right: 0px;
+}
+
+}
+
+@media (max-width: 992px) {
+
+
+.margin-left {
+    margin-left: -35%
+}
+.ml-60{
+    margin-left: 0px;
+}
+
+.i18n-arb .margin-left {
+  margin-right: -35%
+}
+.i18n-arb .ml-60{
+    margin-right: 0px;
+}
+}
+
+@media (max-width: 768px) {
+
+
+.margin-left {
+    margin-left: -45%
+}
+.ml-60{
+    margin-left: 0px;
+}
+
+.i18n-arb .margin-left {
+  margin-right: -45%
+}
+.i18n-arb .ml-60{
+    margin-right: 0px;
+}
+}
+
+@media (max-width: 576px) {
+
+.margin-left {
+    margin-left: -80%
+}
+.ml-60{
+    margin-left: 0px;
+}
+
+.i18n-arb .margin-left {
+  margin-right: -80%
+}
+.i18n-arb .ml-60{
+    margin-right: 0px;
+}
+}
+
+
+/*------------------- i18n-arabe -----------------------*/
+/* .i18n-arb */
+.i18n-arb .ml-60{
+margin-left: 0px;
+margin-right: 60px;
+}

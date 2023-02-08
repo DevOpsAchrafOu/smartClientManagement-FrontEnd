@@ -1,2 +1,25 @@
-<p>layout works!</p>
-<router-outlet></router-outlet>
+
+<div class="wrapper" [dir]="rtl == true ? 'rtl' : '' "  [ngClass]="{' i18n-arb ' : rtl}" >
+
+  <!-- Start  SideBar -->
+  <app-sidebar [isActiveInChild]="isActiveInParent" (sideBarActiveChild1)="getDataFromChild1($event)"  [ngClass]="{' i18n-arb ' : rtl}" ></app-sidebar>
+  <!-- ENd  SideBar -->
+
+  <!-- Strat Page Contient(header+main)  -->
+  <div class="content flex-fill " [ngClass]="{'ml-60': data.menu}">
+
+      <!-- start navBar top  -->
+      <app-header (sideBarActiveChild)="getDataFromChild($event)" [isActiveInChild1]="isActiveInParent1" [ngClass]="{' i18n-arb ' : rtl}" ></app-header>
+      <!-- end navBar top  -->
+
+      <!-- start main-->
+      <div  class="main mb-4 " >
+          <router-outlet></router-outlet>
+      </div>
+      <!-- end main-->
+
+      <!-- start footer -->
+      <app-footer [isActiveInChild]="isActiveInParent" [ngClass]="{' i18n-arb ' : rtl}" ></app-footer>
+      <!-- end footer -->
+  </div>
+  <!-- End Page Contient  -->
