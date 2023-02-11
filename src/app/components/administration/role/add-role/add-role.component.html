@@ -1,0 +1,119 @@
+<!-- Start addRole section -->
+<span id="dis-modal" dir="ltr">
+  <!-- Start overlay Section -->
+  <div class="overlay" [ngStyle]="{'display':display}"></div>
+  <!-- End overlay Section -->
+
+  <div class="modal" role="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" [ngClass]="{'d-none':isCreated}"><i class="fa fa-edit"></i> Modifier
+                      rôle{{'' | translate}}{{'' | translate}}</h6>
+                  <h6 class="modal-title" [ngClass]="{'d-none':!isCreated}"><i class="fa fa-plus"></i> Ajouter
+                      rôle{{'' | translate}}{{'' | translate}}</h6>
+                  <button type="button" class="close" (click)="onCloseModal()">
+                      <span>&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="" [formGroup]="formContent" (ngSubmit)="formSubmit(formContent)" class="form">
+                        <!-- Start message error -->
+                        <div
+                        class="alert alert-danger msgError text-center"
+                        *ngIf="messageError"
+                      >
+                        {{ messageError }}
+                      </div>
+                      <!-- End message error-->
+                      <!-- Start Code field -->
+                      <div class="mb-2">
+                        <div class="form-group">
+                            <label class="col-form-label">Code{{'' | translate}} <span class="color-red">*</span> :
+                            </label>
+                            <input type="text" class="form-control form-control-sm"
+                                [ngClass]="{'was-invalid':formContent.controls['code'].touched && formContent.controls['code'].errors?.required}"
+                                formControlName="code">
+                        </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['code'].errors) || (formContent.controls['code']?.invalid && ( formContent.controls['code']?.dirty || formContent.controls['code']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf=" formContent.controls['code'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez une code de role.{{'' | translate}}
+                              </div>
+                          </section>
+
+                      </div>
+                      <!-- End Code field -->
+                      <!-- Start label field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">Label{{'' | translate}} <span class="color-red">*</span> : </label>
+                              <input type="text" class="form-control form-control-sm" formControlName="label">
+                          </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['label'].errors) || (formContent.controls['label']?.invalid && ( formContent.controls['label']?.dirty || formContent.controls['label']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf=" formContent.controls['label'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez nom de rôle.{{'' | translate}}
+                              </div>
+                          </section>
+                      </div>
+                      <!-- End Nom field -->
+
+                      <!-- Start checkbox menu field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">Menus{{'' | translate}} : </label>
+                              <div class="row   mx-auto" *ngIf="menus" formArrayName="menus">
+                                <ng-container *ngFor="let itemKey of mapMenuToList; let iKey = index" >
+                                  <div class="col-4">
+                                    <ng-container *ngFor="let itemMenu of itemKey; let iMenu = index" >
+                                      <ng-container *ngFor="let item of formContent.controls?.menus?.controls; let i = index" >
+                                        <div class=" px-1 py-2" *ngIf="((iKey == 0 && iMenu == i) || (iKey == 1 && (mapMenuToList[0].length+iMenu) == i) || (iKey == 2 && (mapMenuToList[1].length+mapMenuToList[0].length+iMenu) == i))  && itemMenu" [formGroupName]="i" >
+                                          <ng-container *ngIf=" (iKey == 1 || iKey == 2 ) && iMenu == 0;else other" >
+                                            <input  (click)="checkedAllOrInCheckedAll(itemMenu,i)" type="checkbox" formControlName="checked"  />
+                                          </ng-container>
+                                          <ng-template #other>
+                                            <input (click)="checkedSubOrInCheckedSub(itemMenu,i)" type="checkbox"  formControlName="checked" [ngClass]="{'  ml-3':itemMenu.parentId && itemMenu.parentId != 0 }" />
+                                          </ng-template>
+                                          <span class="ml-2"><i class="fa  fa-icon-role"></i> {{ itemMenu.titleAr }}</span>
+                                        </div>
+                                      </ng-container>
+                                    </ng-container>
+                                  </div>
+                                </ng-container>
+                              </div>
+                          </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['menus'].errors) || (formContent.controls['menus']?.invalid && ( formContent.controls['menus']?.dirty || formContent.controls['menus']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf="formContent.controls['menus'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez sélectionner au mois un menu.{{'' | translate}}
+                              </div>
+                          </section>
+                      </div>
+
+
+
+
+                      <!-- Start Submit button -->
+                      <div class="button-box mt-5">
+                        <button type="button" class="btn btn-sm btn-danger m-2"
+                            (click)="onCloseModal()">{{'BTN-CANCEL' | translate}}</button>
+                        <button
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid"
+                            [ngClass]="{'d-none':isCreated}">{{'BTN-EDIT' | translate}}</button>
+                        <button
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid "
+                            [ngClass]="{'d-none':!isCreated}">{{'BTN-ADD' | translate}}</button>
+                    </div>
+
+                      <!-- End Submit button -->
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</span>
+<!-- End addRole section -->

@@ -24,6 +24,10 @@ import { PaysComponent } from './components/parametres/pays/pays.component';
 import { VilleComponent } from './components/parametres/ville/ville.component';
 import { DatePipe } from '@angular/common';
 import { TokenHtppInterceptorService } from './services/security/token-htpp-interceptor.service';
+import { AddRoleComponent } from './components/administration/role/add-role/add-role.component';
+import { AddUtilisateurComponent } from './components/administration/utilisateur/add-utilisateur/add-utilisateur.component';
+import { MenuComponent } from './components/administration/menu/menu.component';
+import { AddMenuComponent } from './components/administration/menu/add-menu/add-menu.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,10 @@ import { TokenHtppInterceptorService } from './services/security/token-htpp-inte
     RoleComponent,
     PaysComponent,
     VilleComponent,
+    AddRoleComponent,
+    AddUtilisateurComponent,
+    MenuComponent,
+    AddMenuComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -66,7 +74,9 @@ import { TokenHtppInterceptorService } from './services/security/token-htpp-inte
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents : [AddUtilisateurComponent,AddRoleComponent,AddMenuComponent
+    ]
 })
 export class AppModule { }
 

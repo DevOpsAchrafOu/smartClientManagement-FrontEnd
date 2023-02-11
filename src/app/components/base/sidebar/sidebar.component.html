@@ -57,7 +57,7 @@
       </a>
       <ul class="collapse list-unstyled" id="administration">
         <li>
-          <a href="javascript: void(0);" [routerLink]="['/list-user']"
+          <a href="javascript: void(0);" [routerLink]="['/administration/list-user']"
             ><span class="nav-icon"><i class="fa fa-users px-1"></i></span
             ><span
               class="item-submenu"
@@ -67,7 +67,7 @@
           >
         </li>
         <li>
-          <a href="javascript: void(0);" [routerLink]="['/list-role']"
+          <a href="javascript: void(0);" [routerLink]="['/administration/list-role']"
             ><span class="nav-icon"><i class="fa fa-id-card px-1"></i></span
             ><span
               class="item-submenu"
@@ -75,7 +75,15 @@
               >{{'SADBAR-TITLE-ROLE' | translate}}</span
             ></a>
         </li>
-
+        <li>
+          <a href="javascript: void(0);" [routerLink]="['/administration/list-menu']"
+            ><span class="nav-icon"><i class="fa fa-list-alt px-1"></i></span
+            ><span
+              class="item-submenu"
+              [ngClass]="{ hide: isActiveInChild == true }"
+              >{{'SADBAR-TITLE-MENUS' | translate}}</span
+            ></a>
+        </li>
       </ul>
     </li>
 
@@ -93,7 +101,7 @@
       </a>
       <ul class="collapse list-unstyled" id="parametres">
          <li>
-          <a href="javascript: void(0);" [routerLink]="['/list-pays']"
+          <a href="javascript: void(0);" [routerLink]="['/parametres/list-pays']"
             ><span class="nav-icon"><i class="fa fa-globe px-1"></i></span
             ><span
               class="item-submenu"
@@ -103,7 +111,7 @@
           >
         </li>
          <li>
-          <a href="javascript: void(0);" [routerLink]="['/list-ville']"
+          <a href="javascript: void(0);" [routerLink]="['/parametres/list-ville']"
             ><span class="nav-icon"><i class="fa fa-building-o px-1"></i></span
             ><span
               class="item-submenu"

@@ -1,17 +1,17 @@
-<!-- Start roles section  -->
+<!-- Start menus section  -->
 <div class="content-header row" id="dis-list-header" dir="ltr">
   <div class="content-header-left  col-12 mb-2">
-      <h5 class="content-header-title mb-0">Gestion des rôles{{'' | translate}}{{'' | translate}}</h5>
+      <h5 class="content-header-title mb-0">Gestion des menus{{'' | translate}}{{'' | translate}}</h5>
       <div class="row breadcrumbs-top">
           <div class="breadcrumb-wrapper col-sm-6 col-12 my-2">
               <ol class="breadcrumb">
                   <li class="breadcrumb-item ">
                       <a href="javascript: void(0);" [routerLink]="['/home']">
-                          Accueil{{'' | translate}}{{'' | translate}}
+                          Accueil{{'' | translate}}
                       </a>
                   </li>
                   <li class="breadcrumb-item active">
-                      Gestion des rôles{{'' | translate}}{{'' | translate}}
+                      Gestion des menus{{'' | translate}}{{'' | translate}}
                   </li>
               </ol>
           </div>
@@ -34,14 +34,14 @@
         <div class="card-tools  float-right">
           <button class="btn  btn-sm shadow-none btn-add"
           placement="left"
-          ngbTooltip="Ajouter rôle{{'' | translate}}"
-           (click)="addRole()">
-            <i class="fa fa-id-card"></i>
+          ngbTooltip="Ajouter menu{{'' | translate}}"
+          (click)="addMenu()">
+            <i class="fa fa-list-alt"></i>
           </button>
         </div>
 
         <h6 class="card-title float-rigth m-0">
-          Liste des rôles
+          Liste des menus{{'' | translate}}{{'' | translate}}
         </h6>
       </div>
       <div class="card-body  py-0">
@@ -52,7 +52,7 @@
               <small> Afficher </small>
              <select   [(ngModel)]="pageSize"
              class="form-control form-control-sm" id="pageSize"
-             (change)="refreshRoles()">
+             (change)="refreshMenus()">
              <option [ngValue]="5">5</option>
              <option [ngValue]="10">10</option>
              <option [ngValue]="15">15</option>
@@ -68,21 +68,30 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Code{{'' | translate}}</th>
-                  <th scope="col">Libellé{{'' | translate}}</th>
+                  <th scope="col">Icon{{'' | translate}}</th>
+                  <th scope="col" class="text-right">Libellé en Ar{{'' | translate}}</th>
+                  <th scope="col">Libellé en Fr{{'' | translate}}</th>
+                  <th scope="col">Lien{{'' | translate}}</th>
+                  <th scope="col">Ordre{{'' | translate}}</th>
+                  <th scope="col">Type Nav{{'' | translate}}</th>
                   <th scope="col"  class="action" >Action{{'' | translate}}</th>
                 </tr>
               </thead>
-              <tbody class="text-left">
-                <tr *ngFor="let r of roles,let index=index">
+              <tbody >
+                <tr *ngFor="let m of menus,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
-                  <td class="" >{{ r.code }}</td>
-                  <td>{{ r.title}}</td>
+                  <td>{{ m.icon }}</td>
+                  <td class="text-right">{{ m.titleAr}}</td>
+                  <td >{{ m.titleFr}}</td>
+                  <td>{{ m.url}}</td>
+                  <td>{{m.order}}</td>
+                  <td>{{m.typeNav}}</td>
+
                   <td class="action">
 
                   <span class="dropdown ">
                     <a id="dropdownMenuIndex"
-                    placement="{{rtl ? 'right' : 'left' }}" ngbTooltip="{{'LIST-LABEL-ACTION' | translate}}"
+                      placement="{{rtl ? 'right' : 'left' }}" ngbTooltip="{{'LIST-LABEL-ACTION' | translate}}"
                       href="javascript: void(0);"
                       data-toggle="dropdown"
                       class="dropdown-toggle  p-0 m-1"
@@ -92,14 +101,16 @@
 
                     <span class="dropdown-menu dropdown-menu-sm text-align-r" aria-labelledby="dropdownMenuIndex"  [ngClass]="rtl == true ? ' dropdown-menu-left ' : ' dropdown-menu-right ' " >
                       <!-- href="javascript: void(0);" class="dropdown-item"  -->
-                      <a  href="javascript: void(0);" class="dropdown-item"   class="btn btn-warning btn-sm m-1 p-0 btn-icon" (click)="updateRole(r)"
+                      <a  href="javascript: void(0);" class="dropdown-item"   class="btn btn-warning btn-sm m-1 p-0 btn-icon"
+                      (click)="updateMenu(m)"
                       placement="left" ngbTooltip="Éditer{{'' | translate}}">
-                        <i class="fa fa-edit text-white"></i>
-                      </a>
-                      <a  href="javascript: void(0);" class="dropdown-item"   *ngIf="r.code != roleSuperAdmin" class="btn btn-danger btn-sm m-1 p-0 btn-icon" (click)="deleteRole(r.id,r.title,r.code)"
-                      placement="left" ngbTooltip="Supprimer{{'' | translate}}">
-                        <i class="fa fa-trash text-white"></i>
-                      </a>
+                       <i class="fa fa-edit text-white"></i>
+                     </a>
+                     <a  href="javascript: void(0);" class="dropdown-item"   class="btn btn-danger btn-sm m-1 p-0 btn-icon"
+                     (click)="deleteMenu(m.id,m.titleAr)"
+                     placement="left" ngbTooltip="Supprimer{{'' | translate}}">
+                       <i class="fa fa-trash text-white"></i>
+                     </a>
 
                     </span>
                   </span>
@@ -115,7 +126,7 @@
           <div class="col-12">
             <div class="d-flex justify-content-end px-2">
               <ngb-pagination class="pagination" id="pagination" [collectionSize]="collectionSize" [(page)]="page"
-                [pageSize]="pageSize" (pageChange)="refreshRoles()">
+                [pageSize]="pageSize" (pageChange)="refreshMenus()">
               </ngb-pagination>
             </div>
           </div>
@@ -128,4 +139,4 @@
 </div>
 <!-- start add/delete component dynamique -->
 <div #componentModal></div>
-<!-- End roles section  -->
+<!-- End menus section  -->

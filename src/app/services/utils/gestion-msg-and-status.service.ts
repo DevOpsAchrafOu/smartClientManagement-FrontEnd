@@ -61,6 +61,12 @@ export class GestionMsgAndStatusService {
   bodyToastrRoleUpdate : string = "Rôle a été bien modifié ";
   bodyToastrRoleDelete : string = "Rôle a été bien supprimé ";
 
+  /*------------------------  Menu ------------------------*/
+  /* start body Toastr */
+  bodyToastrMenuAdd : string = "Menu a été bien enregistré ";
+  bodyToastrMenuUpdate : string = "Menu a été bien modifié ";
+  bodyToastrMenuDelete : string = "Menu a été bien supprimé ";
+
 
   /*------------------------  Pays ------------------------*/
   /* start body Toastr */
@@ -104,6 +110,12 @@ export class GestionMsgAndStatusService {
   getBodySwalConfirmRoleDeleteImpossible(name : any){
     return "Impossible de supprimer le rôle < <b>"+name+" </b>>. Certain(s) utilisateurs ont toujours ce rôle dans l'application.";
   }
+
+  /*------------------------  menu ------------------------*/
+  getBodySwalConfirmMenuDelete(name : any){
+    return "Vous êtes sur le point de supprimer le menu '"+name+"' ";
+  };
+
 
   /*------------------------  Pays ------------------------*/
 

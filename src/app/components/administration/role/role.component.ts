@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import { Role } from 'src/app/interfaces/administration/role';
+import { RoleService } from 'src/app/services/administration/role.service';
+import { AlertSwalService } from 'src/app/services/utils/alert-swal.service';
+import { CurrentLangService } from 'src/app/services/utils/current-lang.service';
+import { GestionMsgAndStatusService } from 'src/app/services/utils/gestion-msg-and-status.service';
+import { HandleStatusService } from 'src/app/services/utils/handle-status.service';
+import { UtilsService } from 'src/app/services/utils/utils.service';
+import Swal from 'sweetalert2';
+import { AddRoleComponent } from './add-role/add-role.component';
+
 
 @Component({
   selector: 'app-role',
@@ -7,9 +19,175 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoleComponent implements OnInit {
 
-  constructor() { }
+
+  /********************************************************************************************/
+  /**************************************** The attributes  ***********************************/
+  /********************************************************************************************/
+  rtl: boolean = false; //par défaul Francais (false)
+
+  today = new Date();
+  public value: string ="";
+  roleSuperAdmin = "";
+
+  /* start property table */
+  page = 1;
+  pageSize = 10;
+  collectionSize = 0;
+
+  roles : Role[] = [];
+  messageError: string = "";
+
+  @ViewChild('componentModal', { static: false, read: ViewContainerRef }) entry: any ;
+  isCreated: boolean = false;
+  isNotCreated: boolean = false;
+  message: string = ""
+
+  /********************************************************************************************/
+  /************************************* Initialization functions  ****************************/
+  /*******************************************************************************************/
+
+  constructor(private roleService: RoleService,
+    private resolver: ComponentFactoryResolver,
+    private toastr: ToastrService,
+    private alertServ : AlertSwalService,//property for alert(toastr and Swal)
+    private messageServ : GestionMsgAndStatusService,//massagae for alert(toastr and Swal)
+    private handleErrorServ : HandleStatusService,
+    private currentLangService: CurrentLangService,
+    private translate: TranslateService,
+    ) {
+      this.roleSuperAdmin = this.roleService.roleSuperAdmin;
+    }
 
   ngOnInit(): void {
+
+    this.refreshRoles();
+
+
+    //get current lang
+    //this.rtl = this.currentLangService.isRTL();
+
   }
+
+  /********************************************************************************************/
+  /**************************************  The functions **************************************/
+  /********************************************************************************************/
+
+
+  /* add role */
+  addRole() {
+    this.entry.clear();
+    const factory = this.resolver.resolveComponentFactory(AddRoleComponent);// initialser component
+    let componentRef = this.entry.createComponent(factory);//create component
+    componentRef.instance.role = { };//initialser les inputs
+
+    componentRef.instance.outputEvent.subscribe( //récu data de component fils
+      (val: any) => {
+        if ('error' in val) {
+          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+        }
+        else {
+          this.refreshRoles();
+          this.message = this.messageServ.bodyToastrRoleAdd;
+          this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
+          this.destroyComponent(componentRef);//delete component
+        }
+
+      }
+    );
+  }
+
+  /* update role */
+  updateRole(role: Role) {
+    this.entry.clear();
+    const factory = this.resolver.resolveComponentFactory(AddRoleComponent);
+    let componentRef = this.entry.createComponent(factory);
+    componentRef.instance.role = role;
+    componentRef.instance.outputEvent.subscribe(//récu data de component fils
+      (val:any) => {
+        if ('error' in val) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+        }
+        else {
+          this.refreshRoles();
+          this.message = this.messageServ.bodyToastrRoleUpdate;
+          this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
+          this.destroyComponent(componentRef);//delete component
+        }
+      }
+    );
+  }
+
+  /* delete role */
+  deleteRole(id: number | undefined, name : any ,code : any){
+    if(this.roleService.roleSuperAdmin != code)
+    {
+      this.roleService.countUtilisateurByRoleIdFromBack(id).subscribe(
+        (count : any) =>{
+         if(count != 0){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'warning',
+            html: this.messageServ.getBodySwalConfirmRoleDeleteImpossible(name),
+            showConfirmButton: false,
+            timer: 4500
+          })
+         }else {
+          Swal.fire({
+            title: this.messageServ.titleSwal,
+            text: this.messageServ.getBodySwalConfirmRoleDelete(name),
+            showCancelButton: this.alertServ.showCancelButton,
+            confirmButtonColor: this.alertServ.confirmButtonColor,
+            cancelButtonColor: this.alertServ.cancelButtonColor,
+            confirmButtonText: this.messageServ.confirmButtonText,
+            cancelButtonText: this.messageServ.cancelButtonText
+          }).then((result) => {
+              console.log(result);
+              if (result.value && id) {
+                //  delete role  //
+                this.roleService.deleteRoleByIdFromBack(id).subscribe(
+                  iteam =>{
+                    this.message = this.messageServ.bodyToastrRoleDelete;
+                    this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
+                    this.refreshRoles();
+                  },
+                  error => {
+                    this.handleErrorServ.onHandleCodeStatus(error);          }
+                );
+              }
+          });
+         }
+        },
+        error => {
+          this.handleErrorServ.onHandleCodeStatus(error);          }
+      );
+    }
+
+  }
+
+/* get all role */
+  refreshRoles() {
+      this.roleService.getAllRolesFromBack().subscribe(
+        (listRole : any[]) => {
+          console.log(listRole);
+          if(!UtilsService.isEmptyArray(listRole))
+          this.roles = listRole
+          .map((country, i) => ({id: i + 1, ...country}))
+          .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+          this.collectionSize = listRole.length;
+        },
+        error => {
+          this.handleErrorServ.onHandleCodeStatus(error);
+         }
+      );
+
+  }
+
+
+  /* delete component */
+  destroyComponent(componentRef : ComponentRef<AddRoleComponent>) {
+      componentRef.destroy();
+  }
+
+
 
 }

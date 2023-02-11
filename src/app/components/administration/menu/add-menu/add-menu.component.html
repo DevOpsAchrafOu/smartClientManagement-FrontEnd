@@ -1,0 +1,171 @@
+<!-- Start addMenu section -->
+<span id="dis-modal" dir="ltr">
+  <!-- Start overlay Section -->
+  <div class="overlay" [ngStyle]="{'display':display}"></div>
+  <!-- End overlay Section -->
+
+  <div class="modal" menu="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog modal-dialog-scrollable " role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" [ngClass]="{'d-none':isCreated}"><i class="fa fa-edit"></i> Modifier
+                      menu{{'' | translate}}{{'' | translate}}</h6>
+                  <h6 class="modal-title" [ngClass]="{'d-none':!isCreated}"><i class="fa fa-plus"></i> Ajouter
+                      menu{{'' | translate}}{{'' | translate}}</h6>
+                  <button type="button" class="close" (click)="onCloseModal()">
+                      <span>&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="" [formGroup]="formContent" (ngSubmit)="formSubmit(formContent)" class="form">
+                      <!-- Start Icon field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">Icon{{'' | translate}} <span class="color-red">*</span> :
+
+                              </label>
+                              <input type="text" class="form-control form-control-sm" placeholder="Ex: fa-user{{'' | translate}}"
+                                  [ngClass]="{'was-invalid':formContent.controls['icon'].touched && formContent.controls['icon'].errors?.required}"
+                                  formControlName="icon">
+                          </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['icon'].errors) || (formContent.controls['icon']?.invalid && ( formContent.controls['icon']?.dirty || formContent.controls['icon']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf=" formContent.controls['icon'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez icon de label.{{'' | translate}}
+                              </div>
+                          </section>
+
+                      </div>
+                      <!-- End Icon field -->
+
+
+                      <!-- Start label Fr field -->
+                      <div class="mb-2">
+                        <div class="form-group">
+                            <label class="col-form-label">Libellé en Fr{{'' | translate}} <span class="color-red">*</span> : </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Libellé en Fr{{'' | translate}}"
+                                [ngClass]="{'was-invalid':formContent.controls['titleFr'].touched && formContent.controls['titleFr'].errors?.required}"
+                                formControlName="titleFr">
+                        </div>
+                        <section
+                        *ngIf="(isSubmit && formContent.controls['titleFr'].errors) || (formContent.controls['titleFr']?.invalid && ( formContent.controls['titleFr']?.dirty || formContent.controls['titleFr']?.touched))">
+                        <div class="invalid-feedback d-block"
+                            *ngIf=" formContent.controls['titleFr'].errors?.required">
+                            <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez label de menu.{{'' | translate}}
+                        </div>
+                        </section>
+                    </div>
+                    <!-- End Label FR field -->
+
+                      <!-- Start label Ar field -->
+                      <div class="mb-2">
+                        <div class="form-group">
+                            <label class="col-form-label">Libellé en Ar{{'' | translate}} <span class="color-red">*</span> : </label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Libellé en Fr{{'' | translate}}"
+                                [ngClass]="{'was-invalid':formContent.controls['titleAr'].touched && formContent.controls['titleAr'].errors?.required}"
+                                formControlName="titleAr">
+                        </div>
+                        <section
+                          *ngIf="(isSubmit && formContent.controls['titleAr'].errors) || (formContent.controls['titleAr']?.invalid && ( formContent.controls['titleAr']?.dirty || formContent.controls['titleAr']?.touched))">
+                          <div class="invalid-feedback d-block"
+                              *ngIf=" formContent.controls['titleAr'].errors?.required">
+                              <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez label de menu.{{'' | translate}}
+                          </div>
+                          </section>
+                      </div>
+                      <!-- End Label AR field -->
+
+                      <!-- Start url field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">URL{{'' | translate}} <span class="color-red">*</span> : </label>
+                              <input type="text" class="form-control form-control-sm" placeholder="Ex: /list-user{{'' | translate}}"
+                                  [ngClass]="{'was-invalid':formContent.controls['url'].touched && formContent.controls['url'].errors?.required}"
+                                  formControlName="url">
+                          </div>
+                          <section
+                          *ngIf="(isSubmit && formContent.controls['url'].errors) || (formContent.controls['url']?.invalid && ( formContent.controls['url']?.dirty || formContent.controls['url']?.touched))">
+                         <div class="invalid-feedback d-block"
+                              *ngIf=" formContent.controls['url'].errors?.required">
+                              <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez lien de label.{{'' | translate}}
+                          </div>
+                          </section>
+                      </div>
+                      <!-- End url field -->
+
+                      <!-- Start menu parent field -->
+                      <div class="mb-2">
+                        <div class="form-group ">
+                            <label class="col-form-label" for="menuSelect">Menu Parent <span class="color-red">*</span>:
+                            </label>
+                            <ng-select2 id="menuSelect" [data]="listMenuSelect" [options]="optionsSelect"
+                                formControlName="menuParent" width="100%" class="menuParent" [placeholder]="'--- Menu ---'">
+                            </ng-select2>
+                            <!-- [placeholder]="'Pays'" -->
+                        </div>
+                        <section
+                          *ngIf="(isSubmit && formContent.controls['menuParent'].errors) || (formContent.controls['menuParent']?.invalid && ( formContent.controls['menuParent']?.dirty || formContent.controls['menuParent']?.touched))">
+                          <div class="invalid-feedback d-block"
+                              *ngIf="(isSubmit ) && formContent.controls['menuParent'].errors?.required">
+                              <i class="fa fa-exclamation-triangle"></i> S'il vous plaît sélectionner un rôle.{{'' | translate}}
+                          </div>
+                        </section>
+                      </div>
+                      <!-- End menu parent field -->
+
+                      <!-- Start order field -->
+                      <div class="mb-2">
+                        <div class="form-group">
+                            <label class="col-form-label">ordre{{'' | translate}} <span class="color-red">*</span> : </label>
+                            <input type="number"   class="form-control form-control-sm"
+                                [ngClass]="{'was-invalid':formContent.controls['order'].touched && formContent.controls['order'].errors?.required}"
+                                formControlName="order">
+                        </div>
+                          <section
+                          *ngIf="(isSubmit && formContent.controls['order'].errors) || (formContent.controls['order']?.invalid && ( formContent.controls['order']?.dirty || formContent.controls['order']?.touched))">
+                          <div class="invalid-feedback d-block"
+                              *ngIf=" formContent.controls['order'].errors?.required">
+                              <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez ordre de menu.{{'' | translate}}
+                          </div>
+                          </section>
+                      </div>
+                      <!-- End order field -->
+
+                      <!-- Start Obligatoire field -->
+                      <div class="mb-2">
+                      <div class="form-group">
+                          <div class="row">
+                              <label class="col-4 col-form-label text-align-r ">Type Nav{{'' | translate}} <span class="color-red">*</span> : </label>
+                              <div class="row col-4 align-items-center">
+                                  <input class="col-2 " type="radio" value="V" formControlName="typeNav" >
+                                  <span class="col-2 text-dark "> Vertical{{'' | translate}} </span>
+                              </div>
+                              <div class="row col-4 align-items-center">
+                                  <input class="col-2 " type="radio" value="H" formControlName="typeNav" >
+                                  <span class="col-2 text-dark "> Horizontal{{'' | translate}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                      <!-- Start Submit button -->
+                      <div class="button-box mt-5">
+                        <button type="button" class="btn btn-sm btn-danger m-2"
+                            (click)="onCloseModal()">{{'BTN-CANCEL' | translate}}</button>
+                        <button
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid"
+                            [ngClass]="{'d-none':isCreated}">{{'BTN-EDIT' | translate}}</button>
+                        <button
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid "
+                            [ngClass]="{'d-none':!isCreated}">{{'BTN-ADD' | translate}}</button>
+                    </div>
+
+                      <!-- End Submit button -->
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</span>
+<!-- End addMenu section -->
