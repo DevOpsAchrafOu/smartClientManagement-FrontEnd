@@ -28,6 +28,8 @@ import { AddRoleComponent } from './components/administration/role/add-role/add-
 import { AddUtilisateurComponent } from './components/administration/utilisateur/add-utilisateur/add-utilisateur.component';
 import { MenuComponent } from './components/administration/menu/menu.component';
 import { AddMenuComponent } from './components/administration/menu/add-menu/add-menu.component';
+import { AddPaysComponent } from './components/parametres/pays/add-pays/add-pays.component';
+import { AddVilleComponent } from './components/parametres/ville/add-ville/add-ville.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { AddMenuComponent } from './components/administration/menu/add-menu/add-
     AddUtilisateurComponent,
     MenuComponent,
     AddMenuComponent,
+    AddPaysComponent,
+    AddVilleComponent,
   ],
   imports: [
     AppRoutingModule,

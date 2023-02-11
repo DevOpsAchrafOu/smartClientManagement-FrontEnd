@@ -1,0 +1,100 @@
+<!-- Start addMenu section -->
+<span  id="dis-modal"  dir="ltr">
+  <!-- Start overlay Section -->
+  <div class="overlay" [ngStyle]="{'display':display}"></div>
+  <!-- End overlay Section -->
+
+  <div  class="modal" menu="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content "  >
+              <div class="modal-header ">
+                  <h6 class="modal-title" [ngClass]="{'d-none':isCreated}"><i class="fa fa-edit"></i> Modifier
+                      Ville</h6>
+                  <h6 class="modal-title" [ngClass]="{'d-none':!isCreated}"><i class="fa fa-plus"></i> Ajouter
+                      Ville</h6>
+                  <button type="button" class="close" (click)="onCloseModal()">
+                      <span>&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="" [formGroup]="formContent" (ngSubmit)="formSubmit(formContent)" class="form">
+
+                      <!-- Start titleFr field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">Label en français <span class="color-red">*</span> :
+                              </label>
+                              <input type="text" class="form-control form-control-sm"
+                                  [ngClass]="{'was-invalid':formContent.controls['titleFr'].touched && formContent.controls['titleFr'].errors?.required}"
+                                  formControlName="titleFr">
+                          </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['titleFr'].errors) || (formContent.controls['titleFr']?.invalid && ( formContent.controls['titleFr']?.dirty || formContent.controls['titleFr']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf=" formContent.controls['titleFr'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez un label de
+                                  ville en français.
+                              </div>
+                          </section>
+                      </div>
+                      <!-- End LabelFr field -->
+
+                      <!-- Start titleAr field -->
+                      <div class="mb-2">
+                          <div class="form-group">
+                              <label class="col-form-label">Label en arabe <span class="color-red">*</span> : </label>
+                              <input type="text" class="form-control form-control-sm"
+                                  [ngClass]="{'was-invalid':formContent.controls['titleAr'].touched && formContent.controls['titleAr'].errors?.required}"
+                                  formControlName="titleAr">
+                          </div>
+                          <section
+                              *ngIf="(isSubmit && formContent.controls['titleAr'].errors) || (formContent.controls['titleAr']?.invalid && ( formContent.controls['titleAr']?.dirty || formContent.controls['titleAr']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf="formContent.controls['titleAr'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez un label de
+                                  ville en arabe.
+                              </div>
+                          </section>
+                      </div>
+                      <!-- End titleAr field -->
+
+
+                      <!-- Start payss field-->
+                      <div class="row">
+                        <div class="col">
+                            <div class="form-group ">
+                                <label class="col-form-label" for="paysSelect">Pays <span class="color-red">*</span>:
+                                </label>
+                                <ng-select2 id="paysSelect" [data]="listPaysSelect" [options]="optionsSelect"
+                                    formControlName="idPays" width="100%" class="pays" [placeholder]="'--- Pays ---'">
+                                </ng-select2>
+                                <!-- [placeholder]="'Pays'" -->
+                            </div>
+                            <section
+                              *ngIf="(isSubmit && formContent.controls['idPays'].errors) || (formContent.controls['idPays']?.invalid && ( formContent.controls['idPays']?.dirty || formContent.controls['idPays']?.touched))">
+                              <div class="invalid-feedback d-block"
+                                  *ngIf="(isSubmit ) && formContent.controls['idPays'].errors?.required">
+                                  <i class="fa fa-exclamation-triangle"></i> S'il vous plaît sélectionner un pays.
+                              </div>
+                          </section>
+                        </div>
+                    </div>
+
+                      <!-- Start Submit button -->
+                      <div class="button-box mt-5">
+                          <button type="button" class="btn btn-sm btn-danger m-2"
+                              (click)="onCloseModal()">Annuler</button>
+                          <button class="btn btn-sm btn-success m-2" type="submit"
+                              [ngClass]="{'d-none':isCreated}">Modifier</button>
+                          <button class="btn btn-sm btn-success m-2" type="submit"
+                              [ngClass]="{'d-none':!isCreated}">Ajouter</button>
+                      </div>
+
+                      <!-- End Submit button -->
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</span>
+<!-- End addMenu section -->
