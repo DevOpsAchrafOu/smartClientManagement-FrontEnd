@@ -69,7 +69,7 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Icon{{'' | translate}}</th>
-                  <th scope="col" class="text-right">Libellé en Ar{{'' | translate}}</th>
+                  <th scope="col" >Libellé en Ar{{'' | translate}}</th>
                   <th scope="col">Libellé en Fr{{'' | translate}}</th>
                   <th scope="col">Lien{{'' | translate}}</th>
                   <th scope="col">Ordre{{'' | translate}}</th>
@@ -81,7 +81,7 @@
                 <tr *ngFor="let m of menus,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
                   <td>{{ m.icon }}</td>
-                  <td class="text-right">{{ m.titleAr}}</td>
+                  <td >{{ m.titleAr}}</td>
                   <td >{{ m.titleFr}}</td>
                   <td>{{ m.url}}</td>
                   <td>{{m.order}}</td>

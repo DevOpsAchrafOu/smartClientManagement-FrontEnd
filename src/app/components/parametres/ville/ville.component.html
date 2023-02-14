@@ -39,7 +39,7 @@
                 placement="left"
                 ngbTooltip="Ajouter ville"
                 (click)="addVille()">
-                  <i class="fa fa-map-pin"></i>
+                  <i class="fa fa-building-o"></i>
                 </button>
               </div>
             </div>
@@ -70,22 +70,20 @@
         </div>
         <div class="row my-2">
           <div class="col-12">
-            <table  class="table table-striped table-sm text-sm text-center " id="dis-table">
+            <table  class="table table-striped table-sm text-sm text-left " id="dis-table">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <!-- <th scope="col">Code</th> -->
-                  <th scope="col" >Libellé en Fr</th>
                   <th scope="col">Libellé en Ar</th>
+                  <th scope="col" >Libellé en Fr</th>
                   <th scope="col"  class="action" >Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let m of villes,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
-                  <!-- <td>{{ m.code }}</td> -->
-                  <td class="text-left">{{ m.titleFr }}</td>
-                  <td class="text-right">{{ m.titleAr}}</td>
+                  <td >{{ m.titleAr}}</td>
+                  <td >{{ m.titleFr }}</td>
                   <td class="action">
                     <span class="dropdown ">
                       <a id="dropdownMenuIndex"

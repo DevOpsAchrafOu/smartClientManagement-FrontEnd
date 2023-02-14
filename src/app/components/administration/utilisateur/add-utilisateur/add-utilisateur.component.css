@@ -1,0 +1,43 @@
+#dis-modal .form-group{
+  margin-bottom: 0;
+}
+
+#dis-modal .form-control.privilege{
+  height: 14px;
+}
+
+.width-10{
+  width: 10%;
+}
+
+#dis-modal .fa-1x {
+  font-size: 1rem;
+}
+
+/* #dis-modal input[type="checkbox"]#checkbox1:checked + span {
+  color: red !important;
+  border-color: red !important;
+  background-color:red !important;
+}
+
+#dis-modal input[type=checkbox]:checked + label:after {
+  color: red !important;
+  border-color: red !important;
+  background-color:red !important;
+}
+
+input[type=checkbox] {
+  cursor: pointer;
+}
+
+input[type=checkbox]:after {
+content: " ";
+background-color: #D7B1D7;
+display: inline-block;
+visibility: visible;
+}
+
+input[type=checkbox]:checked:after {
+content: "\2714";
+} */
+

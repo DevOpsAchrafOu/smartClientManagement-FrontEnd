@@ -1,1 +1,225 @@
 <p>add-utilisateur works!</p>
+<!-- Start addUser section -->
+<span id="dis-modal" dir="ltr">
+  <!-- Start overlay Section -->
+  <div class="overlay" [ngStyle]="{'display':display}"></div>
+  <!-- End overlay Section -->
+
+
+  <div class="modal" role="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" [ngClass]="{'d-none':isCreated}"><i class="fa fa-edit"></i> Modifier
+                      utilisateur {{'' | translate}} {{'' | translate}}</h6>
+                  <h6 class="modal-title" [ngClass]="{'d-none':!isCreated}"><i class="fa fa-plus"></i> Ajouter
+                      utilisateur {{'' | translate}} {{'' | translate}}</h6>
+                  <button type="button" class="close" (click)="onCloseModal()">
+                      <span>&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="" [formGroup]="formContent" (ngSubmit)="formSubmit(formContent)" class="form">
+
+
+                      <!-- Start prenom/nom input-->
+                      <div class="row">
+                          <div class="col-sm-6 col-12">
+                              <div class="form-group my-1">
+                                  <label class="col-form-label " for="prenom">Prénom{{'' | translate}}  <span
+                                          class="color-red">*</span> : </label>
+                                  <input type="text" class="form-control " id="prenom" formControlName="prenom"
+                                      name="prenom" required placeholder="Prénom{{'' | translate}}">
+                                  <section
+                                      *ngIf="(isSubmit && formContent.controls['prenom'].errors) || (formContent.get('prenom')?.invalid) && ( formContent.get('prenom')?.submitted || formContent.get('prenom')?.touched)">
+                                      <div class="invalid-feedback d-block "
+                                          *ngIf="formContent.get('prenom')?.errors?.required ">
+                                          <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez Prénom.{{'' | translate}}
+                                      </div>
+                                      <div class="invalid-feedback d-block "
+                                          *ngIf="formContent.get('prenom')?.errors?.pattern ">
+                                          <i class="fa fa-exclamation-triangle"></i> S'il vous plaît le Prénom ne
+                                          contient que les caractères.{{'' | translate}}
+                                      </div>
+
+                                  </section>
+                              </div>
+                          </div>
+                          <div class="col-sm-6 col-12">
+                            <div class="form-group my-1">
+                                <label class="col-form-label " for="nom">Nom{{'' | translate}} <span class="color-red">*</span> :
+                                </label>
+                                <input type="text" class="form-control " id="nom" formControlName="nom"
+                                    name="nom" required placeholder="Nom{{'' | translate}}">
+                                <section
+                                    *ngIf="(isSubmit && formContent.controls['nom'].errors) || (formContent.get('nom')?.invalid) && ( formContent.get('nom')?.submitted || formContent.get('nom')?.touched)">
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('nom')?.errors?.required ">
+                                        <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez Nom.{{'' | translate}}
+                                    </div>
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('nom')?.errors?.pattern ">
+                                        <i class="fa fa-exclamation-triangle"></i> S'il vous plaît le Nom ne
+                                        contient que les caractères.{{'' | translate}}
+                                    </div>
+
+                                </section>
+                            </div>
+                        </div>
+                      </div>
+
+
+                      <!-- Start login input-->
+                      <div class="row">
+                        <div class="col">
+                            <div class="form-group my-1">
+                                <label class="col-form-label d-block" for="login">login{{'' | translate}} <span
+                                        class="color-red">*</span> : </label>
+                                <input type="text" class="form-control " id="login" formControlName="login"
+                                    name="login" [readonly]="isCreated == false" placeholder="login{{'' | translate}}">
+                                <section
+                                    *ngIf="isCreated && ((isSubmit && formContent.controls['login'].errors) || (formContent.get('login')?.invalid) && ( formContent.get('login')?.submitted || formContent.get('login')?.touched))">
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('login')?.errors?.required ">
+                                        <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez login.{{'' | translate}}
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+
+                      <!-- Start password/confirm input isCreated == true && -->
+                      <div class="row" >
+                          <div class="col-sm-6 col-12">
+                              <div class="form-group my-1">
+                                  <label class="col-form-label d-block" for="password">Mot de passe{{'' | translate}} <span
+                                          class="color-red" *ngIf="isCreated == true">*</span> : </label>
+                                  <input type="password" class="form-control " id="password" formControlName="password{{'' | translate}}"
+                                      name="password"  placeholder="Mot de passe">
+                                  <section
+                                      *ngIf="((isSubmit && formContent.controls['password'].errors) || (formContent.get('password')?.invalid) && ( formContent.get('password')?.submitted || formContent.get('password')?.touched))">
+                                      <div class="invalid-feedback d-block "
+                                          *ngIf="formContent.get('password')?.errors?.required ">
+                                          <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez mot de
+                                          passe.{{'' | translate}}
+                                      </div>
+                                  </section>
+                              </div>
+                          </div>
+                          <div class="col-sm-6 col-12">
+                            <div class="form-group my-1">
+                                <label class="col-form-label d-block" for="confirmPass">Confirmer le mot de passe{{'' | translate}} <span
+                                        class="color-red" *ngIf="isCreated == true">*</span> : </label>
+                                <input type="password" class="form-control " id="confirmPass" formControlName="confirmPass"
+                                    name="confirmPass"  placeholder="Confirmer le mot de passe{{'' | translate}}">
+                                <section
+                                    *ngIf="(( formContent.controls['confirmPass'].errors) || (formContent.get('confirmPass')?.invalid) && ( formContent.get('confirmPass')?.submitted || formContent.get('confirmPass')?.touched))">
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('confirmPass')?.errors?.notEquivalent ">
+                                        <i class="fa fa-exclamation-triangle"></i> Le mot de passe ne correspond pas.{{'' | translate}}
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                      </div>
+
+
+                      <!-- Start Emial/phone input-->
+                      <div class="row">
+                          <div class="col-sm-6 col-12">
+                              <div class="form-group my-1">
+                                  <label class="col-form-label" for="email">Email {{'' | translate}}<span class="color-red">*</span> :
+                                  </label>
+                                  <input type="text" class="form-control " id="email" formControlName="email"
+                                      name="email" required placeholder="Email{{'' | translate}}">
+                                  <section
+                                      *ngIf="(isSubmit && formContent.controls['email'].errors) || (formContent.get('email')?.invalid) && ( formContent.get('email')?.submitted || formContent.get('email')?.touched)">
+                                      <div class="invalid-feedback d-block"
+                                          *ngIf=" formContent.get('email')?.errors?.required">
+                                          <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez votre
+                                          Email.{{'' | translate}}
+                                      </div>
+                                      <div class="invalid-feedback d-block"
+                                          *ngIf="formContent.get('email')?.errors?.minlength">
+                                          <i class="fa fa-exclamation-triangle"></i> Votre Email doit contenir au
+                                          moins 8 caractères.{{'' | translate}}
+                                      </div>
+                                      <div class="invalid-feedback d-block"
+                                          *ngIf="formContent.get('email')?.errors?.pattern">
+                                          <i class="fa fa-exclamation-triangle"></i> S'il vous plaît inclure un "@"
+                                          dans l'adresse e-mail, 'yourname@example.com' manque un "@".{{'' | translate}}
+                                      </div>
+                                  </section>
+                              </div>
+                          </div>
+                          <div class="col-sm-6 col-12">
+                            <div class="form-group my-1">
+                                <label class="col-form-label" for="phone">N° Téléphone{{'' | translate}} <span
+                                        class="color-red">*</span> : </label>
+                                <input type="text" class="form-control " id="phone" formControlName="phone"
+                                    name="phone" required placeholder="N° Tél{{'' | translate}}">
+                                <section
+                                    *ngIf="(isSubmit && formContent.controls['phone'].errors) || (formContent.get('phone')?.invalid) && ( formContent.get('phone')?.submitted || formContent.get('phone')?.touched)">
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('phone')?.errors?.required ">
+                                        <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez votre N°
+                                        téléphone.{{'' | translate}}
+                                    </div>
+                                    <div class="invalid-feedback d-block "
+                                        *ngIf="formContent.get('phone')?.errors?.minlength ">
+                                        <i class="fa fa-exclamation-triangle"></i> Votre numéro téléphone doit
+                                        contenir 10 chiffres.{{'' | translate}}
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                      </div>
+
+
+                    <!-- Start roles field-->
+                      <div class="row">
+                        <div class="col-sm-6 col-12">
+                          <div class="form-group my-1 ">
+                              <label class="col-form-label" for="roleSelect">Rôle <span class="color-red">*</span>:
+                              </label>
+                              <ng-select2  id="roleSelect" [data]="listRoleSelect" [options]="optionsSelect"
+                                  formControlName="role" width="100%" class="role" [placeholder]="'--- Rôle ---'">
+                              </ng-select2>
+                              <!-- [placeholder]="'Pays'" -->
+                          </div>
+                          <section
+                            *ngIf="(isSubmit && formContent.controls['role'].errors) || (formContent.controls['role']?.invalid && ( formContent.controls['role']?.dirty || formContent.controls['role']?.touched))">
+                            <div class="invalid-feedback d-block"
+                                *ngIf="(isSubmit ) && formContent.controls['role'].errors?.required">
+                                <i class="fa fa-exclamation-triangle"></i> S'il vous plaît sélectionner un rôle.{{'' | translate}}
+                            </div>
+                          </section>
+                      </div>
+                    </div>
+
+
+
+                      <!-- Start Submit button -->
+                      <div class="button-box mt-5">
+                        <button type="button" class="btn btn-sm btn-danger m-2"
+                            (click)="onCloseModal()">{{'BTN-CANCEL' | translate}}</button>
+                        <button *ngIf="isAuthorizerToUpdate"
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid"
+                            [ngClass]="{'d-none':isCreated}">{{'BTN-EDIT' | translate}}</button>
+                        <button *ngIf="isAuthorizerToUpdate"
+                        class="btn btn-sm btn-success m-2" type="submit" [disabled]="formContent.invalid "
+                            [ngClass]="{'d-none':!isCreated}">{{'BTN-ADD' | translate}}</button>
+                     </div>
+
+                      <!-- End Submit button -->
+                  </form>
+
+
+
+              </div>
+          </div>
+      </div>
+  </div>
+</span>
+<!-- End addUser section -->

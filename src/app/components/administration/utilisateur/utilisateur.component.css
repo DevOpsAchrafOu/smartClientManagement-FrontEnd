@@ -1,0 +1,19 @@
+/*------ start delete after ------*/
+#dis-list-header .content-header-title,
+#dis-list-body .card-header:first-child,
+#dis-list-body .pageSize {
+  text-align: left !important;
+}
+
+#dis-list-header .float-l {
+  float: right !important;
+}
+
+#dis-list-header .breadcrumb-item+.breadcrumb-item::after {
+  float: left;
+}
+
+#dis-list-body .float-r {
+  float: left !important;
+}
+/*------ end delete after ------*/

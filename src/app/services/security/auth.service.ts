@@ -83,6 +83,9 @@ export class AuthService {
   isloadConnectedUser(): boolean {
 
     let connectedUser = this.loadConnectedUser();
+
+    console.log(connectedUser)
+
     //set CurrentUserName And AvatarLogo
     this.sharedData.setCurrentUserNameAndAvatarLogo(connectedUser);
 

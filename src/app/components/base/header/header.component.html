@@ -9,14 +9,6 @@
         <ng-template #elseBlock>
             <i class="fa  fa-lg btn " [ngClass]="rtl == true ? ' fa-angle-double-left ' : ' fa-angle-double-right  ' "   id="sidebarCollapse" (click)="onSidebarCollapse()"></i>
         </ng-template>
-
-        <form class=" d-flex  ml-auto w-30"
-        placement="{{rtl ? 'left' : 'right' }}" ngbTooltip="{{'NAVBAR-TIP-SEARCH' | translate}}">
-          <input class="form-control form-control-sm mr-2" type="search" id="search"
-           [(ngModel)]="searchNumDossier" [ngModelOptions]="{standalone: true}"
-            placeholder=" Ex: S001-AP001-2022" aria-label="Search">
-          <button class="btn btn-sm btn-outline-success p-1 mx-2"  type="submit" (click)="searchByNumDossier()">{{'NAVBAR-INPUT-SEARCH'|translate}}</button>
-        </form>
         <div class=" navbar p-0" id="navbarSupportedContent">
             <ul class="nav  ml-auto">
 

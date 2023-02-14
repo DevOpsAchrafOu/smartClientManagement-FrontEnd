@@ -47,11 +47,11 @@ export class GestionMsgAndStatusService {
   confirmButtonTextReason = 'Valider';
 
 
-  /*------------------------  user ------------------------*/
+  /*------------------------  Utilisateur ------------------------*/
   /* start body Toastr */
-  bodyToastrUserAdd : string = "Compte utilisateur a été bien enregistré ";
-  bodyToastrUserUpdate : string = "Compte utilisateur a été bien modifié ";
-  bodyToastrUserDelete : string = "Compte utilisateur a été bien supprimé ";
+  bodyToastrUtilisateurAdd : string = "Compte utilisateur a été bien enregistré ";
+  bodyToastrUtilisateurUpdate : string = "Compte utilisateur a été bien modifié ";
+  bodyToastrUtilisateurDelete : string = "Compte utilisateur a été bien supprimé ";
 
   bodyToastrDemaInscripValid : string = "Demande d'inscription a été bien traité ";
 
@@ -94,11 +94,11 @@ export class GestionMsgAndStatusService {
 
 
   /*------------------------  user ------------------------*/
-  getBodySwalConfirmUserDelete(name : any){
+  getBodySwalConfirmUtilisateurDelete(name : any){
     return "Vous êtes sur le point de supprimer le compte utilisateur '"+name+"' ";
   };
 
-  getBodySwalConfirmCollaborateurDeleteImpossible(name : any){
+  getBodySwalConfirmUtilisateurDeleteImpossible(name : any){
     return "Impossible de supprimer ce compte. Le compte a plusieurs des dépendances.";
   }
 
