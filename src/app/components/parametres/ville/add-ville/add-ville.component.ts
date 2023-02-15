@@ -7,6 +7,7 @@ import { Ville } from 'src/app/interfaces/paramètres/ville';
 import { PaysService } from 'src/app/services/paramètres/pays.service';
 import { VilleService } from 'src/app/services/paramètres/ville.service';
 import { HandleStatusService } from 'src/app/services/utils/handle-status.service';
+import { UtilsService } from 'src/app/services/utils/utils.service';
 
 
 @Component({
@@ -76,9 +77,9 @@ export class AddVilleComponent implements OnInit {
     /* start add ville part*/
     if(this.isCreated){
       this.villeService.addVilleFromBack(this.ville).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
           //this.onCloseModal();
@@ -90,9 +91,9 @@ export class AddVilleComponent implements OnInit {
     /* start update ville part*/
     else{
       this.villeService.updateVilleFromBack(this.ville).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
           this.outputEvent.emit(err);
@@ -129,19 +130,19 @@ export class AddVilleComponent implements OnInit {
   let listR : any[]= [];
 
   this.paysService.getAllPayssFromBack().subscribe(
-    (listPays : any) =>{
+    (dataList : any) =>{
+      if(!UtilsService.isEmptyArray(dataList)){
+        this.listPays = dataList;
 
-      this.listPays = listPays;
-
-    for(var i = 0; i < listPays.length; i++)
-    {
-      let select2 = {} as {id:string,text:string};
-      select2.id = (listPays[i].id)+"";
-      select2.text = listPays[i].titleFr;
-      listR.push(select2);
-    }
-
-      this.listPaysSelect = listR;
+        for(var i = 0; i < dataList.length; i++)
+        {
+          let select2 = {} as {id:string,text:string};
+          select2.id = (dataList[i].id)+"";
+          select2.text = dataList[i].titleFr;
+          listR.push(select2);
+        }
+        this.listPaysSelect = listR;
+      }
     }
   )
  }

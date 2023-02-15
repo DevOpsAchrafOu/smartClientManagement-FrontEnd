@@ -25,13 +25,13 @@ export class AddPaysComponent implements OnInit {
 
 
   /********************************************************************************************/
-  /************************************* Initialization payss  ****************************/
+  /************************************* Initialization pays  *********************************/
   /*******************************************************************************************/
 
   constructor(private formBuilder: FormBuilder,
      private paysService: PaysService,
      private handleErrorServ : HandleStatusService) {
-     }
+  }
 
   ngOnInit() {
     this.initForm();
@@ -39,7 +39,7 @@ export class AddPaysComponent implements OnInit {
   }
 
   /********************************************************************************************/
-  /**************************************  The payss **************************************/
+  /**************************************  The functions  *************************************/
   /********************************************************************************************/
 
   formSubmit(form: NgForm) {
@@ -55,9 +55,9 @@ export class AddPaysComponent implements OnInit {
     /* start add pays part*/
     if(this.isCreated){
       this.paysService.addPaysFromBack(this.pays).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
           //this.onCloseModal();
@@ -69,9 +69,9 @@ export class AddPaysComponent implements OnInit {
     /* start update pays part*/
     else{
       this.paysService.updatePaysFromBack(this.pays).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
           this.outputEvent.emit(err);

@@ -77,9 +77,9 @@ export class VilleComponent implements OnInit {
     componentRef.instance.ville = { };//initialser les inputs
 
     componentRef.instance.outputEvent.subscribe( //récu data de component fils
-      (val: any) => {
-        if ('error' in val) {
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response: any) => {
+        if ('error' in response) {
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshVilles();
@@ -99,9 +99,9 @@ export class VilleComponent implements OnInit {
     let componentRef = this.entry.createComponent(factory);
     componentRef.instance.ville = ville;
     componentRef.instance.outputEvent.subscribe(//récu data de component fils
-      (val:any) => {
-        if ('error' in val) {//attrubier 'error' in objet
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response:any) => {
+        if ('error' in response) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshVilles();
@@ -129,7 +129,7 @@ export class VilleComponent implements OnInit {
       if (result.value && id) {
         //  delete ville  //
         this.villeService.deleteVilleByIdFromBack(id).subscribe(
-          iteam =>{
+          response =>{
             this.message = this.messageServ.bodyToastrVilleDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshVilles();
@@ -145,12 +145,12 @@ export class VilleComponent implements OnInit {
 /* get all ville */
   refreshVilles() {
       this.villeService.getAllVillesFromBack().subscribe(
-        (listVille : Ville[]) => {
-          if(!UtilsService.isEmptyArray(listVille))
-          this.villes = listVille
+        (dataList : Ville[]) => {
+          if(!UtilsService.isEmptyArray(dataList))
+          this.villes = dataList
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-          this.collectionSize = listVille.length;
+          this.collectionSize = dataList.length;
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);

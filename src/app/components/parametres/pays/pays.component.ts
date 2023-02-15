@@ -76,9 +76,9 @@ export class PaysComponent implements OnInit {
     componentRef.instance.pays = { };//initialser les inputs
 
     componentRef.instance.outputEvent.subscribe( //récu data de component fils
-      (val: any) => {
-        if ('error' in val) {
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response: any) => {
+        if ('error' in response) {
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshPayss();
@@ -98,9 +98,9 @@ export class PaysComponent implements OnInit {
     let componentRef = this.entry.createComponent(factory);
     componentRef.instance.pays = pays;
     componentRef.instance.outputEvent.subscribe(//récu data de component fils
-      (val:any) => {
-        if ('error' in val) {//attrubier 'error' in objet
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response:any) => {
+        if ('error' in response) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshPayss();
@@ -128,7 +128,7 @@ export class PaysComponent implements OnInit {
       if (result.value && id) {
         //  delete pays  //
         this.paysService.deletePaysByIdFromBack(id).subscribe(
-          iteam =>{
+          response =>{
             this.message = this.messageServ.bodyToastrPaysDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshPayss();
@@ -144,12 +144,12 @@ export class PaysComponent implements OnInit {
 /* get all pays */
   refreshPayss() {
       this.paysService.getAllPayssFromBack().subscribe(
-        (listPays : Pays[]) => {
-          if(!UtilsService.isEmptyArray(listPays))
-          this.payss = listPays
+        (dataList : Pays[]) => {
+          if(!UtilsService.isEmptyArray(dataList))
+          this.payss = dataList
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-          this.collectionSize = listPays.length;
+          this.collectionSize = dataList.length;
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);
@@ -159,7 +159,7 @@ export class PaysComponent implements OnInit {
   }
 
 
-  /* delete component */
+/* delete component */
 destroyComponent(componentRef : ComponentRef<AddPaysComponent>) {
     componentRef.destroy();
 }
