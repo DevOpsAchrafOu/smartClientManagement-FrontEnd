@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class MenuService {
 
-  prefixe : string= "/menus";
+  prefixeUrl : string= "/menus";
 
   constructor(
     private httpClient : HttpClient
@@ -17,36 +17,36 @@ export class MenuService {
 
 
   getAllMenusFromBack() : Observable<Menu[]> {
-    return this.httpClient.get<Menu[]>(`${environment.api_client_mng_bo}`+this.prefixe);
+    return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl);
   }
 
   getAllMenusForRoleFromBack() : Observable<Menu[]> {
-    return this.httpClient.get<Menu[]>(`${environment.api_client_mng_bo}`+this.prefixe+`/role`);
+    return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/role`);
   }
 
   getAllMenusByCollaborateurConnectedFromBack() : Observable<Menu[]> {
-    return this.httpClient.get<Menu[]>(`${environment.api_client_mng_bo}`+this.prefixe+`/userConnected`);
+    return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/userConnected`);
   }
 
 
   getAllMenusParentFromBack() : Observable<Menu[]> {
-    return this.httpClient.get<Menu[]>(`${environment.api_client_mng_bo}`+this.prefixe+`/parent`);
+    return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/parent`);
   }
 
   getMenuByIdFromBack(id: any)  {
-   return this.httpClient.get<Menu>(`${environment.api_client_mng_bo}`+this.prefixe+`/`+id);
+   return this.httpClient.get<Menu>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+id);
  }
 
 
   addMenuFromBack(menu : Menu) : Observable<Menu>{
-   return this.httpClient.post<Menu>(`${environment.api_client_mng_bo}`+this.prefixe,menu);
+   return this.httpClient.post<Menu>(`${environment.baseUrl_mng}`+this.prefixeUrl,menu);
   }
 
   updateMenuFromBack(menu : Menu) : Observable<any>{
-   return this.httpClient.put(`${environment.api_client_mng_bo}`+this.prefixe+`/`+menu.id+'/',menu,{responseType: 'text', observe: 'response' });
+   return this.httpClient.put(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+menu.id+'/',menu,{responseType: 'text', observe: 'response' });
   }
 
   deleteMenuByIdFromBack(idMenu : number) : Observable<Menu>{
-   return this.httpClient.delete(`${environment.api_client_mng_bo}`+this.prefixe+`/`+idMenu+'/');
+   return this.httpClient.delete(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+idMenu+'/');
   }
 }

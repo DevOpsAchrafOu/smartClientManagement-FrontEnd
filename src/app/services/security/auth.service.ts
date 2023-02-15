@@ -18,7 +18,7 @@ export class AuthService {
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
 
-  prefixe : string= "/end-users";
+  prefixeUrl : string= "/end-users";
 
 
   /********************************************************************************************/
@@ -39,13 +39,8 @@ export class AuthService {
    * @return token:
    */
   login(user: Login){
-    return this.httpClient.post(`${environment.api_client_mng_bo_login}/login`,user,{responseType: 'text', observe: 'response' });
+    return this.httpClient.post(`${environment.baseUrl_mng_login}/login`,user,{responseType: 'text', observe: 'response' });
 
-  }
-
-  //delete
-  getUserByTokenTest(token : string){
-    return this.httpClient.get<Utilisateur>(`${environment.apiUrl}/end-users?testToken=`+token);
   }
 
   saveToken(token: string): void {
@@ -94,7 +89,7 @@ export class AuthService {
   }
 
   logout() {
-    return this.httpClient.get(`${environment.api_client_mng_bo}/public/logout`,{responseType: 'text' , observe: 'response'});
+    return this.httpClient.get(`${environment.baseUrl_mng}/public/logout`,{responseType: 'text' , observe: 'response'});
   }
 
   onLogout(){
@@ -115,12 +110,6 @@ export class AuthService {
         }
       );
    }
-
-  forgotPassword(email : string)
-  {
-    return this.httpClient.get<Utilisateur>(`${environment.apiUrl}/end-users?email=`+email);
-
-  }
 
 
   deleteLocalStorage(){

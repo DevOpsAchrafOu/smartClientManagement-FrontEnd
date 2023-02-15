@@ -14,7 +14,7 @@ export class PaysService {
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
 
-  prefixe : string= "/pays";
+  prefixeUrl : string= "/pays";
 
 
   /********************************************************************************************/
@@ -31,23 +31,23 @@ export class PaysService {
 
 
   getAllPayssFromBack() : Observable<Pays[]> {
-    return this.httpClient.get<Pays[]>(`${environment.api_client_mng_bo}`+this.prefixe);
+    return this.httpClient.get<Pays[]>(`${environment.baseUrl_mng}`+this.prefixeUrl);
   }
 
   getPaysByIdFromBack(id: any)  {
-   return this.httpClient.get<Pays>(`${environment.api_client_mng_bo}`+this.prefixe+`/`+id);
+   return this.httpClient.get<Pays>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+id);
  }
 
 
   addPaysFromBack(pays : Pays) : Observable<Pays>{
-   return this.httpClient.post<Pays>(`${environment.api_client_mng_bo}`+this.prefixe,pays);
+   return this.httpClient.post<Pays>(`${environment.baseUrl_mng}`+this.prefixeUrl,pays);
   }
 
   updatePaysFromBack(pays : Pays) : Observable<any>{
-   return this.httpClient.put(`${environment.api_client_mng_bo}`+this.prefixe+`/`+pays.id+'/',pays,{responseType: 'text', observe: 'response' });
+   return this.httpClient.put(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+pays.id+'/',pays,{responseType: 'text', observe: 'response' });
   }
 
   deletePaysByIdFromBack(idPays : number) : Observable<Pays>{
-   return this.httpClient.delete(`${environment.api_client_mng_bo}`+this.prefixe+`/`+idPays+'/');
+   return this.httpClient.delete(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+idPays+'/');
   }
 }

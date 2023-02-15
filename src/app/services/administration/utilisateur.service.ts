@@ -12,7 +12,7 @@ export class UtilisateurService {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-  prefixe : string= "/utilisateurs";
+  prefixeUrl : string= "/utilisateurs";
 
 
   constructor(
@@ -25,29 +25,29 @@ export class UtilisateurService {
    * @return Utilisateur Object
    */
   getConnectedUtilisateurFromBack() : Observable<HttpResponse<any>>  {
-    return this.httpClient.get<HttpResponse<any>>(`${environment.api_client_mng_bo}`+this.prefixe+"/me",{observe: 'response'});
+    return this.httpClient.get<HttpResponse<any>>(`${environment.baseUrl_mng}`+this.prefixeUrl+"/me",{observe: 'response'});
   }
 
 
    getAllUtilisateursFromBack() : Observable<Utilisateur[]> {
-     return this.httpClient.get<Utilisateur[]>(`${environment.api_client_mng_bo}`+this.prefixe);
+     return this.httpClient.get<Utilisateur[]>(`${environment.baseUrl_mng}`+this.prefixeUrl);
    }
 
    getUtilisateurByIdFromBack(id: any)  {
-    return this.httpClient.get<Utilisateur>(`${environment.api_client_mng_bo}`+this.prefixe+`/`+id);
+    return this.httpClient.get<Utilisateur>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+id);
   }
 
 
    addUtilisateurFromBack(user : Utilisateur) : Observable<Utilisateur>{
-    return this.httpClient.post<Utilisateur>(`${environment.api_client_mng_bo}/signup`,user);
+    return this.httpClient.post<Utilisateur>(`${environment.baseUrl_mng}/signup`,user);
    }
 
    updateUtilisateurFromBack(user : Utilisateur) : Observable<any>{
-    return this.httpClient.put(`${environment.api_client_mng_bo}`+this.prefixe+`/`+user.id+'/',user,{ observe: 'response' });
+    return this.httpClient.put(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+user.id+'/',user,{ observe: 'response' });
    }
 
    deleteUtilisateurByIdFromBack(idUser : number) : Observable<Utilisateur>{
-    return this.httpClient.delete(`${environment.api_client_mng_bo}`+this.prefixe+`/`+idUser+'/');
+    return this.httpClient.delete(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+idUser+'/');
    }
 
   //  editPassword(pwd : Password) {

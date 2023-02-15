@@ -12,7 +12,7 @@ export class RoleService {
 
 
 
-  prefixe : string= "/roles";
+  prefixeUrl : string= "/roles";
   public roleSuperAdmin = 'ROLE_SUPER_ADMIN';
   public roleAdmin = 'ROLE_ADMIN';
   public roleDirection = 'ROLE_DIR_GEN';
@@ -27,27 +27,27 @@ export class RoleService {
 
 
   getAllRolesFromBack() : Observable<any[]> {
-    return this.httpClient.get<any[]>(`${environment.api_client_mng_bo}`+this.prefixe);
+    return this.httpClient.get<any[]>(`${environment.baseUrl_mng}`+this.prefixeUrl);
   }
 
   getRoleByIdFromBack(id: any)  {
-   return this.httpClient.get<Role>(`${environment.api_client_mng_bo}`+this.prefixe+`/`+id);
+   return this.httpClient.get<Role>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+id);
  }
 
  countUtilisateurByRoleIdFromBack(id: any)  {
-  return this.httpClient.get<Role>(`${environment.api_client_mng_bo}`+this.prefixe+`/utilisateur/count/`+id);
+  return this.httpClient.get<Role>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/utilisateur/count/`+id);
 }
 
   addRoleFromBack(role : Role) : Observable<Role>{
-   return this.httpClient.post<Role>(`${environment.api_client_mng_bo}`+this.prefixe,role);
+   return this.httpClient.post<Role>(`${environment.baseUrl_mng}`+this.prefixeUrl,role);
   }
 
   updateRoleFromBack(role : Role) : Observable<any>{
-   return this.httpClient.put(`${environment.api_client_mng_bo}`+this.prefixe+`/`+role.id,role,{responseType: 'text', observe: 'response' });
+   return this.httpClient.put(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+role.id,role,{responseType: 'text', observe: 'response' });
   }
 
   deleteRoleByIdFromBack(idRole : number) : Observable<Role>{
-   return this.httpClient.delete(`${environment.api_client_mng_bo}`+this.prefixe+`/`+idRole);
+   return this.httpClient.delete(`${environment.baseUrl_mng}`+this.prefixeUrl+`/`+idRole);
   }
 
 
