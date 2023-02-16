@@ -24,9 +24,6 @@ export class AddRoleComponent implements OnInit {
   //Map
   mapMenu = new Map<number, any>();
   mapMenuToList : any[] = [];
-
-
-
   menus: {
     id?: number;
     icon?: string;
@@ -67,7 +64,6 @@ export class AddRoleComponent implements OnInit {
     //get all menu with selected
     this.getAllMenu();
 
-
     //get current lang
     //this.rtl = this.currentLangService.isRTL();
   }
@@ -97,12 +93,11 @@ export class AddRoleComponent implements OnInit {
     /* start add role part*/
     if(this.isCreated){
       this.roleService.addRoleFromBack(this.role).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
-          //this.onCloseModal();
           this.outputEvent.emit(err);
         }
       );
@@ -111,9 +106,9 @@ export class AddRoleComponent implements OnInit {
     /* start update role part*/
     else{
       this.roleService.updateRoleFromBack(this.role).subscribe(
-        data => {
+        response => {
           this.onCloseModal();
-          this.outputEvent.emit(data);//emit data
+          this.outputEvent.emit(response);//emit data
         },
         err =>{
           this.outputEvent.emit(err);
@@ -165,10 +160,10 @@ export class AddRoleComponent implements OnInit {
   const formArray = this.formContent.get('menus') as FormArray;
 
   this.menuService.getAllMenusForRoleFromBack().subscribe(
-    (listMenu : Menu[]) =>{
-      this.listMenuWithChildren = listMenu;
+    (dataList : Menu[]) =>{
+      this.listMenuWithChildren = dataList;
       console.log('getAllMenusFromBack/listMenuWithChildren =>');
-      console.log(listMenu);
+      console.log(dataList);
       this.listMenuWithChildren.map((x : any) => {
          console.log(x);
         if(x){

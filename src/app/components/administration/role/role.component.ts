@@ -62,7 +62,6 @@ export class RoleComponent implements OnInit {
 
     this.refreshRoles();
 
-
     //get current lang
     //this.rtl = this.currentLangService.isRTL();
 
@@ -81,9 +80,9 @@ export class RoleComponent implements OnInit {
     componentRef.instance.role = { };//initialser les inputs
 
     componentRef.instance.outputEvent.subscribe( //récu data de component fils
-      (val: any) => {
-        if ('error' in val) {
-          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+      (response: any) => {
+        if ('error' in response) {
+          this.toastr.error(this.messageServ.titleToastrError, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshRoles();
@@ -103,9 +102,9 @@ export class RoleComponent implements OnInit {
     let componentRef = this.entry.createComponent(factory);
     componentRef.instance.role = role;
     componentRef.instance.outputEvent.subscribe(//récu data de component fils
-      (val:any) => {
-        if ('error' in val) {//attrubier 'error' in objet
-          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+      (response :any) => {
+        if ('error' in response) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.titleToastrError, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshRoles();
@@ -122,8 +121,8 @@ export class RoleComponent implements OnInit {
     if(this.roleService.roleSuperAdmin != code)
     {
       this.roleService.countUtilisateurByRoleIdFromBack(id).subscribe(
-        (count : any) =>{
-         if(count != 0){
+        (data : any) =>{
+         if(data != 0){
           Swal.fire({
             position: 'top-end',
             icon: 'warning',
@@ -145,7 +144,7 @@ export class RoleComponent implements OnInit {
               if (result.value && id) {
                 //  delete role  //
                 this.roleService.deleteRoleByIdFromBack(id).subscribe(
-                  iteam =>{
+                  response =>{
                     this.message = this.messageServ.bodyToastrRoleDelete;
                     this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
                     this.refreshRoles();
@@ -167,13 +166,12 @@ export class RoleComponent implements OnInit {
 /* get all role */
   refreshRoles() {
       this.roleService.getAllRolesFromBack().subscribe(
-        (listRole : any[]) => {
-          console.log(listRole);
-          if(!UtilsService.isEmptyArray(listRole))
-          this.roles = listRole
+        (dataList : any[]) => {
+          if(!UtilsService.isEmptyArray(dataList))
+          this.roles = dataList
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-          this.collectionSize = listRole.length;
+          this.collectionSize = dataList.length;
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);

@@ -56,11 +56,11 @@ export class MenuComponent implements OnInit {
 
     }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    this.refreshMenus();
+      this.refreshMenus();
 
-  }
+    }
 
   /********************************************************************************************/
   /**************************************  The functions **************************************/
@@ -75,9 +75,9 @@ export class MenuComponent implements OnInit {
     componentRef.instance.menu = { };//initialser les inputs
 
     componentRef.instance.outputEvent.subscribe( //récu data de component fils
-      (val: any) => {
-        if ('error' in val) {
-          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+      (response: any) => {
+        if ('error' in response) {
+          this.toastr.error(this.messageServ.titleToastrError, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshMenus();
@@ -97,9 +97,9 @@ export class MenuComponent implements OnInit {
     let componentRef = this.entry.createComponent(factory);
     componentRef.instance.menu = menu;
     componentRef.instance.outputEvent.subscribe(//récu data de component fils
-      (val:any) => {
-        if ('error' in val) {//attrubier 'error' in objet
-          this.toastr.error(this.messageServ.titleToastrError, val.error.message,this.alertServ.configToastr);
+      (response:any) => {
+        if ('error' in response) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.titleToastrError, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshMenus();
@@ -127,7 +127,7 @@ export class MenuComponent implements OnInit {
       if (result.value && id) {
         //  delete menu  //
         this.menuService.deleteMenuByIdFromBack(id).subscribe(
-          iteam =>{
+          response =>{
             this.message = this.messageServ.bodyToastrMenuDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshMenus();
@@ -140,16 +140,15 @@ export class MenuComponent implements OnInit {
   });
   }
 
-/* get all menu */
+  /* get all menu */
   refreshMenus() {
       this.menuService.getAllMenusFromBack().subscribe(
-        (listMenu : Menu[]) => {
-          console.log(listMenu);
-          if(!UtilsService.isEmptyArray(listMenu))
-          this.menus = listMenu
+        (dataList : Menu[]) => {
+          if(!UtilsService.isEmptyArray(dataList))
+          this.menus = dataList
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-          this.collectionSize = listMenu.length;
+          this.collectionSize = dataList.length;
         },
         error => {
           // this.messageError = error.message;
@@ -158,10 +157,9 @@ export class MenuComponent implements OnInit {
 
   }
 
-
   /* delete component */
-destroyComponent(componentRef : ComponentRef<AddMenuComponent>) {
-    componentRef.destroy();
-}
+  destroyComponent(componentRef : ComponentRef<AddMenuComponent>) {
+      componentRef.destroy();
+  }
 
 }

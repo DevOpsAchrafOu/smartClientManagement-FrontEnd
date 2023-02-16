@@ -100,11 +100,11 @@ export class AddUtilisateurComponent implements OnInit {
   getCurrentCollborateur(){
     this.userService.getConnectedUtilisateurFromBack()
     .subscribe(
-        (res : any) => {
-          console.log(res);
-          if(res){
-            if (res.status === 200) {
-              let user : Utilisateur = res?.body;
+        (data : any) => {
+          console.log(data);
+          if(data){
+            if (data.status === 200) {
+              let user : Utilisateur = data?.body;
               if(!UtilsService.isEmptyObjet(user)){
                 console.log("user =>");
                 console.log(user);
@@ -150,7 +150,6 @@ export class AddUtilisateurComponent implements OnInit {
           }
         },
         err =>{
-          //this.onCloseModal();
           this.outputEvent.emit(err);
         }
       );
@@ -252,19 +251,19 @@ export class AddUtilisateurComponent implements OnInit {
     let listR : any[]= [];
     console.log("getAllRole =>")
     this.roleService.getAllRolesFromBack().subscribe(
-      (data : any) =>{
-        this.listRole = data;
-        console.log(data);
+      (dataList : any) =>{
+        this.listRole = dataList;
+        console.log(dataList);
         if(this.user.role)
           this.formContent.patchValue({
             role : this.listRole.find(x=> x.code == this.user.role)?.id
           });
 
-      for(var i = 0; i < data.length; i++)
+      for(var i = 0; i < dataList.length; i++)
       {
         let select2 = {} as {id:string,text:string};
-        select2.id = (data[i].id)+"";
-        select2.text = data[i].title;
+        select2.id = (dataList[i].id)+"";
+        select2.text = dataList[i].title;
         listR.push(select2);
       }
 

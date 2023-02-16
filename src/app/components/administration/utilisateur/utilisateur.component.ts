@@ -34,7 +34,7 @@ export class UtilisateurComponent implements OnInit {
   page = 1;
   pageSize = 10;
   collectionSize = 0;
-  currentCollborateur : Utilisateur = {};
+  currentUtilisateur : Utilisateur = {};
   users : Utilisateur[] = [];
   messageError: string = "";
 
@@ -64,7 +64,7 @@ export class UtilisateurComponent implements OnInit {
 
     this.refreshUsers();
 
-    this.getCurrentCollborateur();
+    this.getCurrentUtilisateur();
 
 
     //get current lang
@@ -75,18 +75,18 @@ export class UtilisateurComponent implements OnInit {
   /**************************************  The functions **************************************/
   /********************************************************************************************/
 
-  getCurrentCollborateur(){
+  getCurrentUtilisateur(){
     this.userService.getConnectedUtilisateurFromBack()
     .subscribe(
-        (res : any) => {
-          console.log(res);
-          if(res){
-            if (res.status === 200) {
-              let user : Utilisateur = res?.body;
+        (data : any) => {
+          console.log(data);
+          if(data){
+            if (data.status === 200) {
+              let user : Utilisateur = data?.body;
               if(!UtilsService.isEmptyObjet(user)){
                 console.log("user =>");
                 console.log(user);
-                this.currentCollborateur = user;
+                this.currentUtilisateur = user;
               }
             }
           }
@@ -106,9 +106,9 @@ export class UtilisateurComponent implements OnInit {
     componentRef.instance.user = { };//initialser les inputs
 
     componentRef.instance.outputEvent.subscribe( //récu data de component fils
-      (val: any) => {
-        if ('error' in val) {
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response: any) => {
+        if ('error' in response) {
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshUsers();
@@ -128,9 +128,9 @@ export class UtilisateurComponent implements OnInit {
     let componentRef = this.entry.createComponent(factory);
     componentRef.instance.user = user;
     componentRef.instance.outputEvent.subscribe(//récu data de component fils
-      (val:any) => {
-        if ('error' in val) {//attrubier 'error' in objet
-          this.toastr.error(this.messageServ.bodyToastrAny, val.error.message,this.alertServ.configToastr);
+      (response:any) => {
+        if ('error' in response) {//attrubier 'error' in objet
+          this.toastr.error(this.messageServ.bodyToastrAny, response.error.message,this.alertServ.configToastr);
         }
         else {
           this.refreshUsers();
@@ -154,11 +154,10 @@ export class UtilisateurComponent implements OnInit {
       confirmButtonText: this.messageServ.confirmButtonText,
       cancelButtonText: this.messageServ.cancelButtonText
   }).then((result) => {
-      console.log(result);
       if (result.value && id) {
         //  delete user  //
         this.userService.deleteUtilisateurByIdFromBack(id).subscribe(
-          iteam =>{
+          response =>{
             this.message = this.messageServ.bodyToastrUtilisateurDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshUsers();
@@ -181,16 +180,16 @@ export class UtilisateurComponent implements OnInit {
   });
   }
 
-/* get all user */
+  /* get all user */
   refreshUsers() {
       this.userService.getAllUtilisateursFromBack().subscribe(
-        (listUser : Utilisateur[]) => {
-          console.log(listUser);
-          if(!UtilsService.isEmptyArray(listUser))
-          this.users = listUser
+        (dataList : Utilisateur[]) => {
+          console.log(dataList);
+          if(!UtilsService.isEmptyArray(dataList))
+          this.users = dataList
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-          this.collectionSize = listUser.length;
+          this.collectionSize = dataList.length;
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);

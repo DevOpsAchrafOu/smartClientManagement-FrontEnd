@@ -7,6 +7,7 @@ import { HandleStatusService } from 'src/app/services/utils/handle-status.servic
 import { MenuService } from 'src/app/services/administration/menu.service';
 import { Select2OptionData } from 'ng-select2';
 import { Options } from 'select2';
+import { UtilsService } from 'src/app/services/utils/utils.service';
 
 @Component({
   selector: 'app-add-menu',
@@ -130,8 +131,6 @@ export class AddMenuComponent implements OnInit {
     this.menu.parentId = form.value['menuParent'] != 0 ? form.value['menuParent'] : null;
     this.menu.typeNav = form.value['typeNav'];
     this.menu.order = form.value['order'];
-
-
   }
 
    /* get all menu */
@@ -140,29 +139,31 @@ export class AddMenuComponent implements OnInit {
     let listM : any[]= [];
 
     this.menuService.getAllMenusParentFromBack().subscribe(
-      (listMenu : any) =>{
+      (dataList : any) =>{
 
-        this.listMenu = listMenu;
+        if(!UtilsService.isEmptyArray(dataList)){
 
-        if(this.menu.parentId)
-          this.formContent.patchValue({
-            menuParent : this.listMenu.find(x=> x.parentId == this.menu.parentId)?.id
-          });
+          this.listMenu = dataList;
+          if(this.menu.parentId)
+            this.formContent.patchValue({
+              menuParent : this.listMenu.find(x=> x.parentId == this.menu.parentId)?.id
+            });
 
-        let select2 = {} as {id:string,text:string};
-        select2.id = "0";
-        select2.text = " ----- ";
-        listM.push(select2);
+          let select2 = {} as {id:string,text:string};
+          select2.id = "0";
+          select2.text = " ----- ";
+          listM.push(select2);
 
-      for(var i = 0; i < listMenu.length; i++)
-      {
-        let select2 = {} as {id:string,text:string};
-        select2.id = (listMenu[i].id)+"";
-        select2.text = listMenu[i].titleAr;
-        listM.push(select2);
-      }
+          for(var i = 0; i < dataList.length; i++)
+          {
+            let select2 = {} as {id:string,text:string};
+            select2.id = (dataList[i].id)+"";
+            select2.text = dataList[i].titleAr;
+            listM.push(select2);
+          }
 
-        this.listMenuSelect = listM;
+          this.listMenuSelect = listM;
+        }
       }
     )
    }

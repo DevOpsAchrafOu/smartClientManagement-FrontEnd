@@ -102,7 +102,7 @@
                         placement="left" ngbTooltip="Éditer{{'' | translate}}">
                           <i class="fa fa-edit text-white"></i>
                         </a>
-                        <a href="javascript: void(0);" *ngIf="roleSuperAdmin != u.role && currentCollborateur.login != u.login" class="dropdown-item"  class="btn btn-danger btn-sm m-1 p-0 btn-icon" (click)="deleteUser(u.id,u.prenom)"
+                        <a href="javascript: void(0);" *ngIf="roleSuperAdmin != u.role && currentUtilisateur.login != u.login" class="dropdown-item"  class="btn btn-danger btn-sm m-1 p-0 btn-icon" (click)="deleteUser(u.id,u.prenom)"
                         placement="left" ngbTooltip="Supprimer{{'' | translate}}">
                           <i class="fa fa-trash text-white"></i>
                         </a>
