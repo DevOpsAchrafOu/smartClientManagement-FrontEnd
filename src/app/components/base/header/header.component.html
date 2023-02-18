@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white px-0 py-1 bg-gradient-navbar"
+<nav class="navbar navbar-expand-lg navbar-light bg-white px-0 py-1 bg-gradient-navbar" id="header"
 [ngClass]="{' i18n-arb ' : rtl}"  id="dis">
     <div class="container-fluid">
 
         <!-- button click hide/show -->
 
-        <i *ngIf="isActiveInChildNav == false; else elseBlock" class="fa  fa-lg btn " [ngClass]="rtl == true ? ' fa-angle-double-right ' : ' fa-angle-double-left ' " id="sidebarCollapse"
+        <i *ngIf="isActiveInChildNav == false; else elseBlock" class="fa  fa-lg btn fa-bars"  id="sidebarCollapse"
             (click)="onSidebarCollapse()"></i>
         <ng-template #elseBlock>
-            <i class="fa  fa-lg btn " [ngClass]="rtl == true ? ' fa-angle-double-left ' : ' fa-angle-double-right  ' "   id="sidebarCollapse" (click)="onSidebarCollapse()"></i>
+            <i class="fa  fa-lg btn fa-bars"    id="sidebarCollapse" (click)="onSidebarCollapse()"></i>
         </ng-template>
         <div class=" navbar p-0" id="navbarSupportedContent">
             <ul class="nav  ml-auto">
@@ -24,7 +24,7 @@
                 </li>
 
                 <li class="nav-item" class="currentUserName">
-                  <span class="text-dark font-weight-bold">Bonjour : {{'' | translate}}</span>
+                  <span class="text-dark font-weight-bold"> {{'' | translate}}</span>
                   {{ dataUser.currentUserName }}
                 </li>
                 <li class="nav-item">
@@ -38,6 +38,7 @@
                     data-toggle="dropdown"
                     class="dropdown-toggle nav-link dropdown-user-link"
                   >
+                  <i class="fa fa-ellipsis-v " ></i>
                   </a>
                   <div class="dropdown-menu "  [ngClass]="rtl == true ? ' dropdown-menu-left ' : ' dropdown-menu-right ' " >
                     <a href="javascript: void(0);" class="dropdown-item d-none"

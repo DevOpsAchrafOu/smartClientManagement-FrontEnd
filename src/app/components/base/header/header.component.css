@@ -1,6 +1,6 @@
 /*--------- start navbar section -----------*/
 .navbar-expand-lg {
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
 .navbar-btn {
@@ -25,13 +25,13 @@ padding-right: 5px;
   color: inherit;
 }
 
-#dis .fa-angle-double-left:hover,
-#dis .fa-angle-double-right:hover{
+#dis .fa-bars:hover,
+#dis .fa-bars:hover{
 color: var(--third-color-dis);
 }
 
 .dropdown-item {
-padding: 0.25rem 0rem;
+padding: 0.7rem 0rem;
 padding-right: 10px;
 }
 
@@ -48,6 +48,23 @@ color: var(--sixth-color-dis);
 color: var(--third-color-dis);
 background: #F3F6F9;
 }
+
+.navbar .dropdown-toggle::after {
+  content: none;
+}
+
+.navbar .dropdown-toggle i.fa-ellipsis-v {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  line-height: 25px;
+}
+
+.navbar .dropdown-toggle i.fa-ellipsis-v:hover {
+  background-color: rgba(158,158,158,.2);
+  border-radius: 50px;
+}
+
+
 
 .circle {
   background-color: #740b60 ;
