@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
 
-  --main-color-dis: #022326ff;/*#9e1211;*/
+  --main-color-dis: #2331B5;/*#9e1211;*/
   --first-color-dis: #3445E5;
   --second-color-dis: #9e1211;
   --third-color-dis: #4680ff;
@@ -285,9 +285,16 @@ color: var(--sixth-color-dis);
 }
 
 #dis-modal .button-box{
-float: right;
+  text-align: center;
 }
 
+#dis-modal .button-box .btn{
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
 /*----- End  style model -----*/
 
 
@@ -305,15 +312,13 @@ float: right;
 }
 
 #dis-list-body .text-sm{
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 #dis-list-body .table .action{
 text-align: center;
 }
-#dis-list-body .btn-icon{
-  min-width: 23px;
-}
+
 
 /* start style table */
 #dis-list-body .pagination{
@@ -326,21 +331,30 @@ text-align: center;
 }
 
 #dis-list-body .table thead th {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-block: 0.5rem;
+}
+#dis-list-body .table-sm td, .table-sm th {
+  padding-block: 0.45rem;
 }
 
 #dis-list-body table#dis-table thead{
+  /* background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%); */
+  /* color: white; */
+}
+#dis-list-body:hover table#dis-table thead{
+/* background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-color-dis) 50%); */
   background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%);
   color: white;
-}
-#dis-list-body table#dis-table:hover thead{
-background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-color-dis) 50%);
 }
 
 #dis-list-body table#dis-table td,
 #dis-list-body .table th {
   vertical-align: middle;
+}
+
+#dis-list-body .table > tbody > tr:hover,
+#dis-list-body .table  > tbody > tr:hover > td {
+  background: #d1d8e4 !important;
 }
 
 #dis-list-body .table-striped tbody tr:nth-of-type(odd) {
@@ -361,18 +375,59 @@ background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-c
   background-color: inherit;
   border-color: inherit;
 }
+
+#dis-list-body .btn-icon{
+  min-width: 29px;
+  min-width: 27px;
+  line-height: 27px;
+  border-color: transparent;
+  border-radius: 5px;
+  font-weight: 100;
+  font-size: 1rem;
+}
+
 #dis-list-body .btn-add {
   color: white;
   border: none;
   outline: none;
   transition: transform 0.2s ease 0s;
-  background: var(--main-color-dis) !important;
+  background: var(--first-color-dis) !important;
   box-shadow: rgb(30 30 45 / 30%) 0px 5px 10px 0px;
   text-transform: uppercase;
 }
 
+
 #dis-list-body .btn-add:hover {
-  background-color: var(--fifth-color-dis) !important;
+  background-color: var(--third-color-dis) !important;
+}
+
+#dis-list-body .btn-warning{
+  background-color: rgba(0, 255, 10, 0.2);
+}
+
+#dis-list-body .btn-warning .fa{
+color: #4caf50 !important;
+}
+
+#dis-list-body .btn-warning:hover{
+  background-color: #0ba83b;
+}
+#dis-list-body .btn-warning:hover .fa{
+  color: #fff !important;
+}
+
+#dis-list-body .btn-danger{
+  background-color: rgba(255, 68, 0, 0.2);
+}
+
+#dis-list-body .btn-danger .fa{
+  color: #fa6c39 !important;
+}
+#dis-list-body .btn-danger:hover{
+  background-color: #f86e3c;
+}
+#dis-list-body .btn-danger:hover .fa{
+  color: #fff !important;
 }
 
 /* start style select for page Size */
@@ -406,14 +461,14 @@ background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-c
 }
 
 .dropdown-menu.dropdown-menu-sm {
-  min-width: 4rem;
+  min-width: 5rem;
 }
 
 .dropdown-menu.dropdown-menu-m {
-  min-width: 6rem;
+  min-width: 7rem;
 }
 
 .dropdown-menu.dropdown-menu-l {
-  min-width: 8rem;
+  min-width: 9rem;
 }
 /* ----- end width of popper in list ----- */
