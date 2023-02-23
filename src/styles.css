@@ -101,8 +101,9 @@ a {
   float: right;
   background-color: var(--seventh-color-dis);
   color : var(--third-color-dis) !important;
-  border-radius: 5px;
-  padding: 5px;
+  border-radius: 50px;
+  padding-inline: 6px;
+  padding-block: 6px;
   font-size: .8rem;
 }
 
@@ -114,11 +115,6 @@ a {
   background-color: var(--third-color-dis);
   color: white !important;
 }
-
-
-.today:hover .today-item{
-  color: var(--first-color-dis);
- }
 
 
 /* start style breadcrumb */
@@ -134,10 +130,27 @@ a {
   padding: 0 0 0.75rem 0rem;
 }
 
+ol.breadcrumb{
+  border-radius: 50px;
+  background: rgba(220, 208, 208, 0.3);
+  padding-inline: 15px !important;
+  padding-block: 8px !important;
+  display: inline-flex;
+}
+
+.breadcrumb a{
+  color: var(--sixth-color-dis);
+}
+
+.breadcrumb a:hover{
+  color: var(--third-color-dis);
+}
+
 .breadcrumb-item+.breadcrumb-item::before {
-content: "\f111";
+content: "\f054";
 font-family: FontAwesome;
-font-size: 0.4rem;
+font-size: 0.7rem;
+font-weight: 100;
 line-height: 15px;
 color:var(--sixth-color-dis);
 }
@@ -150,7 +163,7 @@ color:var(--sixth-color-dis);
 }
 
 .breadcrumb-item.active {
-color: var(--sixth-color-dis);
+color: black;
 }
 
 /* start style title for page */
@@ -235,13 +248,17 @@ color: var(--sixth-color-dis);
 /* ------- Start style model -------- */
 
 #dis-modal .overlay{
-  background-color:rgba(0,0,0,0.6);
+  background-color: rgb(2 3 9 / 60%);
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100vh;
   z-index: 1040;
+}
+
+#dis-modal .modal-content{
+  border-radius: 10px;
 }
 
 #dis-modal .modal .modal-dialog {
@@ -257,14 +274,21 @@ color: var(--sixth-color-dis);
 }
 
 #dis-modal .modal-header {
-  background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%);
-  color: white;    padding: 0.8rem;
+  color: black;
+  border-bottom: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%);
+  padding: 0.8rem;
+}
+
+#dis-modal .modal-header .fa{
+  color: var(--third-color-dis) ;
 }
 
 
 #dis-modal .modal .modal-header .modal-title,
 #dis-modal .modal .modal-header .close{
-  color: #fff;
+  color: black;
 }
 #dis-modal .modal .modal-header .close{
   opacity: 1;
@@ -272,6 +296,10 @@ color: var(--sixth-color-dis);
 
 #dis-modal .modal .modal-header .close:hover{
   opacity: .5;
+}
+
+#dis-modal .modal .modal-header:hover .modal-title{
+  color: var(--fifth-color-dis) ;
 }
 
 #dis-modal .col-form-label{
@@ -315,6 +343,10 @@ color: var(--sixth-color-dis);
   font-size: 0.85rem;
 }
 
+#dis-list-body .table{
+  text-align: center;
+  }
+
 #dis-list-body .table .action{
 text-align: center;
 }
@@ -340,11 +372,13 @@ text-align: center;
 #dis-list-body table#dis-table thead{
   /* background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%); */
   /* color: white; */
+  border-bottom: 3px solid transparent;
 }
 #dis-list-body:hover table#dis-table thead{
-/* background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-color-dis) 50%); */
-  background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%);
-  color: white;
+  /* background-image: linear-gradient(19deg, var(--main-color-dis) 0%, var(--third-color-dis) 50%); */
+  /* background-image: linear-gradient(156deg, var(--main-color-dis) 0%, var(--third-color-dis) 100%); */
+  /* color: white; */
+  border-bottom: 3px solid var(--third-color-dis);
 }
 
 #dis-list-body table#dis-table td,
