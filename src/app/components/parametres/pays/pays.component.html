@@ -84,8 +84,8 @@
               <tbody>
                 <tr *ngFor="let m of payss,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
-                  <td >{{ m.titleAr}}</td>
-                  <td >{{ m.titleFr }}</td>
+                  <td >{{ m.titleAr ?  (m.titleAr | truncate:10) : ''}}</td>
+                  <td >{{ m.titleFr ?  (m.titleFr | truncate:10) : ''}}</td>
                   <td class="action">
                     <span class="dropdown ">
                       <a id="dropdownMenuIndex"

@@ -77,7 +77,7 @@
                 <tr *ngFor="let r of roles,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
                   <td class="" >{{ r.code }}</td>
-                  <td>{{ r.title}}</td>
+                  <td >{{ r.title ?  (r.title | truncate:10) : ''}}</td>
                   <td class="action">
 
                   <span class="dropdown ">

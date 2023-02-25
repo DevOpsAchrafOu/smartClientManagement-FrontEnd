@@ -80,9 +80,9 @@
               <tbody>
                 <tr *ngFor="let u of users,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
-                  <td>{{ u.prenom }}</td>
-                  <td>{{ u.nom}}</td>
-                  <td>{{ u.email }}</td>
+                  <td>{{ u.prenom ?  (u.prenom | truncate:10) : ''}}</td>
+                  <td>{{ u.nom ?  (u.nom | truncate:10) : ''}}</td>
+                  <td>{{ u.email ?  (u.email | truncate:20) : ''}}</td>
                   <td>{{ u.creationDate ? (u.creationDate | date: 'd/MM/yyyy') : "-----"  }}</td>
                   <td class="action">
 

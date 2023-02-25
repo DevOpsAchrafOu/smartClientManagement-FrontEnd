@@ -81,8 +81,8 @@
                 <tr *ngFor="let m of menus,let index=index">
                   <th scope="row">{{ index + 1 }}</th>
                   <td>{{ m.icon }}</td>
-                  <td >{{ m.titleAr}}</td>
-                  <td >{{ m.titleFr}}</td>
+                  <td >{{ m.titleAr ?  (m.titleAr | truncate:10) : ''}}</td>
+                  <td >{{ m.titleFr ?  (m.titleFr | truncate:10) : ''}}</td>
                   <td>{{ m.url}}</td>
                   <td>{{m.order}}</td>
                   <td>{{m.typeNav}}</td>

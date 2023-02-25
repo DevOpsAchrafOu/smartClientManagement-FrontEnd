@@ -30,6 +30,8 @@ import { MenuComponent } from './components/administration/menu/menu.component';
 import { AddMenuComponent } from './components/administration/menu/add-menu/add-menu.component';
 import { AddPaysComponent } from './components/parametres/pays/add-pays/add-pays.component';
 import { AddVilleComponent } from './components/parametres/ville/add-ville/add-ville.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { AddVilleComponent } from './components/parametres/ville/add-ville/add-v
     AddMenuComponent,
     AddPaysComponent,
     AddVilleComponent,
+    TruncatePipe,
+    SafePipe,
   ],
   imports: [
     AppRoutingModule,
