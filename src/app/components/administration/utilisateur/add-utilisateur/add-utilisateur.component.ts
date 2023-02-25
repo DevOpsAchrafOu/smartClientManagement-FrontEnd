@@ -10,7 +10,7 @@ import { UtilisateurService } from 'src/app/services/administration/utilisateur.
 import { RoleService } from 'src/app/services/administration/role.service';
 import { HandleStatusService } from 'src/app/services/utils/handle-status.service';
 import { CurrentLangService } from 'src/app/services/utils/current-lang.service';
-import { ValidatorService } from 'src/app/services/utils/validator.service';
+import { ValidatorService } from 'src/app/services/validators/validator.service';
 import { UtilsService } from 'src/app/services/utils/utils.service';
 
 @Component({
