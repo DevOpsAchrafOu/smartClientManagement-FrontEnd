@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "smartClientManagementFrontEnd": {
+    "smartClientManagement-FrontEnd": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/smartClientManagementFrontEnd",
+            "outputPath": "dist/smartClientManagement-FrontEnd",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -78,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "smartClientManagementFrontEnd:build:production"
+              "browserTarget": "smartClientManagement-FrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "smartClientManagementFrontEnd:build:development"
+              "browserTarget": "smartClientManagement-FrontEnd:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "smartClientManagementFrontEnd:build"
+            "browserTarget": "smartClientManagement-FrontEnd:build"
           }
         },
         "test": {
@@ -113,5 +113,5 @@
       }
     }
   },
-  "defaultProject": "smartClientManagementFrontEnd"
+  "defaultProject": "smartClientManagement-FrontEnd"
 }

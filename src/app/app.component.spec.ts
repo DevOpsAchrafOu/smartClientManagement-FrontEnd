@@ -16,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'smartClientManagementFrontEnd'`, () => {
+  it(`should have as title 'smartClientManagement-FrontEnd'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('smartClientManagementFrontEnd');
+    expect(app.title).toEqual('smartClientManagement-FrontEnd');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('smartClientManagementFrontEnd app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('smartClientManagement-FrontEnd app is running!');
   });
 });
