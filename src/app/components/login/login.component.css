@@ -48,7 +48,7 @@
   font-size: 14px !important;
 }
 
-#login .main-bg{
+/* #login .main-bg{
   position: absolute;
   height: 100%;;
   width: 100%;
@@ -80,6 +80,22 @@
   left: 0;
   background: url(../../../assets/images/login-bg-top.svg) center top no-repeat;
   background-size: 100%;
+} */
+
+#login .main-bg{
+  background: #fafbfc;
+}
+
+#login .main-bg:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: url(../../../assets/images/login-bg-webinar.svg) center top no-repeat;
+  mix-blend-mode: multiply;
 }
 
 #login  .navbar .navbar-nav .btn-signup,
@@ -114,6 +130,22 @@
 #login .main .rounded-lg{
   border-radius: 1rem!important;
 }
+
+#login  .card .card-logo{
+  border: 3px solid #fff;
+  box-sizing: border-box;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  top: -60px;
+  z-index: 1;
+  margin-bottom: -30px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+}
+
 
 .card-title{
   color: var(--third-color-dis);
