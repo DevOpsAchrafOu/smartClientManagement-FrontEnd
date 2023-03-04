@@ -1,7 +1,7 @@
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { SidebarComponent } from './components/base/sidebar/sidebar.component';
@@ -67,6 +67,7 @@ import { SpinnerComponent } from './components/base/spinner/spinner.component';
     ToastrModule.forRoot(),//Toastr
     NgSelect2Module,
     HttpClientModule,
+    BrowserAnimationsModule,// for fixed problem 'Found the synthetic property @flyInOut'
     TranslateModule.forRoot({
       defaultLanguage : "fr",
       loader:{//for use class "TranslateLoader" like service

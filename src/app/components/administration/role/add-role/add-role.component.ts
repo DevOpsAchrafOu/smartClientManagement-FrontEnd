@@ -152,7 +152,7 @@ export class AddRoleComponent implements OnInit {
     form.value['menus'].forEach((menu :any) => {
       //add menu checked
       if(menu.checked)
-      selectedMenuIds.push(menu.id);
+       selectedMenuIds.push(menu.id);
     });
 
     this.role.menus = selectedMenuIds;
@@ -165,7 +165,6 @@ export class AddRoleComponent implements OnInit {
  getAllMenu(){
   // get array control
   const formArray = this.formContent.get('menus') as FormArray;
-
   this.menuService.getAllMenusForRoleFromBack().subscribe(
     (dataList : Menu[]) =>{
       this.listMenuWithChildren = dataList;

@@ -49,12 +49,12 @@
                       <div class="mb-2">
                           <div class="form-group">
                               <label class="col-form-label">Label{{'' | translate}} <span class="color-red">*</span> : </label>
-                              <input type="text" class="form-control form-control-sm" formControlName="label">
+                              <input type="text" class="form-control form-control-sm" formControlName="title">
                           </div>
                           <section
-                              *ngIf="(isSubmit && formContent.controls['label'].errors) || (formContent.controls['label']?.invalid && ( formContent.controls['label']?.dirty || formContent.controls['label']?.touched))">
+                              *ngIf="(isSubmit && formContent.controls['title'].errors) || (formContent.controls['title']?.invalid && ( formContent.controls['title']?.dirty || formContent.controls['title']?.touched))">
                               <div class="invalid-feedback d-block"
-                                  *ngIf=" formContent.controls['label'].errors?.required">
+                                  *ngIf=" formContent.controls['title'].errors?.required">
                                   <i class="fa fa-exclamation-triangle"></i> S'il vous plaît entrez nom de rôle.{{'' | translate}}
                               </div>
                           </section>
