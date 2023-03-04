@@ -21,6 +21,7 @@ export class MenuComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
   today = new Date();
@@ -125,16 +126,20 @@ export class MenuComponent implements OnInit {
   }).then((result) => {
       console.log(result);
       if (result.value && id) {
+        this.loading = true;// start Loading
         //  delete menu  //
         this.menuService.deleteMenuByIdFromBack(id).subscribe(
           response =>{
             this.message = this.messageServ.bodyToastrMenuDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshMenus();
+            this.loading = false;// end Loading
           },
           error => {
             // this.messageError = error.message;
-            this.handleErrorServ.onHandleCodeStatus(error);          }
+            this.handleErrorServ.onHandleCodeStatus(error);
+            this.loading = false;// end Loading
+          }
         );
       }
   });
@@ -142,6 +147,7 @@ export class MenuComponent implements OnInit {
 
   /* get all menu */
   refreshMenus() {
+    this.loading = true;// start Loading
       this.menuService.getAllMenusFromBack().subscribe(
         (dataList : Menu[]) => {
           if(!UtilsService.isEmptyArray(dataList))
@@ -149,10 +155,13 @@ export class MenuComponent implements OnInit {
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
           this.collectionSize = dataList.length;
+          this.loading = false;// end Loading
         },
         error => {
           // this.messageError = error.message;
-          this.handleErrorServ.onHandleCodeStatus(error);         }
+          this.handleErrorServ.onHandleCodeStatus(error);
+          this.loading = false;// end Loading
+        }
       );
 
   }

@@ -15,7 +15,7 @@ export class AddPaysComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   display: string = 'block';
   isCreated : boolean = true;
   formContent: any ;
@@ -51,17 +51,19 @@ export class AddPaysComponent implements OnInit {
     /* start create pays object part*/
     this.createPays(form);
     /* End create pays object part*/
-
+    this.loading = true;// start Loading
     /* start add pays part*/
     if(this.isCreated){
       this.paysService.addPaysFromBack(this.pays).subscribe(
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           //this.onCloseModal();
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }
@@ -72,9 +74,11 @@ export class AddPaysComponent implements OnInit {
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }

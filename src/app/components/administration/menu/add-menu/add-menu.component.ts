@@ -19,6 +19,7 @@ export class AddMenuComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
   public listMenuSelect: Array<Select2OptionData> = [];
@@ -76,17 +77,19 @@ export class AddMenuComponent implements OnInit {
     /* start create menu object part*/
     this.createMenu(form);
     /* End create menu object part*/
-
+    this.loading = true;// start Loading
     /* start add menu part*/
     if(this.isCreated){
       this.menuService.addMenuFromBack(this.menu).subscribe(
         data => {
           this.onCloseModal();
           this.outputEvent.emit(data);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           //this.onCloseModal();
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }
@@ -97,9 +100,11 @@ export class AddMenuComponent implements OnInit {
         data => {
           this.onCloseModal();
           this.outputEvent.emit(data);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }
@@ -137,10 +142,9 @@ export class AddMenuComponent implements OnInit {
    getAllMenuParent(){
 
     let listM : any[]= [];
-
+    this.loading = true;// start Loading
     this.menuService.getAllMenusParentFromBack().subscribe(
       (dataList : any) =>{
-
         if(!UtilsService.isEmptyArray(dataList)){
 
           this.listMenu = dataList;
@@ -164,6 +168,7 @@ export class AddMenuComponent implements OnInit {
 
           this.listMenuSelect = listM;
         }
+        this.loading = false;// end Loading
       }
     )
    }

@@ -23,7 +23,7 @@ export class PaysComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   today = new Date();
   public value: string ="";
 
@@ -126,15 +126,18 @@ export class PaysComponent implements OnInit {
   }).then((result) => {
       console.log(result);
       if (result.value && id) {
+        this.loading = true;// start Loading
         //  delete pays  //
         this.paysService.deletePaysByIdFromBack(id).subscribe(
           response =>{
             this.message = this.messageServ.bodyToastrPaysDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshPayss();
+            this.loading = false;// end Loading
           },
           error => {
             this.handleErrorServ.onHandleCodeStatus(error);
+            this.loading = false;// end Loading
           }
         );
       }
@@ -143,6 +146,7 @@ export class PaysComponent implements OnInit {
 
 /* get all pays */
   refreshPayss() {
+    this.loading = true;// start Loading
       this.paysService.getAllPayssFromBack().subscribe(
         (dataList : Pays[]) => {
           if(!UtilsService.isEmptyArray(dataList))
@@ -150,9 +154,11 @@ export class PaysComponent implements OnInit {
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
           this.collectionSize = dataList.length;
+          this.loading = false;// end Loading
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);
+          this.loading = false;// end Loading
          }
       );
 

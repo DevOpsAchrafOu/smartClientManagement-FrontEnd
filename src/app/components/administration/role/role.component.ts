@@ -23,6 +23,7 @@ export class RoleComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
   today = new Date();
@@ -120,6 +121,7 @@ export class RoleComponent implements OnInit {
   deleteRole(id: number | undefined, name : any ,code : any){
     if(this.roleService.roleSuperAdmin != code)
     {
+
       this.roleService.countUtilisateurByRoleIdFromBack(id).subscribe(
         (data : any) =>{
          if(data != 0){
@@ -142,15 +144,19 @@ export class RoleComponent implements OnInit {
           }).then((result) => {
               console.log(result);
               if (result.value && id) {
+                this.loading = true;// start Loading
                 //  delete role  //
                 this.roleService.deleteRoleByIdFromBack(id).subscribe(
                   response =>{
                     this.message = this.messageServ.bodyToastrRoleDelete;
                     this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
                     this.refreshRoles();
+                    this.loading = false;// end Loading
                   },
                   error => {
-                    this.handleErrorServ.onHandleCodeStatus(error);          }
+                    this.handleErrorServ.onHandleCodeStatus(error);
+                    this.loading = false;// end Loading
+                  }
                 );
               }
           });
@@ -165,6 +171,7 @@ export class RoleComponent implements OnInit {
 
 /* get all role */
   refreshRoles() {
+      this.loading = true;// start Loading
       this.roleService.getAllRolesFromBack().subscribe(
         (dataList : any[]) => {
           if(!UtilsService.isEmptyArray(dataList))
@@ -172,9 +179,11 @@ export class RoleComponent implements OnInit {
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
           this.collectionSize = dataList.length;
+          this.loading = false;// end Loading
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);
+          this.loading = false;// end Loading
          }
       );
 
@@ -185,6 +194,7 @@ export class RoleComponent implements OnInit {
   destroyComponent(componentRef : ComponentRef<AddRoleComponent>) {
       componentRef.destroy();
   }
+
 
 
 

@@ -20,6 +20,7 @@ export class AddRoleComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
   //Map
   mapMenu = new Map<number, any>();
@@ -89,16 +90,20 @@ export class AddRoleComponent implements OnInit {
     /* start create role object part*/
     this.createRole(form);
     /* End create role object part*/
-
+    this.loading = true;// start Loading
     /* start add role part*/
     if(this.isCreated){
       this.roleService.addRoleFromBack(this.role).subscribe(
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
+
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
+
         }
       );
     }
@@ -109,9 +114,11 @@ export class AddRoleComponent implements OnInit {
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }

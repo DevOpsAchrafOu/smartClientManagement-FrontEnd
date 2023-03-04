@@ -24,6 +24,7 @@ export class AddUtilisateurComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
 
@@ -139,7 +140,7 @@ export class AddUtilisateurComponent implements OnInit {
     /* start create user object part*/
     this.createUser(form);
     /* End create user object part*/
-
+    this.loading = true;// start Loading
     /* start add user part*/
     if(this.isCreated){
       this.userService.addUtilisateurFromBack(this.user).subscribe(
@@ -147,10 +148,12 @@ export class AddUtilisateurComponent implements OnInit {
           if(data && data.id != null){
             this.onCloseModal();
             this.outputEvent.emit(data);//emit data
+            this.loading = false;// end Loading
           }
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }
@@ -163,10 +166,12 @@ export class AddUtilisateurComponent implements OnInit {
             if(data && data.body && data.body.id != null){
               this.onCloseModal();
               this.outputEvent.emit(data);//emit data
+              this.loading = false;// end Loading
             }
           },
           err =>{
             this.outputEvent.emit(err);
+            this.loading = false;// end Loading
           }
         );
     }
@@ -247,7 +252,6 @@ export class AddUtilisateurComponent implements OnInit {
 
   /* get all role */
   getAllRole(){
-
     let listR : any[]= [];
     console.log("getAllRole =>")
     this.roleService.getAllRolesFromBack().subscribe(

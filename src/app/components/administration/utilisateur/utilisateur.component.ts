@@ -22,7 +22,7 @@ export class UtilisateurComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
   today = new Date();
@@ -155,12 +155,14 @@ export class UtilisateurComponent implements OnInit {
       cancelButtonText: this.messageServ.cancelButtonText
   }).then((result) => {
       if (result.value && id) {
+        this.loading = true;// start Loading
         //  delete user  //
         this.userService.deleteUtilisateurByIdFromBack(id).subscribe(
           response =>{
             this.message = this.messageServ.bodyToastrUtilisateurDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshUsers();
+            this.loading = false;// end Loading
           },
           error => {
             // this.messageError = error.message;
@@ -174,6 +176,7 @@ export class UtilisateurComponent implements OnInit {
               }else{
                 this.handleErrorServ.onHandleCodeStatus(error);
               }
+              this.loading = false;// end Loading
           }
         );
       }
@@ -182,6 +185,7 @@ export class UtilisateurComponent implements OnInit {
 
   /* get all user */
   refreshUsers() {
+    this.loading = true;// start Loading
       this.userService.getAllUtilisateursFromBack().subscribe(
         (dataList : Utilisateur[]) => {
           console.log(dataList);
@@ -190,9 +194,11 @@ export class UtilisateurComponent implements OnInit {
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
           this.collectionSize = dataList.length;
+          this.loading = false;// end Loading
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);
+          this.loading = false;// end Loading
          }
       );
 

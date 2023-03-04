@@ -24,7 +24,7 @@ export class VilleComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   today = new Date();
   public value: string ="";
 
@@ -127,15 +127,18 @@ export class VilleComponent implements OnInit {
   }).then((result) => {
       console.log(result);
       if (result.value && id) {
+        this.loading = true;// end Loading
         //  delete ville  //
         this.villeService.deleteVilleByIdFromBack(id).subscribe(
           response =>{
             this.message = this.messageServ.bodyToastrVilleDelete;
             this.toastr.success(this.messageServ.titleToastrSuccess, this.message,this.alertServ.configToastr);
             this.refreshVilles();
+            this.loading = false;// end Loading
           },
           error => {
             this.handleErrorServ.onHandleCodeStatus(error);
+            this.loading = false;// end Loading
           }
         );
       }
@@ -144,6 +147,7 @@ export class VilleComponent implements OnInit {
 
 /* get all ville */
   refreshVilles() {
+    this.loading = true;// start Loading
       this.villeService.getAllVillesFromBack().subscribe(
         (dataList : Ville[]) => {
           if(!UtilsService.isEmptyArray(dataList))
@@ -151,9 +155,11 @@ export class VilleComponent implements OnInit {
           .map((country, i) => ({id: i + 1, ...country}))
           .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
           this.collectionSize = dataList.length;
+          this.loading = false;// end Loading
         },
         error => {
           this.handleErrorServ.onHandleCodeStatus(error);
+          this.loading = false;// end Loading
          }
       );
 

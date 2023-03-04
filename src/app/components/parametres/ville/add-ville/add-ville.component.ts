@@ -21,7 +21,7 @@ export class AddVilleComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   display: string = 'block';
   isCreated : boolean = true;
   formContent: any ;
@@ -73,17 +73,19 @@ export class AddVilleComponent implements OnInit {
     /* start create ville object part*/
     this.createVille(form);
     /* End create ville object part*/
-
+    this.loading = true;// start Loading
     /* start add ville part*/
     if(this.isCreated){
       this.villeService.addVilleFromBack(this.ville).subscribe(
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           //this.onCloseModal();
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }
@@ -94,9 +96,11 @@ export class AddVilleComponent implements OnInit {
         response => {
           this.onCloseModal();
           this.outputEvent.emit(response);//emit data
+          this.loading = false;// end Loading
         },
         err =>{
           this.outputEvent.emit(err);
+          this.loading = false;// end Loading
         }
       );
     }

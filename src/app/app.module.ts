@@ -32,6 +32,7 @@ import { AddPaysComponent } from './components/parametres/pays/add-pays/add-pays
 import { AddVilleComponent } from './components/parametres/ville/add-ville/add-ville.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { SafePipe } from './pipes/safe.pipe';
+import { SpinnerComponent } from './components/base/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SafePipe } from './pipes/safe.pipe';
     AddVilleComponent,
     TruncatePipe,
     SafePipe,
+    SpinnerComponent,
   ],
   imports: [
     AppRoutingModule,
