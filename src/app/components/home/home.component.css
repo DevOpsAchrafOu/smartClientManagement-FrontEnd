@@ -1,0 +1,80 @@
+#home .card-body::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+  inline-size: 22px;
+  block-size: 22px;
+  background: transparent url("data:image/svg+xml;utf8,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M21.3827 2.07615C21.7564 2.23093 22 2.59557 22 3.00003V7.50003C22 8.05231 21.5523 8.50003 21 8.50003C20.4477 8.50003 20 8.05231 20 7.50003V5.41424L12.7071 12.7071C12.3166 13.0977 11.6834 13.0977 11.2929 12.7071C10.9024 12.3166 10.9024 11.6834 11.2929 11.2929L18.5763 4.0095L16.4954 4.00002C15.9432 3.9975 15.4975 3.54775 15.5 2.99547C15.5025 2.44319 15.9523 1.99752 16.5046 2.00004L20.803 2.01963C20.9936 1.98134 21.1952 1.9985 21.3827 2.07615ZM4 8.00003C4 5.79114 5.79005 4.00003 7.99943 4.00003H12C12.5523 4.00003 13 4.44774 13 5.00003C13 5.55231 12.5523 6.00003 12 6.00003H7.99943C6.89511 6.00003 6 6.89521 6 8.00003V16C6 17.1046 6.89543 18 8 18H16C17.1046 18 18 17.1046 18 16V12C18 11.4477 18.4477 11 19 11C19.5523 11 20 11.4477 20 12V16C20 18.2092 18.2091 20 16 20H8C5.79086 20 4 18.2092 4 16V8.00003Z' fill='%232A2E34'/></svg>") 0 0 no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+
+#home .border-left {
+  border-left: 8px solid #e2e8f0!important;
+}
+#home .border-secondary {
+  border-color: var(--fifth-color-dis)!important;
+}
+#home .card:hover .border-secondary {
+  border-color: var(--third-color-dis)!important;
+}
+
+#home .font-size-lg {
+  font-size: 1.125rem;
+}
+
+#home .card {
+  transition-timing-function: ease-out;
+}
+
+#home .card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1.5rem;
+}
+
+#home .card:hover {
+  transform: translateY(calc(var(--transition-translate-factor,.5) * var(--spacer,.3rem)));
+}
+
+#home .card:hover {
+  box-shadow: none;
+}
+
+
+
+
+.transition-fast {
+  transition-duration: 0.15s;
+  transition: 0.15s;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.shadow-sm {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
+}
+.shadow-sm:hover {
+  box-shadow: none !important;
+}
+
+
+#home .title{
+  color : #041731;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+#home .text{
+  color : #333333;
+  line-height: 1.7rem;
+
+}

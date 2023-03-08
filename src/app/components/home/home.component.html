@@ -21,65 +21,55 @@
       </div>
     </div>
   </div>
-<div class="content-body"   >
+<div class="content-body"   id="home">
     <!-- start home -->
-    <div class="card">
-        <div class="card-content collapse show">
-            <div class="card-body home p-3 ">
-                <div class="row justify-content-around">
-                    <div class="col-lg-2 p-0 col-md-6 ">
-                        <div class="home-item-card bg-gradient-one row pointer" [routerLink]="['/appel-projet']">
-                            <div class="col-3"><i class="fa fa-eye fa-item"></i> </div>
-                            <div class="home-item col-9 ">
-                                <span class="home-item-title">{{"SADBAR-TITLE-AP"| translate}}</span> <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 p-0 col-md-6 ">
-                      <div class="home-item-card bg-gradient-four  row pointer" [routerLink]="['/rapport-depart']">
-                          <div class="col-3"> <i class="fa fa-folder fa-item "></i> </div>
-                          <div class="home-item col-9  ">
-                              <span class="home-item-title">{{"SADBAR-TITLE-RD"| translate}}</span> <br>
-                          </div>
-                      </div>
-                  </div>
-                    <div class="col-lg-2 p-0 col-md-6 ">
-                        <div class="home-item-card bg-gradient-two row pointer" [routerLink]="['/submission']">
-                            <div class="col-3"><i class="fa fa-upload fa-item"></i> </div>
-                            <div class="home-item col-9 ">
-                                <span class="home-item-title">{{"SADBAR-TITLE-SM"| translate}}</span> <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 p-0 col-md-6 ">
-                      <div class="home-item-card bg-gradient-five  row pointer" [routerLink]="['/rapport-mi-parcous']">
-                          <div class="col-3"> <i class="fa fa-calendar-check-o  fa-item  "></i> </div>
-                          <div class="home-item col-9  ">
-                              <span class="home-item-title">{{"SADBAR-TITLE-RMP"| translate}}</span> <br>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-lg-2 p-0 col-md-6 ">
-                    <div class="home-item-card bg-gradient-three row pointer" [routerLink]="['/rapport-final']">
-                        <div class="col-3"> <i class="fa fa-calendar-check-o  fa-item  "></i> </div>
-                        <div class="home-item col-9  ">
-                            <span class="home-item-title">{{"SADBAR-TITLE-RFin"| translate}}</span> <br>
-                        </div>
-                    </div>
-                </div>
-                    <div class="col-lg-2 p-0 col-md-6 d-none">
-                        <div class="home-item-card bg-gradient-three row pointer" [routerLink]="['/etat-lieu']">
-                            <div class="col-3"><i class="fa fa-clock-o fa-item"></i> </div>
-                            <div class="home-item col-9 ">
-                                <span class="home-item-title">{{"SADBAR-TITLE-EL"| translate}}</span> <br>
-                            </div>
-                        </div>
-                    </div>
+    <div class="container text-left py-4">
 
+      <ul class="list-unstyled row row-sm justify-content-around mb-0 mt-4">
 
-                </div>
-            </div>
-        </div>
+        <li class="mb-6 col-12 col-md-6 col-lg-4 col-xl text-left">
+          <div class="card  border-radius h-100 bg-white shadow-sm overflow-hidden transition-fast ">
+            <a class="card-body border-left border-secondary font-size-lg hover:no-underline" [routerLink]="['/administration/list-user']"  target="_blank">
+                <h2 class="mt-4 mb-3 title"> Utilisateurs </h2>
+                <p class="text">
+                  Gestion des Utilisateurs
+                </p>
+            </a>
+          </div>
+        </li>
+        <li class="mb-6 col-12 col-md-6 col-lg-4 col-xl text-left">
+          <div class="card  border-radius h-100 bg-white shadow-sm overflow-hidden transition-fast ">
+            <a class="card-body border-left border-secondary font-size-lg hover:no-underline" [routerLink]="['/administration/list-role']"  target="_blank">
+
+                <h2 class="mt-4 title"> Rôles </h2>
+                <p class="text">
+                  Gestion des rôles et droits associés
+                </p>
+            </a>
+          </div>
+        </li>
+        <li class="mb-6 col-12 col-md-6 col-lg-4 col-xl text-left">
+          <div class="card  border-radius h-100 bg-white shadow-sm overflow-hidden transition-fast ">
+            <a class="card-body border-left border-secondary font-size-lg hover:no-underline" [routerLink]="['/administration/list-menu']"  target="_blank">
+                <h2 class="mt-4 title"> Menus </h2>
+                <p class="text">
+                  Gestion de menus pour sideBar
+                </p>
+            </a>
+          </div>
+        </li>
+        <li class="mb-6 col-12 col-md-6 col-lg-4 col-xl text-left">
+          <div class="card  border-radius h-100 bg-white shadow-sm overflow-hidden transition-fast ">
+            <a class="card-body border-left border-secondary font-size-lg hover:no-underline" [routerLink]="['/parametres/list-pays']"  target="_blank">
+                <h2 class="mt-4 title"> Paramètres </h2>
+                <p class="text">
+                  Gestion des paramètres de l'application
+                </p>
+            </a>
+          </div>
+        </li>
+
+      </ul>
     </div>
     <!-- end home -->
 

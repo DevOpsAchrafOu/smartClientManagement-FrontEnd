@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
 
-  --main-color-dis: #2331B5;/*#9e1211;*/
+  --main-color-dis: #3445E5;/*#9e1211;*/
   --first-color-dis: #3445E5;
   --second-color-dis: #9e1211;
   --third-color-dis: #4680ff;
@@ -9,6 +9,8 @@
   --fifth-color-dis: #6673fc; /*#1b1b28;*/
   --sixth-color-dis: #B5B5C2;/* #6c757d; */
   --seventh-color-dis: #E1F0FF;/* bg btn */
+
+
 
 }
 

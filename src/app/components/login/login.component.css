@@ -1,87 +1,5 @@
 /* start login section */
 
-#login .w-30 {
-  width: 33%!important;
-}
-
-#login .logo img{
-  max-height: 50px;
-}
-
-#login .main .col-form-label{
-  text-align: start;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 11px;
-  padding: 0 0 8px 2px;
-}
-
-
-
-#login .main .input-group{
-  transition: border-color .2s cubic-bezier(.785,.135,.15,.86) 0s;
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,roboto,Helvetica Neue,helvetica,arial,sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
-  width: 100%;
-  border: 1px solid #d6d9de;
-  box-sizing: border-box;
-  border-radius: 9px;
-  /* padding: 0 20px 0 36px; */
-  height: 40px;
-  color: #2a2e34;
-  overflow: hidden;
-}
-
-#login .main .input-group-text {
-  min-width: 40px;
-  background-color: transparent;
-  border: 0px;
-}
-
-#login .main input.form-control{
-  height: 38px;
-  border: 0px;
-  border-radius: 0px !important;
-  color: var(--main-color-dis);
-  font-size: 14px !important;
-}
-
-/* #login .main-bg{
-  position: absolute;
-  height: 100%;;
-  width: 100%;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background: url(../../../assets/images/login-bg-color.svg) center 10px no-repeat;
-  background-size: cover;
-}
-#login .main-bg:before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 200%;
-  height: 300%;
-  top: -100%;
-  left: -50%;
-  background-image: url(../../../assets/images/login-bg-dots.svg);
-  transform: rotate(-28deg);
-}
-#login .main-bg:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(../../../assets/images/login-bg-top.svg) center top no-repeat;
-  background-size: 100%;
-} */
-
 #login .main-bg{
   background: #fafbfc;
 }
@@ -98,34 +16,6 @@
   mix-blend-mode: multiply;
 }
 
-#login  .navbar .navbar-nav .btn-signup,
-#login .main button.btn-submit{
-  background-color: var(--main-color-dis);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  font-weight: 700;
-  transition: transform .2s cubic-bezier(.785,.135,.15,.86),background-color .2s cubic-bezier(.785,.135,.15,.86);
-  letter-spacing: .4px;
-  padding: 13px 20px;
-  color: #fff;
-  border-radius: 9px;
-  cursor: pointer;
-  box-shadow: 0 8px 18px #6cb9ec; /*#7b68ee80; */
-  border: 0px;
-}
-#login .main button.btn-submit{
-  padding: 15px !important;
-}
-
-#login .lien-signup{
-  color: var(--main-color-dis);
-  border-bottom: 1px dashed transparent;
-}
-
-#login .main a.lien-signup:hover {
-  text-decoration: revert;
-}
 
 #login .main .rounded-lg{
   border-radius: 1rem!important;
@@ -146,19 +36,73 @@
   background: #fff;
 }
 
-
 .card-title{
   color: var(--third-color-dis);
 }
 
-.title-forgot-password,.title-inscrit{
-  font-size: 0.8rem;
+#login  .card-body .input-champ{
+  min-height: 95px;
+}
+
+
+#login .main .input-group{
+  transition: border-color .2s cubic-bezier(.785,.135,.15,.86) 0s;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,roboto,Helvetica Neue,helvetica,arial,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  width: 100%;
+  border: 1px solid #d6d9de;
+  box-sizing: border-box;
+  border-radius: 9px;
+  /* padding: 0 20px 0 36px; */
+  height: 40px;
+  color: #2a2e34;
+  overflow: hidden;
+}
+
+
+#login .main .input-group-text {
+  min-width: 40px;
+  background-color: transparent;
+  border: 0px;
+}
+
+#login .main .col-form-label{
+  text-align: start;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 11px;
+  padding: 0 0 8px 2px;
+}
+
+
+#login .main input.form-control{
+  height: 38px;
+  border: 0px;
+  border-radius: 0px !important;
+  color: var(--main-color-dis);
+  font-size: 14px !important;
+}
+
+
+#login .lien-signup{
+  color: var(--main-color-dis);
+  border-bottom: 1px dashed transparent;
+}
+
+#login .main a.lien-signup:hover {
+  text-decoration: revert;
 }
 
 
 .msgError{
   font-size: small;
   padding: 3px;
+}
+
+.title-forgot-password,.title-inscrit{
+  font-size: 0.8rem;
 }
 
 
@@ -172,6 +116,24 @@
 
 #login .main .input-group .title-forgot-password:hover {
   border-bottom-color: var(--main-color-dis);
+}
+
+
+#login .main button.btn-submit{
+  background-color: var(--main-color-dis);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform .2s cubic-bezier(.785,.135,.15,.86),background-color .2s cubic-bezier(.785,.135,.15,.86);
+  letter-spacing: .4px;
+  color: #fff;
+  border-radius: 9px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px #6cb9ec; /*#7b68ee80; */
+  border: 0px;
+  padding: 13px 20px;
+  padding: 15px !important;
 }
 
 /* end login section */

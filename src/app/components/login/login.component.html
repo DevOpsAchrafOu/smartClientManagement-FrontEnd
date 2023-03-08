@@ -10,7 +10,6 @@
             <img src="./assets/images/logo.svg" class="">
           </div>
           <div class="card-body py-4 px-sm-5  text-center">
-            <!-- <img src="./assets/images/logo-001.png" role="button" [routerLink]="['/']" class="my-3 logo rounded-circle shadow text-center" > -->
             <h3 class="card-title d-flex justify-content-center text-center mb-4" role="button" [routerLink]="['/']">Connectez-vous</h3>
             <!-- Start form -->
             <form [formGroup]="formLogin" (ngSubmit)="onFormSubmit(formLogin)" >
@@ -20,7 +19,7 @@
               <!-- End message error-->
 
               <!-- Start login input-->
-              <div class="py-2">
+              <div class="py-2 input-champ">
                 <label class="col-form-label d-block " >Nom d'utilisateur : </label>
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -30,17 +29,16 @@
                   </div>
                   <input  type="text" class="form-control"  id="login" formControlName="username" name="username" placeholder="Saisir votre adresse e-mail ou Nom d'utilisateur" aria-describedby="inputGroupLogin"  required >
                 </div>
-                  <!-- placeholder="{{'input-username-label' + 'translate'}}" -->
+                  <!-- placeholder="{{'input-username-label' | translate}}" -->
                   <section  *ngIf="(isSubmitLogin && formLogin.get('username')?.errors) || (formLogin.get('username')?.invalid && ( formLogin.get('username')?.dirty || formLogin.get('username')?.touched))">
                     <div class="invalid-feedback d-block " *ngIf="formLogin.get('username')?.errors?.required ">
-                      <i class="fa fa-exclamation-triangle" ></i> {{"validation-username-required" + 'translate'}}
+                      <i class="fa fa-exclamation-triangle" ></i> {{"VALIDATION-USERNAME-REQUIRED" | translate}}
                     </div>
                   </section>
                 </div>
 
-
               <!-- Start password input-->
-              <div class="py-2">
+              <div class="py-2 input-champ">
                 <label class="col-form-label d-block"  >Entrer le mot de passe : </label>
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -58,7 +56,7 @@
                     <!-- Entrer le mot de passe -->
                     <section *ngIf="(isSubmitLogin && formLogin.get('password')?.errors) || (formLogin.get('password')?.invalid && ( formLogin.get('password')?.dirty || formLogin.get('password')?.touched))">
                       <div class="invalid-feedback d-block" *ngIf="formLogin.get('password')?.errors?.required ">
-                        <i class="fa fa-exclamation-triangle" ></i> {{"validation-password-required" + 'translate'}}
+                        <i class="fa fa-exclamation-triangle" ></i> {{"VALIDATION-PASSWORD-REQUIRED" | translate}}
                       </div>
                     </section>
 

@@ -1,14 +1,14 @@
-import { Login } from './../../interfaces/login';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/security/auth.service';
 import { AlertSwalService } from 'src/app/services/utils/alert-swal.service';
 import { CurrentLangService } from 'src/app/services/utils/current-lang.service';
 import { GestionMsgAndStatusService } from 'src/app/services/utils/gestion-msg-and-status.service';
+import { Login } from './../../interfaces/login';
 
 @Component({
   selector: 'app-login',
@@ -107,7 +107,6 @@ export class LoginComponent implements OnInit {
       this.route.navigate(["/home"]);
     }
   }
-
 
   changeCurrentLang(lang : string){
     this.currentLang =this.currnetLangService.currentLang(lang);
