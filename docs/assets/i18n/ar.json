@@ -1,0 +1,225 @@
+{
+    "_ALL ################################## ": "I18N en générale ##################################",
+
+
+    "LIST-PAGESIZE-TITLE-ONE" : " عرض",
+    "LIST-PAGESIZE-TITLE-TWO" : " عناصر ",
+    "LIST-LABEL-ACTION": "إجراء",
+    "LIST-ADD": " إضافة ",
+    "LIST-EDIT": " تعديل ",
+    "LIST-GESTION": " إدارة",
+    "LIST-ACTIF" : "نشيط",
+    "LIST-LIST": " قائمة",
+    "LIST-STATUS" : "وضعية",
+    "LIST-LABEL-DATE-RECEIVED" : "تاريخ الاستلام",
+    "LIST-LABEL-DATE-TREATMENT" : "تاريخ المعالجة",
+    "LIST-LABEL-DATE-OPERATION" : " تاريخ العملية",
+    "LIST-LABEL-DATE-STATUT" : "الوضعية",
+    "LIST-TIP-DOWNLOAD" : "تحميل الوثيقة المرافقة",
+    "HEADER-CURRENT-DATE": "اليوم",
+
+
+    "langFr" : "الفرنسية",
+    "langAr" : "العربية",
+
+    "_LOGIN ################################## ": "I18N login ######################################",
+
+    "LOGIN-TITLE": "مدرسة الفرصة الثانية",
+    "LOGIN-SUBTITLE": "تسجيل الدخول للمتابعة",
+    "LOGIN-BTN-LABEL-CONNXION": "تسجيل الدخول",
+    "LOGIN-URL-LABEL-FORGOT-PASSWORD": "استرجاع كلمة المرور",
+    "LOGIN-URL-LABEL-SIGN-UP": "لم تسجل بعد ؟",
+    "LOGIN-RIGHT-TITLE": "مرحبًا بك في حسابك الخاص",
+    "LOGIN-RIGHT-SUBTITLE": "منظومة معلوماتية متكاملة من أجل تواصل أفضل",
+    "FORGOT-PASSWORD-SUBTITLE": "استرجاع كلمة المرور",
+    "FORGOT-PASSWORD-BTN-LABEL-CONNXION": "تأكيد",
+
+    "INPUT-USERNAME-PLACEHOLDER" : "إسم المستخدم",
+    "INPUT-PASSWORD-PLACEHOLDER" : "كلمة المرور",
+    "VALIDATION-USERNAME-REQUIRED" : "المرجو إدخال إسم المستخدم",
+    "VALIDATION-PASSWORD-REQUIRED" : "المرجو إدخال كلمة المرور",
+
+    "INPUT-EMAIL-PLACEHOLDER" :	"البريد الإلكتروني",
+    "VALIDATION-EMAIL-REQUIRED" :	"المرجو إدخال البريد الإلكتروني",
+    "VALIDATION-EMAIL-MINLENGTH" :	"يجب أن يحتوي بريدك الإلكتروني على 8 أحرف على الأقل",
+    "VALIDATION-EMAIL-PATTERN" :"المرجو تضمين '@' في عنوان البريد الإلكتروني، 'yourname@example.com'",
+
+    "_PASSWORD ################################## ": "I18N PASSWORD ######################################",
+
+    "edit-password-subTitle" : "تغيير كلمة المرور",
+    "input-oldPassword-label" : " كلمة المرور الحالية",
+    "input-password-label" : "كلمة المرور الجديدة ",
+    "input-confirmPass-label" : "أكد كلمة المرور",
+
+    "validation-password-required" : "المرجو ادخال كلمة المرور",
+    "validation-confirmPass-notEquivalent" : "كلمة السر لا تتطابق",
+    "validation-password-minlength" : "يجب أن تحتوي كلمة المرور على 8 على الأقل",
+    "validation-oldPassword-incorrect" : " كلمة المرور سابق غير صحيحة",
+    "validation-oldPassword-and-oldPassword-incorrect" : " كلمات المرور القديمة والحالية غير متطابقة ",
+    "validation-password-valid" : "كلمة المرور ليست كلمة مرور صالحة. من فضلك حاول إعطاء كلمة مرور آمنة!",
+
+
+    "_ACCOUNT ################################## ": "I18N account ######################################",
+
+    "ACCOUNT-DET-TITLE" : "طلب التسجيل",
+    "ACCOUNT-LIST-SUBTITLE" : " قائمة طلبات التسجيل ",
+
+    "ACCOUNT-INPUT-EMAIL-LABEL" :  "البريد الإلكتروني",
+
+    "ACCOUNT-INPUT-ASSOCIATIONNAME-LABEL-FR" : "اسم الجمعية بالفرنسية",
+    "ACCOUNT-INPUT-ASSOCIATIONNAME-LABEL-AR" : "اسم الجمعية بالعربي",
+    "ACCOUNT-INPUT-RESPONSIBLENAME-LABEL" : "الإسم الكامل للمسؤول",
+    "ACCOUNT-INPUT-RESPONSABLEPHONENUMBER-LABEL" : "رقم هاتف المسؤول",
+    "ACCOUNT-INPUT-RESPONSIBLEEMAIL-LABEL" : "البريد الإلكتروني للمسؤول ",
+    "ACCOUNT-INPUT-ADDRESS-LABEL" : "عنوان المسؤول",
+    "ACCOUNT-INPUT-COUNTY-LABEL" : "البلد",
+    "ACCOUNT-INPUT-CITY-LABEL" : "المدينة",
+    "ACCOUNT-INPUT-REGIONACADEMY-LABEL" : "الأكاديمية",
+    "ACCOUNT-INPUT-ZIPCODE-LABEL" : "الرمز البريدي",
+    "ACCOUNT-INPUT-DATE-CREATION-LABEL" : "تاريخ التسجيل ",
+
+    "ACCOUNT-DET-BTN-PENDING" : "تعليق التسجيل",
+    "ACCOUNT-DET-BTN-ACTIVATED" : "تفعيل التسجيل",
+    "ACCOUNT-DET-BTN-DEACTIVATED" : " إلغاء التسجيل",
+    "ACCOUNT-DET-BTN-DELETED" : "حذف الحساب",
+    "ACCOUNT-DET-BTN-BLOCKED" : "إيقاف الحساب",
+
+    "ACCOUNT-SWAL-VALID-BODY-PENDING-1" : " بضغطك على زر التأكيد, أنت تؤكد رغبتك في  تعليق هذاالحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-PENDING-2" : " <span class='d-block' > هل أنت متأكد من المتابعة ؟</span> ",
+
+    "ACCOUNT-SWAL-VALID-BODY-ACTIVATED-1" : " بضغطك على زر التأكيد, أنت تؤكد رغبتك في  تفعيل هذا الحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-ACTIVATED-2" : " <span class='d-block' > هل أنت متأكد من المتابعة ؟</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-DEACTIVATED-1" : " بضغطك على زر التأكيد, أنت تؤكد رغبتك في إلغاء تفعيل هذا الحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-DEACTIVATED-2" : " <span class='d-block' > هل أنت متأكد من المتابعة ؟</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-DELETED-1" : " بضغطك على زر التأكيد, أنت تؤكد رغبتك في حذف هذا الحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-DELETED-2" : "<span class='d-block' > هل أنت متأكد من المتابعة ؟</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-BLOCKED-1" : " بضغطك على زر التأكيد, أنت تؤكد رغبتك في إيقاف هذا الحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-BLOCKED-2" : " <span class='d-block' > هل أنت متأكد من المتابعة ؟</span> ",
+
+    "STATUS-PENDING" : "مُعلّق",
+    "STATUS-ACTIVATED" : "مُفعّل",
+    "STATUS-DEACTIVATED" : "غير مفعل",
+    "STATUS-DELETED" : "محذوف",
+    "STATUS-BLOCKED" : "موقوف",
+
+    "_NAVBAR ################################## ": "I18N navBar ##################################",
+
+    "NAVBAR-TITLE-BONJ" : "مرحباً",
+    "NAVBAR-NOTIF-TIP" : "إشعار",
+    "NAVBAR-NOTIF-MENU-HEAD-TITLE" : "إشعارات",
+    "NAVBAR-NOTIF-MENU-FOOTER-TITLE" : "عرض جميع الإشعارات",
+
+    "NAVBAR-MENU-TITLE-PROF" : "الملف الشخصي",
+    "NAVBAR-MENU-TITLE-PWD" : " تغيير كلمة المرور",
+    "NAVBAR-MENU-TITLE-LOGOUT" : "تسجيل الخروج",
+
+    "NAVBAR-INPUT-SEARCH" : "بحث  ",
+
+
+
+    "_SADBAR ################################## ": "I18N sadBar ##################################",
+    "SADBAR-TITLE": "Xxxxx xxxxx xxxxxx",
+    "SADBAR-TITLE-HOME": "الصفحة الرئيسية",
+    "SADBAR-TITLE-TABLE-BORD": "الصفحة الرئيسية",
+    "SADBAR-TITLE-ADMIN": "ادارة",
+    "SADBAR-TITLE-USER": "المستخدمون",
+    "SADBAR-TITLE-ROLE": "الأدوار",
+    "SADBAR-TITLE-MENUS": "القوائم",
+    "SADBAR-TITLE-REFE": "إعدادت",
+    "SADBAR-TITLE-PAYS": "البلدان",
+    "SADBAR-TITLE-VILLES": "المدن",
+
+
+    "_FOOTER ################################## ": "I18N footer ##################################",
+
+    "FOOTER-TITLE" : "جميع الحقوق محفوظة . © Smart Mng 2023",
+
+    "_FILE ################################## ": "I18N file ##################################",
+    "FILE-SHOW-LABEL" : "وثيقة",
+
+    "_TOOLTIPS ##################################": "I18N tooltips ##############################",
+    "TIP-DETAIL": "المزيد من التفاصيل",
+    "TIP-DOWNLOAD": "تنزيل المرفقات",
+    "TIP-ADD-FILE":"أضف وثيقة ",
+    "TIP-EDIT-FILE" : " تعديل وثيقة",
+    "TIP-MOTIF": "سبب الرفض",
+    "TIP-RAISON" : "سبب",
+    "TIP-MSG": "معلومات إضافية",
+    "TIP-SOUM": "التقديم على طلبات المشاريع",
+    "TIP-GO": "الوصول إليه",
+    "TIP-EDIT": "تعديل",
+    "TIP-DELTE": "حذف",
+    "TIP-VALID": "قبول",
+    "TIP-REJECT": "رفض",
+    "TIP-CHARGE" : "تحميل",
+    "TIP-CI": "يستلزم معلومات إضافية",
+    "TIP-PRE-CH": "معالجة الملف",
+
+    "TIP-R" : " التقرير ",
+    "TIP-SM" : " التقديم على طلبات المشاريع ",
+    "TIP-PAR-CONTR" : " ",
+
+    "TIP-SHOW-CI" : " إظهار المعلومات الإضافية",
+
+    "TIP-ADD-PV" : "  محضر الانتقاء",
+    "TIP-NOTIFIER-CLIENT" : "اشعار المتقدمين",
+
+
+    "_BUTTONS ##################################": "I18N buttons ##############################",
+    "BTN-ADD": "إضافة",
+    "BTN-EDIT": "تعديل",
+    "BTN-SAVE": "حفظ",
+    "BTN-EXPORT-PDF": "طباعة نسخة",
+    "BTN-CANCEL": "إلغاء",
+    "BTN-OK": "موافق",
+    "BTN-YES": "نعم",
+    "BTN-VALID": "قبول",
+    "BTN-REJECT": "رفض",
+    "BTN-CI": "طلب معلومات إضافية",
+
+    "BTN-CONTR": "التأكيد على صحة المعلومات",
+    "BTN-ACCEP-PREAL": "موافقة مبدئية",
+
+    "BTN-SHOW-CI" : "إظهار ",
+
+    "_VALUE ################################## ": "I18N value ##############################",
+
+    "VAL-YES":"نعم",
+    "VAL-NON":"لا",
+
+  "_MSGERROR ##################################": "I18N message erreur ##############################",
+
+  "MSGERROR-FILE-EMPTY": "أحد الملفات المطلوبة فارغ !",
+  "MSGERROR-FILES-AT-LEAST-ONE": "يستلزم وثيقة على اقل !",
+  "MSGERROR-FILE-EMPTY-OR-BAD": "مستند الإلزامي فارغ أو تنسيق pdf غير صحيح!",
+  "MSGERROR-TABLE-EMPTY": "الجدول فارغ",
+  "MSGERROR-FIELD-EMPTY": "أحد الحقول المطلوبة فارغ !",
+  "MSGERROR-ANY-500": "وقع خطأ ما عنده معالجة طلبكم, المرجو إعادة المحاولة مرة أخرى",
+  "MSGERROR-ANY": "وقع خطأ ما !",
+  "MSGERROR-UN-AUTHORIZED": "أنت غير مخول لك للوصول إلى هذا المورد",
+  "MSGERROR-CONNECTION-REFUSED": "رجاء الاتصال في وقت لاحق",
+  "MSGERROR-UNKNOWN-USERNAME-PASSWORD": "اسم المستخدم أو كلمة المرور غير صالحة",
+  "MSGERROR-MAIL-NOT-EXIST": "بريدك الإلكتروني غير موجود",
+  "MSGERROR-ELEMENT-EXISTS": "العنصر موجود بالفعل",
+
+
+  "_SWAL ##################################": "I18N message Swal ####",
+  "SWAL-CONFIRM": "طلب تأكيد",
+  "SWAL-MOTIF-REJET": "سبب الرفض",
+  "SWAL-CI": "معلومات إضافية",
+  "SWAL-TEXT-MSG": " : الرسالة",
+
+  "_TOASTR ################################## ": "I18N message Toastr ####",
+
+  "TOASTR-ADD": "تم الحفظ بنجاح",
+  "TOASTR-SEND": "تم إرسال طلبك بنجاح",
+  "TOASTR-EDIT": "تم التغيير بنجاح"
+
+
+}

@@ -1,0 +1,205 @@
+{
+    "_ALL ################################## ": "I18N en générale ##################################",
+
+
+    "LIST-PAGESIZE-TITLE-ONE" : "Afficher ",
+    "LIST-PAGESIZE-TITLE-TWO" : " élements",
+    "LIST-LABEL-ACTION": "Action",
+    "LIST-ADD": "Ajouter ",
+    "LIST-EDIT": "Modifier ",
+    "LIST-GESTION": "Gestion ",
+    "LIST-STATUS": "STATE ",
+    "LIST-LIST": "Liste ",
+    "LIST-TIP-DOWNLOAD" : "Télécharger PJ",
+    "HEADER-CURRENT-DATE": "Aujourd'hui",
+
+
+    "langFr" : "français",
+    "langAr" : "arabe",
+
+    "_LOGIN ################################## ": "I18N login ######################################",
+
+    "LOGIN-TITLE": "ÉCOLE 2éme CHANCE",
+    "LOGIN-SUBTITLE": "Connectez-vous pour continuer",
+    "LOGIN-BTN-LABEL-CONNXION": "Connexion",
+    "LOGIN-URL-LABEL-FORGOT-PASSWORD": "Mot de passe oublié ?",
+    "LOGIN-URL-LABEL-SIGN-UP": "Pas encore inscrit ?",
+    "LOGIN-RIGHT-TITLE": "Bienvenue dans votre espace privé",
+    "LOGIN-RIGHT-SUBTITLE": "Un système d'information intégré pour mieux communiquer.",
+    "FORGOT-PASSWORD-SUBTITLE": "Trouver votre adresse e-mail",
+    "FORGOT-PASSWORD-BTN-LABEL-CONNXION": "Valider",
+
+    "INPUT-USERNAME-PLACEHOLDER" : "Nom d'utilisateur",
+    "INPUT-PASSWORD-PLACEHOLDER" : "Entrer le mot de passe",
+    "VALIDATION-USERNAME-REQUIRED" : "S'il vous plaît entrez votre Login.",
+    "VALIDATION-PASSWORD-REQUIRED" : " S'il vous plaît entrez votre Mot de passe.",
+
+    "INPUT-EMAIL-PLACEHOLDER" :		"Email",
+    "VALIDATION-EMAIL-REQUIRED" :	"S'il vous plaît entrez votre Email.",
+    "VALIDATION-EMAIL-MINLENGTH" :	"Votre Email doit contenir au moins 8 caractères.",
+    "VALIDATION-EMAIL-PATTERN" : "S'il vous plaît inclure un '@' dans l'adresse e-mail, 'yourname@example.com' manque un '@'.",
+
+    "_PASSWORD ################################## ": "I18N PASSWORD ######################################",
+
+    "validation-password-required" : " S'il vous plaît entrez votre Mot de passe.",
+    "validation-confirmPass-notEquivalent" : " Le mot de passe ne correspond pas.",
+    "validation-password-minlength" : "Votre Email doit contenir au moins 8 caractères.",
+    "validation-oldPassword-incorrect" : "Le mot de passe précédent était incorrect",
+    "validation-oldPassword-and-oldPassword-incorrect" : " L'ancien et l'actuel mots de passe ne correspondent pas",
+    "validation-password-valid" : "Le mot de passe n'est pas un mot de passe valide. Veuillez essayer un mot de passe sécurisé !",
+
+
+    "_ACCOUNT ################################## ": "I18N account ######################################",
+
+    "ACCOUNT-DET-TITLE" : "Demande d'inscription",
+
+    "ACCOUNT-LIST-SUBTITLE" :"Liste des demandes d'inscription",
+
+    "ACCOUNT-INPUT-EMAIL-LABEL" :   "Email",
+
+    "ACCOUNT-INPUT-ASSOCIATIONNAME-LABEL" : "Association",
+    "ACCOUNT-INPUT-RESPONSIBLENAME-LABEL" : "Nom Responsable",
+    "ACCOUNT-INPUT-RESPONSABLEPHONENUMBER-LABEL" : "N° Téléphone",
+    "ACCOUNT-INPUT-RESPONSIBLEEMAIL-LABEL" : "Email",
+    "ACCOUNT-INPUT-ADDRESS-LABEL" :  "Adresse",
+    "ACCOUNT-INPUT-COUNTY-LABEL" : "Pays",
+    "ACCOUNT-INPUT-CITY-LABEL" : "Villes",
+    "ACCOUNT-INPUT-REGIONACADEMY-LABEL" :  "Académie",
+    "ACCOUNT-INPUT-ZIPCODE-LABEL" : "Code postale",
+    "ACCOUNT-INPUT-DATE-CREATION-LABEL" : "Date d'inscription",
+
+    "ACCOUNT-DET-BTN-PENDING" : "تعليق التسجيل",
+    "ACCOUNT-DET-BTN-ACTIVATED" : "تاكيد التسجيل",
+    "ACCOUNT-DET-BTN-DEACTIVATED" : " إلغاء التسجيل",
+    "ACCOUNT-DET-BTN-DELETED" : "حذف التسجيل",
+    "ACCOUNT-DET-BTN-BLOCKED" : "تعليق التسجيل",
+
+    "ACCOUNT-SWAL-VALID-BODY-PENDING-1" : " أنت على وشك تعليق التسجيل لحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-PENDING-2" : " <span class='d-block' >Êtes-vous sûr de continuer ?</span> ",
+
+    "ACCOUNT-SWAL-VALID-BODY-ACTIVATED-1" : " أنت على وشك تفعيل  التسجيل لحساب  ",
+    "ACCOUNT-SWAL-VALID-BODY-ACTIVATED-2" : " <span class='d-block' >Êtes-vous sûr de continuer ?</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-DEACTIVATED-1" : " أنت على وشك إلغاء تنشيط التسجيل لحساب ",
+    "ACCOUNT-SWAL-VALID-BODY-DEACTIVATED-2" : " <span class='d-block' >Êtes-vous sûr de continuer ?</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-DELETED-1" : " أنت على وشك حذف التسجيل لحساب ",
+    "ACCOUNT-SWAL-VALID-BODY-DELETED-2" : " <span class='d-block' >Êtes-vous sûr de continuer ?</span> ",
+
+
+    "ACCOUNT-SWAL-VALID-BODY-BLOCKED-1" : " أنت على وشك حظر التسجيل لحساب ",
+    "ACCOUNT-SWAL-VALID-BODY-BLOCKED-2" : " <span class='d-block' >Êtes-vous sûr de continuer ?</span> ",
+
+    "STATUS-PENDING" : "PENDING",
+    "STATUS-ACTIVATED" : "ACTIVATED",
+    "STATUS-DEACTIVATED" : "DEACTIVATED",
+    "STATUS-DELETED" : "DELETED",
+    "STATUS-BLOCKED" : "BLOCKED",
+
+    "_NAVBAR ################################## ": "I18N navBar ##################################",
+
+    "NAVBAR-TITLE-BONJ" : "Bonjour",
+    "NAVBAR-NOTIF-TIP" : "Notification",
+    "NAVBAR-NOTIF-MENU-HEAD-TITLE" : "Notifications",
+    "NAVBAR-NOTIF-MENU-FOOTER-TITLE" : "Afficher toutes les notifications",
+
+    "NAVBAR-MENU-TITLE-PROF" : "Profile",
+    "NAVBAR-MENU-TITLE-PWD" : " Changer mot de passe",
+    "NAVBAR-MENU-TITLE-LOGOUT" : " Se déconnecter",
+
+    "NAVBAR-INPUT-SEARCH" : "Recherche  ",
+
+    "_SADBAR ################################## ": "I18N sadBar ##################################",
+    "SADBAR-TITLE": "Smart management",
+    "SADBAR-TITLE-HOME": "Accueil",
+    "SADBAR-TITLE-TABLE-BORD": "Tableau de bord",
+    "SADBAR-TITLE-ADMIN": "Administration",
+    "SADBAR-TITLE-USER": "Utilisateurs",
+    "SADBAR-TITLE-ROLE": "Rôles",
+    "SADBAR-TITLE-MENUS": "Menus",
+    "SADBAR-TITLE-REFE": "Paramètres",
+    "SADBAR-TITLE-PAYS": "Pays",
+    "SADBAR-TITLE-VILLES": "Villes",
+
+
+
+    "_FOOTER ################################## ": "I18N footer ##################################",
+
+    "FOOTER-TITLE" : " Smart Mng 2023. Tous les droits réservés",
+
+
+
+    "_TOOLTIPS ##################################": "I18N tooltips ##############################",
+    "TIP-DETAIL": "Plus de détails",
+    "TIP-DOWNLOAD": "Télécharger PJ",
+    "TIP-ADD-FILE": "Ajouter PJ",
+    "TIP-MOTIF": "Motif de rejet",
+    "TIP-MSG": "Message",
+    "TIP-RAISON" : "Le raison",
+    "TIP-SOUM": "Soumissionner",
+    "TIP-GO": "Accès a lui",
+    "TIP-EDIT": "Éditer",
+    "TIP-DELTE": "Supprimer",
+    "TIP-VALID": "Valide",
+    "TIP-REJECT": "Rejeté",
+    "TIP-CHARGE" : "Chargé le",
+    "TIP-CI": "Demande un complément d'information",
+    "TIP-PRE-CH": "Prendre en charge",
+
+    "TIP-R" : " le Rapport",
+    "TIP-SM" : " la Soumission",
+    "TIP-PAR-CONTR" : " par Contrôleur",
+
+    "TIP-SHOW-CI" : "Afficher complément d'Information",
+
+
+    "TIP-ADD-PV" : "Procès verbal",
+    "TIP-NOTIFIER-CLIENT" : "Notifier clients",
+
+
+  "_BUTTONS ##################################": "I18N buttons ##############################",
+  "BTN-ADD": "Ajouter",
+  "BTN-EDIT": "Modifier",
+  "BTN-SAVE": "Enregistrer",
+  "BTN-EXPORT-PDF": "imprimer une copie",
+  "BTN-CANCEL": "Annuler",
+  "BTN-OK": "Ok",
+  "BTN-YES": "Oui",
+  "BTN-VALID": "Valider",
+  "BTN-REJECT": "Rejeter",
+  "BTN-CI": "Demande de complément",
+
+  "BTN-CONTR": "Contrôler",
+  "BTN-ACCEP-PREAL": "Acceptation préalable",
+
+  "BTN-SHOW-CI" : "Afficher CI",
+
+
+  "_MSGERROR ##################################": "I18N message erreur ##############################",
+  "MSGERROR-TABLE-EMPTY": "Le tableau est vide !",
+  "MSGERROR-FIELD-EMPTY": "L'un des champs obligatoires est vide !",
+  "MSGERROR-ANY": "Une erreur s'est produite !",
+  "MSGERROR-UN-AUTHORIZED": "Vous n'êtes pas autorisé à accéder à cette ressource",
+  "MSGERROR-CONNECTION-REFUSED": "Veuillez réessayer plus tard",
+  "MSGERROR-UNKNOWN-USERNAME-PASSWORD": "Identifiant inconnu ou mot de passe incorrect",
+  "MSGERROR-MAIL-NOT-EXIST": "Votre Email n'existe pas",
+  "MSGERROR-ELEMENT-EXISTS": "Élément existe déjà",
+
+
+  "_SWAL ##################################": "I18N message Swal ####",
+  "SWAL-CONFIRM": "Demande de confirmation",
+  "SWAL-MOTIF-REJET": "Motif de rejet",
+  "SWAL-CI": "Complément d'information",
+  "SWAL-TEXT-MSG": "Message : ",
+
+
+  "_TOASTR ################################## ": "I18N message Toastr  ####",
+
+  "TOASTR-ADD": "Sauvegarde effectuée avec succès",
+  "TOASTR-SEND": "Votre demande a été envoyée avec succcès",
+  "TOASTR-EDIT": "Modification effectuée avec succès"
+
+
+}
