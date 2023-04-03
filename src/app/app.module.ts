@@ -17,7 +17,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TestComponent } from './tests/test/test.component';
 import { UtilisateurComponent } from './components/administration/utilisateur/utilisateur.component';
 import { RoleComponent } from './components/administration/role/role.component';
 import { PaysComponent } from './components/parametres/pays/pays.component';
@@ -43,7 +42,6 @@ import { SpinnerComponent } from './components/base/spinner/spinner.component';
     LayoutComponent,
     FooterComponent,
     HomeComponent,
-    TestComponent,
     UtilisateurComponent,
     RoleComponent,
     PaysComponent,

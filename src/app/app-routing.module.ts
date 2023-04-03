@@ -1,5 +1,4 @@
 import { UtilisateurComponent } from './components/administration/utilisateur/utilisateur.component';
-import { TestComponent } from './tests/test/test.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './components/base/layout/layout.component';
@@ -15,7 +14,6 @@ import { VilleComponent } from './components/parametres/ville/ville.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "test", component: TestComponent },
   // { path: "forgot-password", component: ForgotPasswordComponent },
   // { path: 'edit-password', component: EditPasswordComponent, canActivate: [AuthGuardService]},
   { path: '', redirectTo: '/', pathMatch: 'full' },
