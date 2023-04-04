@@ -1,20 +1,10 @@
 # smartClientManagement-FrontEnd
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
+Développement d'un application La gestion des clients (backOffice) basé sur le framework angular 12
 
-## Development server
+# Live Demo
+Page : https://devopsachrafou.github.io/smartClientManagement-FrontEnd
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## les choes utiliser dans cette projet
-(v.o1)
-pipe
-Custom Validators 
-service, component, interface
-Combined Add/Edit in same Modal(popup)
-Lazy loading ()
-interceptors (authentication, authorization, and error handling)
-
-(v.10)
-// Internationalization (i18n)
-// loading
+# Technology Used :
+Angular 12, Bootstrap, TypeScript, Html, Css, Git, VScode,
