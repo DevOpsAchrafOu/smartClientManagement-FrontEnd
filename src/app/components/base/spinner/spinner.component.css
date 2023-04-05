@@ -9,6 +9,15 @@
   z-index: 9999;
 }
 
+.cssload-speeding-text {
+  display: block;
+  position: absolute;
+  width: 500px;
+  left: 36%;
+  top: 30%;
+  color: var(--second-color-dis);
+}
+
 .cssload-speeding-wheel {
   content: "";
   display: block;

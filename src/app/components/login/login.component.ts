@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   /********************************************************************************************/
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
-
+  loading : boolean = false;
   token: string = "";
   formLogin: FormGroup;
   isSubmitLogin = false;
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
   /********************************************************************************************/
 
   onFormSubmit(form : FormGroup): void {
-
+    this.loading = true;// start Loading
     this.isSubmitLogin = true;
     if (this.formLogin.invalid) { return }
 
@@ -79,14 +79,18 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (response : any) => {
           if(response ){
+
             let token = response;
             this.authService.saveToken(token);
             this.route.navigate(["/home"]);
             console.log('navigate / okay');
+
           }
           else{
             this.toastr.error("",this.messageServ.getMessage("MSGERROR-MAIL-NOT-EXIST") || '',this.alertServ.configToastr);
+
           }
+          this.loading = false;// end Loading
 
         },
         error => {
@@ -96,6 +100,7 @@ export class LoginComponent implements OnInit {
           else{
             this.toastr.error("",this.messageServ.getMessage("MSGERROR-CONNECTION-REFUSED") || '',this.alertServ.configToastr);
           }
+          this.loading = false;// end Loading
         }
       );
   }

@@ -14,6 +14,7 @@ export class SpinnerComponent implements OnInit {
   /********************************************************************************************/
 
   @Input()  loading = false;//pére => fils is loading or not
+  @Input()  firstTime = false;//pére => le serveur render.com prend quelques secondes pour Run la première fois
 
   /********************************************************************************************/
   /************************************* Initialization functions  ****************************/

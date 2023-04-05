@@ -1,3 +1,7 @@
 <div *ngIf="this.loader.getLoading()" class="cssload-container">
+  <div class="cssload-speeding-text" *ngIf="firstTime">
+    <h3>Veuillez patienter,</h3>
+    <p>le serveur <b>render.com</b> prend quelques secondes pour Run la première fois...</p>
+    </div>
   <div class="cssload-speeding-wheel"></div>
 </div>
