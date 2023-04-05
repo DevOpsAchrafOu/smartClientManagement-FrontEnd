@@ -19,7 +19,7 @@ export class AuthService {
   /********************************************************************************************/
 
   prefixeUrl : string= "/end-users";
-
+  loading : boolean = false;
 
   /********************************************************************************************/
   /************************************* Initialization functions  ****************************/
@@ -93,12 +93,13 @@ export class AuthService {
   }
 
   onLogout(){
-    this.logout()
+     this.logout()
     .subscribe(
         (data : any) => {
           if(data){
             this.deleteLocalStorage();
           }
+          return false;
         },
         error => {
           if(error.status === 403){
@@ -107,6 +108,7 @@ export class AuthService {
           else{
             this.deleteLocalStorage();
           }
+          return false;
         }
       );
    }

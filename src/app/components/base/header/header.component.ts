@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   /**************************************** The attributes  ***********************************/
   /********************************************************************************************/
 
-
+  loading : boolean = false;
   rtl: boolean = false; //par défaul Francais (false)
 
   isActiveInChildNav : boolean = false;
@@ -83,7 +83,25 @@ export class HeaderComponent implements OnInit {
  }
 
  onLogout(){
-  this.authServ.onLogout();
+  this.loading = true;// start Loading
+  this.authServ.logout()
+  .subscribe(
+      (data : any) => {
+        if(data){
+          this.authServ.deleteLocalStorage();
+        }
+        this.loading = false;// end Loading
+      },
+      error => {
+        if(error.status === 403){
+          this.authServ.deleteLocalStorage();
+        }
+        else{
+          this.authServ.deleteLocalStorage();
+        }
+        this.loading = false;// end Loading
+      }
+    );
  }
 
  searchByNumDossier(){
