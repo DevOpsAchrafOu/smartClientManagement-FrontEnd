@@ -25,9 +25,14 @@ const routes: Routes = [
       { path: 'administration/list-user', component: UtilisateurComponent },
       { path: 'administration/list-role', component: RoleComponent },
       { path: 'administration/list-menu', component: MenuComponent },
+      { path: 'list-user', component: UtilisateurComponent },
+      { path: 'list-role', component: RoleComponent },
+      { path: 'list-menu', component: MenuComponent },
 
       { path: 'parametres/list-pays', component: PaysComponent },
       { path: 'parametres/list-ville', component: VilleComponent },
+      { path: 'list-pays', component: PaysComponent },
+      { path: 'list-ville', component: VilleComponent },
     ]
     , canActivate: [AuthGuardService]
   }
