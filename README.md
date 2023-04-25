@@ -5,13 +5,13 @@ This is the master branch of SmartClientManagement frontEnd.
 This document decribes the steps to follow to build the project in a Debian/Ubuntu architecture or github page.
 
 ## For login
-Url: https://devopsachrafou.github.io/portfolio-angular11-dataLocal/projet
+Url: https://devopsachrafou.github.io/smartClientManagement-FrontEnd/
  
 ```
-## login :
+login :
 a.admin
   
-## Password : 
+Password : 
 123456789
 ``` 
 
