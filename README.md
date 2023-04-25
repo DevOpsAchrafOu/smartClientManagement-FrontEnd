@@ -6,12 +6,13 @@ This document decribes the steps to follow to build the project in a Debian/Ubun
 
 ## For login
 Url: https://devopsachrafou.github.io/portfolio-angular11-dataLocal/projet
-
-login : 
-```  a.admin
-```  
-Password :
-```  123456789
+ 
+```
+login :
+a.admin
+  
+Password : 
+123456789
 ``` 
 
 ## Features
