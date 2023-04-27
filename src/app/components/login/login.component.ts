@@ -71,6 +71,9 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.invalid) { return }
 
     let user: Login = {...form.value};
+    user.username = user.username.trim();
+    user.password = user.password.trim();
+
     this.authService.login(user)
     .pipe(
     map(response => {
