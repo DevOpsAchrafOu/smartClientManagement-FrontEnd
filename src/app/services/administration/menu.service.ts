@@ -24,7 +24,7 @@ export class MenuService {
     return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/role`);
   }
 
-  getAllMenusByCollaborateurConnectedFromBack() : Observable<Menu[]> {
+  getAllMenusByUtilisateurConnectedFromBack() : Observable<Menu[]> {
     return this.httpClient.get<Menu[]>(`${environment.baseUrl_mng}`+this.prefixeUrl+`/userConnected`);
   }
 

@@ -7,6 +7,8 @@ import { SharedService } from 'src/app/services/utils/shared.service';
 import { CurrentLangService } from 'src/app/services/utils/current-lang.service';
 import { HandleStatusService } from 'src/app/services/utils/handle-status.service';
 import { UtilisateurService } from 'src/app/services/administration/utilisateur.service';
+import { MenuService } from 'src/app/services/administration/menu.service';
+import { Menu } from 'src/app/interfaces/administration/menu';
 
 @Component({
   selector: 'app-sidebar',
@@ -48,6 +50,7 @@ export class SidebarComponent implements OnInit {
     private utilisateurService: UtilisateurService,
     private router: Router,
     private route:ActivatedRoute,
+    private menuService : MenuService,
     private handleErrorServ : HandleStatusService
   ) {
     router.events.pipe(
@@ -75,6 +78,8 @@ export class SidebarComponent implements OnInit {
     console.log("=> data menu");
     console.log(this.data)
 
+    this.getAllMenusByUtilisateurConnected();
+
     //get current lang
     this.rtl = this.currentLangService.isRTL();
 
@@ -88,6 +93,21 @@ export class SidebarComponent implements OnInit {
   closeSidebar(): void {
     this.isActiveInChild = !this.data.menu;
     this.sharedData.changeDataMenu({ menu: this.isActiveInChild });
+  }
+
+  /* get all Menu by utilisateur Connected */
+  getAllMenusByUtilisateurConnected() {
+    this.menuService.getAllMenusByUtilisateurConnectedFromBack().subscribe(
+      (listMenu : Menu[]) => {
+        console.log("getAllMenusFromBack/listMenu =>");
+        console.log(listMenu);
+        this.listMenu = listMenu;
+      },
+      (error : any) => {
+        this.handleErrorServ.onHandleCodeStatus(error);
+      }
+    );
+
   }
 
 

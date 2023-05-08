@@ -30,118 +30,70 @@
 
   <!-- Start navBar SideMain -->
   <ul class="list-unstyled components">
-    <!-- table bord -->
-    <li>
-      <a
-        href="javascript: void(0);"
-        [routerLink]="['/']"
-        style="white-space: nowrap"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        <i class="fa fa-bar-chart"></i>
-        <span class="item-side">{{'SADBAR-TITLE-HOME' | translate}}</span>
-      </a>
-    </li>
-    <!-- Administration -->
-    <li>
-      <a
-        href="#administration"
-        data-toggle="collapse"
-        aria-expanded="false"
-        class="dropdown-toggle"
-        style="white-space: nowrap"
-      >
-        <i class="fa fa-cogs"></i>
-        <span class="item-side">{{'SADBAR-TITLE-ADMIN' | translate}}</span>
-      </a>
-      <ul class="collapse list-unstyled" id="administration">
-        <li>
-          <a
-          href="javascript: void(0);"
-          [routerLink]="['/administration/list-user']"
+    <ng-container *ngFor="let menu of listMenu; let iMenu = index, let iLast = last" >
+      <!-- menu sans fils -->
+      <ng-container *ngIf=" menu.hasChildren == false;else other" >
+      <li >
+        <a href="javascript: void(0);"
+          [routerLink]="[menu.url]"
+          style="white-space: nowrap"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: false }"
-            ><span class="nav-icon"><i class="fa fa-users px-1"></i></span
-            ><span
-              class="item-submenu"
-              [ngClass]="{ hide: isActiveInChild == true }"
-              >{{'SADBAR-TITLE-USER' | translate}}</span
-            ></a
-          >
-        </li>
-        <li>
-          <a
-          href="javascript: void(0);"
-          [routerLink]="['/administration/list-role']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: false }"
-            ><span class="nav-icon"><i class="fa fa-id-card px-1"></i></span
-            ><span
-              class="item-submenu"
-              [ngClass]="{ hide: isActiveInChild == true }"
-              >{{'SADBAR-TITLE-ROLE' | translate}}</span
-            ></a>
-        </li>
-        <li>
-          <a
-          href="javascript: void(0);"
-          [routerLink]="['/administration/list-menu']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: false }"
-            ><span class="nav-icon"><i class="fa fa-list-alt px-1"></i></span
-            ><span
-              class="item-submenu"
-              [ngClass]="{ hide: isActiveInChild == true }"
-              >{{'SADBAR-TITLE-MENUS' | translate}}</span
-            ></a>
-        </li>
-      </ul>
-    </li>
-    <!-- Parametres -->
-    <li>
-      <a
-        href="#parametres"
-        data-toggle="collapse"
-        aria-expanded="false"
-        class="dropdown-toggle"
-        style="white-space: nowrap"
-      >
-        <i class="fa fa-database"></i>
-        <span class="item-side">{{'SADBAR-TITLE-REFE' | translate}}</span>
-      </a>
-      <ul class="collapse list-unstyled" id="parametres">
-         <li>
-          <a
-          href="javascript: void(0);"
-          [routerLink]="['/parametres/list-pays']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: false }"
-            ><span class="nav-icon"><i class="fa fa-globe px-1"></i></span
-            ><span
-              class="item-submenu"
-              [ngClass]="{ hide: isActiveInChild == true }"
-              >{{'SADBAR-TITLE-PAYS' | translate}}</span
-            ></a
-          >
-        </li>
-         <li>
-          <a
-          href="javascript: void(0);"
-          [routerLink]="['/parametres/list-ville']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: false }"
-            ><span class="nav-icon"><i class="fa fa-building-o px-1"></i></span
-            ><span
-              class="item-submenu"
-              [ngClass]="{ hide: isActiveInChild == true }"
-              >{{'SADBAR-TITLE-VILLES' | translate}}</span
-            ></a
-          >
-        </li>
+        >
+          <i class="fa " [ngClass]="menu.icon"></i>
+          <span class="item-side">{{ rtl == true ? menu.titleAr : menu.titleFr}}</span>
+        </a>
+      </li>
+    </ng-container>
+    <!-- menu with fils -->
+    <ng-template #other>
+      <li>
 
-      </ul>
-    </li>
+        <ng-container *ngIf="iLast;else other1" >
+          <a
+          [href]="'#'+menu.titleFr"
+          data-toggle="collapse"
+          aria-expanded="false"
+          class="dropdown-toggle"
+          [ngClass]="{' active ': isRouteActivePar  }"
+          style="white-space: nowrap"
+        >
+          <i class="fa " [ngClass]="menu.icon"></i>
+          <span class="item-side">{{ rtl == true ? menu.titleAr : menu.titleFr}}</span>
+        </a>
+        </ng-container>
+        <ng-template #other1>
+          <a
+          [href]="'#'+menu.titleFr"
+          data-toggle="collapse"
+          aria-expanded="false"
+          class="dropdown-toggle"
+          [ngClass]="{' active ': isRouteActiveAdmin  }"
+          style="white-space: nowrap"
+        >
+          <i class="fa " [ngClass]="menu.icon"></i>
+          <span class="item-side">{{ rtl == true ? menu.titleAr : menu.titleFr}}</span>
+        </a>
+        </ng-template>
+
+        <ul class="collapse list-unstyled" [id]="menu.titleFr">
+          <ng-container *ngFor="let menuChildren of menu.children; let iMenuChildren = index" >
+            <li >
+              <a href="javascript: void(0);"
+                [routerLink]="[menuChildren.url]"
+                style="white-space: nowrap"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <i class="fa " [ngClass]="menuChildren.icon"></i>
+                <span class="item-side">{{ rtl == true ? menuChildren.titleAr : menuChildren.titleFr}}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-template>
+  </ng-container>
   </ul>
   <!-- End navBar SideMain -->
 
