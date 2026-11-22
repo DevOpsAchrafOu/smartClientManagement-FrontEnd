@@ -77,6 +77,18 @@ import { Icon } from '../ui/icon';
             }
           </div>
 
+          <!-- Public demo account (same as in the README) -->
+          <div class="mt-3 flex items-center gap-3 rounded-2xl border border-dashed border-brand/40 bg-brand/5 px-3.5 py-3 text-sm dark:bg-brand/10">
+            <app-icon name="sparkles" class="text-brand dark:text-indigo-300" />
+            <div class="min-w-0 flex-1 leading-relaxed">
+              <p class="font-semibold text-strong">{{ i18n.t('demoAccount') }}</p>
+              <p class="text-muted" dir="ltr" [class.text-end]="i18n.rtl()">
+                <span class="font-mono text-strong">{{ demo.username }}</span> · <span class="font-mono text-strong">{{ demo.password }}</span>
+              </p>
+            </div>
+            <button type="button" class="btn btn-ghost min-h-9 shrink-0 px-3 text-xs" (click)="useDemo()">{{ i18n.t('useDemo') }}</button>
+          </div>
+
           <form class="mt-6 space-y-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
             <div>
               <label class="label" for="username">{{ i18n.t('username') }}</label>
@@ -144,8 +156,17 @@ export class LoginPage {
     { icon: 'pin', key: 'cities' },
   ];
 
+  /** Demo account created by the backend seed data, shown publicly for visitors. */
+  protected demo = { username: 'a.admin', password: '123456789' };
+
   constructor() {
     this.server.wake();
+  }
+
+  /** Fills the form with the demo account (the visitor still clicks "Sign in"). */
+  useDemo(): void {
+    this.form.setValue({ ...this.demo });
+    this.error.set(null);
   }
 
   submit(): void {
