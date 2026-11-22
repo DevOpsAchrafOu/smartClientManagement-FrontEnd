@@ -15,6 +15,23 @@ Password :
 123456789
 ``` 
 
+## Two versions
+| Version | Address | Stack |
+|---|---|---|
+| Original | https://devopsachrafou.github.io/smartClientManagement-FrontEnd/ | Angular 12, Bootstrap 4 (this folder, built to `docs/`) |
+| Redesign | https://devopsachrafou.github.io/smartClientManagement-FrontEnd/redesign/ | Angular 22 (signals, zoneless, standalone), Tailwind CSS 4 (`redesign-app/`, built to `docs/redesign/`) |
+
+Both use the same API (Spring Boot on Render + PostgreSQL on Neon, free plans). The backend sleeps after 15 minutes without traffic: the first request can take about a minute, and the redesign shows this on the login page.
+
+Redesign highlights: dashboard with key figures and charts, users / roles / menus / countries / cities management, sidebar built from the role's menus, French and Arabic (RTL), light and dark mode, mobile layout, accessible forms and dialogs.
+
+Build the redesign (Node 22):
+```
+$ cd redesign-app
+$ npm install
+$ npx ng build      # writes ../docs/redesign
+```
+
 ## Features
 - Login and logout
 - User management
