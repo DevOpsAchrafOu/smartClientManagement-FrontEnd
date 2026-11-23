@@ -1,0 +1,37 @@
+# Checks every pull request and every push to main for the redesign (redesign-app/):
+# unit tests (Vitest) and a production build. The build goes to a temporary folder,
+# so docs/ (what GitHub Pages serves) is never touched here.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  redesign:
+    name: Redesign · tests and build (Node 22)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: redesign-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: redesign-app/package-lock.json
+      - run: npm ci
+      - name: Unit tests
+        run: npx ng test --watch=false
+      - name: Production build
+        run: npx ng build --output-path "$RUNNER_TEMP/redesign-build"
