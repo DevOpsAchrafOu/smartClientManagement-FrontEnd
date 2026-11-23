@@ -9,9 +9,13 @@ import { API, SUPER_ADMIN } from './config';
 export type ClientStatus = 'PROSPECT' | 'CLIENT' | 'LOST';
 export type ActivityType = 'CALL' | 'MEETING' | 'EMAIL' | 'NOTE' | 'TASK';
 export type ActivityView = 'ALL' | 'OPEN' | 'TODAY' | 'LATE' | 'DONE';
+export type OpportunityStage = 'NEW' | 'QUALIFIED' | 'PROPOSAL' | 'NEGOTIATION' | 'WON' | 'LOST';
 
 export const CLIENT_STATUSES: ClientStatus[] = ['PROSPECT', 'CLIENT', 'LOST'];
 export const ACTIVITY_TYPES: ActivityType[] = ['CALL', 'MEETING', 'EMAIL', 'NOTE', 'TASK'];
+/** Pipeline stages in order, with their default probability of winning (same as the API). */
+export const STAGES: OpportunityStage[] = ['NEW', 'QUALIFIED', 'PROPOSAL', 'NEGOTIATION', 'WON', 'LOST'];
+export const STAGE_PROBABILITY: Record<OpportunityStage, number> = { NEW: 10, QUALIFIED: 25, PROPOSAL: 50, NEGOTIATION: 75, WON: 100, LOST: 0 };
 
 export interface Ref {
   id: number;
@@ -100,6 +104,50 @@ export interface ActivityRequest {
   ownerId?: number | null;
 }
 
+/** A possible sale to a client. Amounts are in MAD. */
+export interface Opportunity {
+  id: number;
+  title: string;
+  client: Ref;
+  contact: Ref | null;
+  owner: Ref | null;
+  stage: OpportunityStage;
+  amount: number;
+  probability: number;
+  weighted: number;
+  expectedClose: string | null;
+  closedAt: string | null;
+  lostReason: string | null;
+  notes: string | null;
+  overdue: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OpportunityRequest {
+  title: string;
+  clientId: number;
+  contactId?: number | null;
+  ownerId?: number | null;
+  stage?: OpportunityStage;
+  amount?: number | null;
+  probability?: number | null;
+  expectedClose?: string | null;
+  lostReason?: string | null;
+  notes?: string | null;
+}
+
+export interface PipelineSummary {
+  openCount: number;
+  openAmount: number;
+  weightedAmount: number;
+  wonThisMonth: number;
+  winRate: number | null;
+  averageWon: number | null;
+  overdue: number;
+  stages: { stage: OpportunityStage; count: number; amount: number; weighted: number }[];
+}
+
 export interface ClientCounts {
   total: number;
   prospects: number;
@@ -124,6 +172,7 @@ export interface CrmDashboard {
   byOwner: { owner: string; clients: number; openTasks: number }[];
   upcoming: Activity[];
   recent: Activity[];
+  pipeline: PipelineSummary;
 }
 
 const CRM = `${API}/crm`;
@@ -186,6 +235,25 @@ export class Crm {
   dashboard(): Observable<CrmDashboard> {
     return this.http.get<CrmDashboard>(`${CRM}/dashboard`);
   }
+  opportunities(filter: { clientId?: number; mine?: boolean; stage?: OpportunityStage | ''; q?: string } = {}): Observable<Opportunity[]> {
+    return this.http.get<Opportunity[]>(`${CRM}/opportunities`, { params: params(filter) });
+  }
+  pipelineSummary(): Observable<PipelineSummary> {
+    return this.http.get<PipelineSummary>(`${CRM}/opportunities/summary`);
+  }
+  createOpportunity(body: OpportunityRequest): Observable<Opportunity> {
+    return this.http.post<Opportunity>(`${CRM}/opportunities`, body);
+  }
+  updateOpportunity(id: number, body: OpportunityRequest): Observable<Opportunity> {
+    return this.http.put<Opportunity>(`${CRM}/opportunities/${id}`, body);
+  }
+  moveOpportunity(id: number, stage: OpportunityStage, lostReason?: string | null): Observable<Opportunity> {
+    return this.http.put<Opportunity>(`${CRM}/opportunities/${id}/stage`, { stage, lostReason: lostReason ?? null });
+  }
+  deleteOpportunity(id: number): Observable<unknown> {
+    return this.http.delete(`${CRM}/opportunities/${id}`);
+  }
+
   /** Active users who can own a client or an activity. */
   owners(): Observable<Ref[]> {
     return this.http.get<Ref[]>(`${CRM}/owners`);
@@ -222,6 +290,32 @@ export const STATUS_TONE: Record<ClientStatus, string> = {
   CLIENT: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300',
   LOST: 'bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300',
 };
+
+/** Colour of each pipeline stage: dot / bar colour and a soft chip. */
+export const STAGE_COLOR: Record<OpportunityStage, string> = {
+  NEW: '#94a3b8',
+  QUALIFIED: '#38bdf8',
+  PROPOSAL: '#818cf8',
+  NEGOTIATION: '#f59e0b',
+  WON: '#10b981',
+  LOST: '#f43f5e',
+};
+export const STAGE_TONE: Record<OpportunityStage, string> = {
+  NEW: 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300',
+  QUALIFIED: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300',
+  PROPOSAL: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300',
+  NEGOTIATION: 'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300',
+  WON: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300',
+  LOST: 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300',
+};
+
+/** 185000 → "185 000 MAD" (French) or the Arabic equivalent; compact = "185 k MAD". */
+export function formatMad(value: number | null | undefined, lang: string, compact = false): string {
+  if (value === null || value === undefined) return '—';
+  const locale = lang === 'ar' ? 'ar-MA' : 'fr-MA';
+  const n = new Intl.NumberFormat(locale, { maximumFractionDigits: compact ? 1 : 0, notation: compact ? 'compact' : 'standard' }).format(value);
+  return `${n} ${lang === 'ar' ? 'د.م.' : 'MAD'}`;
+}
 
 /** "2026-11-23T10:00:00" → value for <input type="datetime-local"> and back. */
 export const toLocalInput = (iso: string | null | undefined) => (iso ? iso.slice(0, 16) : '');

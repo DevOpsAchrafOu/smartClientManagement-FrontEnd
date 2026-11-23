@@ -1,19 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { errorMessage } from '../../core/api';
-import { Activity, ClientDetail, Contact, Crm, CrmRights } from '../../core/crm';
+import { Activity, ClientDetail, Contact, Crm, CrmRights, Opportunity, STAGE_TONE, formatMad } from '../../core/crm';
 import { I18n } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem, ClientForm, StatusChip } from '../../ui/crm-ui';
 import { Icon } from '../../ui/icon';
 import { Modal } from '../../ui/modal';
+import { OpportunityForm, stageKey } from '../../ui/pipeline-ui';
 import { ListState } from '../../ui/states';
 
 @Component({
   selector: 'app-crm-client-detail',
-  imports: [RouterLink, DatePipe, ReactiveFormsModule, Icon, Modal, StatusChip, ClientForm, ActivityForm, ActivityItem, ListState],
+  imports: [RouterLink, DatePipe, ReactiveFormsModule, Icon, Modal, StatusChip, ClientForm, ActivityForm, ActivityItem, ListState, OpportunityForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a routerLink="/crm/clients" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-strong">
@@ -112,6 +113,36 @@ import { ListState } from '../../ui/states';
         </section>
       </div>
 
+      <!-- Opportunities -->
+      <section class="card mt-6 overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-2 px-5 pt-5 pb-3">
+          <div>
+            <h2 class="font-semibold text-strong">{{ i18n.t('opportunities') }} <span class="font-normal text-muted">({{ opportunities().length }})</span></h2>
+            @if (openAmount() > 0) { <p class="text-sm text-muted">{{ i18n.t('openPipeline') }} : <span class="font-semibold text-strong tabular-nums">{{ money(openAmount()) }}</span></p> }
+          </div>
+          @if (rights.canEdit()) {
+            <button type="button" class="btn btn-primary min-h-9 px-3" (click)="opportunityEditing.set(null)"><app-icon name="plus" [size]="16" />{{ i18n.t('newOpportunity') }}</button>
+          }
+        </div>
+        <ul class="divide-y divide-line border-t border-line">
+          @for (o of opportunities(); track o.id) {
+            <li class="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-5 py-3">
+              <button type="button" class="min-w-0 flex-1 basis-48 truncate text-start font-medium text-strong hover:text-brand disabled:hover:text-strong"
+                [disabled]="!rights.canEdit()" (click)="opportunityEditing.set(o)">{{ o.title }}</button>
+              <span class="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold" [class]="stageTone[o.stage]">{{ i18n.t(stageKey(o.stage)) }}</span>
+              <span class="w-32 text-end font-semibold text-strong tabular-nums">{{ money(o.amount) }}</span>
+              <span class="w-24 text-end text-sm text-muted" [class.!text-rose-600]="o.overdue">{{ o.expectedClose ? (o.expectedClose | date: 'd MMM y' : undefined : i18n.lang()) : '—' }}</span>
+            </li>
+          } @empty {
+            <li class="px-5 py-8 text-center text-muted">{{ i18n.t('noOpportunities') }}</li>
+          }
+        </ul>
+      </section>
+      @if (opportunityEditing() !== undefined) {
+        <app-opportunity-form [opportunity]="opportunityEditing()!" [fixedClient]="c.id" [contacts]="c.contacts"
+          (closed)="opportunityEditing.set(undefined)" (saved)="opportunitySaved()" />
+      }
+
       @if (editing()) {
         <app-client-form [client]="c" (closed)="editing.set(false)" (saved)="client.set($event); editing.set(false)" />
       }
@@ -171,6 +202,15 @@ export class CrmClientDetailPage {
 
   protected client = signal<ClientDetail | null>(null);
   protected activities = signal<Activity[]>([]);
+  protected opportunities = signal<Opportunity[]>([]);
+  /** undefined = closed, null = new opportunity. */
+  protected opportunityEditing = signal<Opportunity | null | undefined>(undefined);
+  protected openAmount = computed(() =>
+    this.opportunities().filter((o) => o.stage !== 'WON' && o.stage !== 'LOST').reduce((sum, o) => sum + o.amount, 0),
+  );
+  protected stageTone = STAGE_TONE;
+  protected stageKey = stageKey;
+  protected money = (v: number) => formatMad(v, this.i18n.lang());
   protected state = signal<'loading' | 'error' | 'ready'>('loading');
   protected editing = signal(false);
   protected activityEditing = signal<Activity | null | undefined>(undefined);
@@ -198,6 +238,7 @@ export class CrmClientDetailPage {
         this.client.set(c);
         this.state.set('ready');
         this.loadActivities();
+        this.loadOpportunities();
       },
       error: () => this.state.set('error'),
     });
@@ -205,6 +246,17 @@ export class CrmClientDetailPage {
 
   private loadActivities(): void {
     this.crm.activities({ clientId: Number(this.id()), size: 100 }).subscribe({ next: (p) => this.activities.set(p.items), error: () => {} });
+  }
+
+  private loadOpportunities(): void {
+    this.crm.opportunities({ clientId: Number(this.id()) }).subscribe({ next: (list) => this.opportunities.set(list), error: () => {} });
+  }
+
+  /** Winning a deal can turn the prospect into a client, so the client is reloaded too. */
+  protected opportunitySaved(): void {
+    this.opportunityEditing.set(undefined);
+    this.loadOpportunities();
+    this.reloadClient();
   }
 
   private reloadClient(): void {

@@ -37,7 +37,7 @@ const FALLBACK: { key: I18nKey; icon: string; route: string | null; children?: {
   },
 ];
 
-const CRM_TITLES: Record<string, I18nKey> = { '': 'crmDashboard', clients: 'clients', activities: 'activities' };
+const CRM_TITLES: Record<string, I18nKey> = { '': 'crmDashboard', clients: 'clients', pipeline: 'pipeline', activities: 'activities' };
 
 const TITLES: Record<string, I18nKey> = {
   dashboard: 'dashboard', users: 'users', roles: 'roles', menus: 'menus', countries: 'countries', cities: 'cities',
@@ -179,6 +179,7 @@ export class Shell {
       children: [
         { label: this.i18n.t("crmDashboard"), icon: "chart", route: "/crm", children: [] },
         { label: this.i18n.t("clients"), icon: "building", route: "/crm/clients", children: [] },
+        { label: this.i18n.t("pipeline"), icon: "trending", route: "/crm/pipeline", children: [] },
         { label: this.i18n.t("activities"), icon: "calendar", route: "/crm/activities", children: [] },
       ],
     };
