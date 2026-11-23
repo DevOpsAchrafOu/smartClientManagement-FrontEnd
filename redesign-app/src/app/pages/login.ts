@@ -88,6 +88,16 @@ import { Icon } from '../ui/icon';
             </div>
             <button type="button" class="btn btn-ghost min-h-9 shrink-0 px-3 text-xs" (click)="useDemo()">{{ i18n.t('useDemo') }}</button>
           </div>
+          <!-- Other demo accounts, one per CRM role (same password) -->
+          <div class="mt-2 flex flex-wrap items-center gap-2 text-xs">
+            <span class="text-muted">{{ i18n.t('tryRole') }}</span>
+            @for (r of roleDemos; track r.username) {
+              <button type="button" class="inline-flex min-h-8 items-center gap-1.5 rounded-lg border border-line px-2.5 font-medium text-body transition hover:border-brand hover:text-strong"
+                (click)="useDemo(r.username)" [attr.aria-label]="i18n.t('useDemo') + ' : ' + i18n.t(r.key) + ' (' + r.username + ')'">
+                {{ i18n.t(r.key) }} <span class="font-mono text-muted" dir="ltr">{{ r.username }}</span>
+              </button>
+            }
+          </div>
 
           <form class="mt-6 space-y-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
             <div>
@@ -158,14 +168,20 @@ export class LoginPage {
 
   /** Demo account created by the backend seed data, shown publicly for visitors. */
   protected demo = { username: 'a.admin', password: '123456789' };
+  /** Demo accounts of the CRM roles (fictional sales team, same password). */
+  protected roleDemos: { username: string; key: I18nKey }[] = [
+    { username: 'y.benali', key: 'roleManager' },
+    { username: 's.mansouri', key: 'roleSales' },
+    { username: 'l.bouzid', key: 'roleViewer' },
+  ];
 
   constructor() {
     this.server.wake();
   }
 
   /** Fills the form with the demo account (the visitor still clicks "Sign in"). */
-  useDemo(): void {
-    this.form.setValue({ ...this.demo });
+  useDemo(username = this.demo.username): void {
+    this.form.setValue({ username, password: this.demo.password });
     this.error.set(null);
   }
 
@@ -179,7 +195,8 @@ export class LoginPage {
       .login(username.trim(), password)
       .pipe(switchMap(() => this.auth.loadMe()))
       .subscribe({
-        next: () => this.router.navigateByUrl('/dashboard'),
+        // CRM roles (sales manager, sales person, read-only) start on the CRM dashboard.
+        next: (user) => this.router.navigateByUrl(['ROLE_MANAGER', 'ROLE_SALES', 'ROLE_VIEWER'].includes(user.role) ? '/crm' : '/dashboard'),
         error: (err: HttpErrorResponse) => {
           this.auth.clear();
           this.loading.set(false);

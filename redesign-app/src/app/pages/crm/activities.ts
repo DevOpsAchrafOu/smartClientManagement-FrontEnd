@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, debounceTime } from 'rxjs';
 import { errorMessage } from '../../core/api';
-import { ACTIVITY_TYPES, Activity, ActivityType, ActivityView, Crm } from '../../core/crm';
+import { Activity, ACTIVITY_TYPES, ActivityType, ActivityView, Crm, CrmRights } from '../../core/crm';
 import { I18n, I18nKey } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem } from '../../ui/crm-ui';
@@ -18,8 +18,15 @@ const VIEWS: ActivityView[] = ['OPEN', 'TODAY', 'LATE', 'DONE', 'ALL'];
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-header [title]="i18n.t('activities')" [subtitle]="i18n.t('activitiesSubtitle')">
-      <button type="button" class="btn btn-primary" (click)="editing.set(null)"><app-icon name="plus" />{{ i18n.t('newActivity') }}</button>
+      @if (rights.canEdit()) {
+        <button type="button" class="btn btn-primary" (click)="editing.set(null)"><app-icon name="plus" />{{ i18n.t('newActivity') }}</button>
+      }
     </app-page-header>
+    @if (rights.ownOnly() || rights.readOnly()) {
+      <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">
+        <app-icon [name]="rights.ownOnly() ? 'user' : 'eye'" [size]="16" class="shrink-0 text-muted" />{{ i18n.t(rights.ownOnly() ? 'scopeOwn' : 'scopeReadOnly') }}
+      </p>
+    }
 
     <div class="mb-4 flex gap-2 overflow-x-auto pb-1" role="tablist">
       @for (v of views; track v) {
@@ -77,6 +84,7 @@ const VIEWS: ActivityView[] = ['OPEN', 'TODAY', 'LATE', 'DONE', 'ALL'];
 })
 export class CrmActivitiesPage {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
   private toasts = inject(Toasts);
   private confirm = inject(Confirm);

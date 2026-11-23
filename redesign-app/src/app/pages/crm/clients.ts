@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Subject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CLIENT_STATUSES, ClientCounts, ClientDetail, ClientStatus, ClientSummary, Crm } from '../../core/crm';
+import { CLIENT_STATUSES, ClientCounts, ClientDetail, ClientStatus, ClientSummary, Crm, CrmRights } from '../../core/crm';
 import { I18n, I18nKey } from '../../core/i18n';
 import { Icon } from '../../ui/icon';
 import { ClientForm, StatusChip } from '../../ui/crm-ui';
@@ -17,8 +17,15 @@ const PAGE_SIZE = 10;
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-header [title]="i18n.t('clients')" [subtitle]="i18n.t('clientsSubtitle')">
-      <button type="button" class="btn btn-primary" (click)="creating.set(true)"><app-icon name="plus" />{{ i18n.t('newClient') }}</button>
+      @if (rights.canEdit()) {
+        <button type="button" class="btn btn-primary" (click)="creating.set(true)"><app-icon name="plus" />{{ i18n.t('newClient') }}</button>
+      }
     </app-page-header>
+    @if (rights.ownOnly() || rights.readOnly()) {
+      <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">
+        <app-icon [name]="rights.ownOnly() ? 'user' : 'eye'" [size]="16" class="shrink-0 text-muted" />{{ i18n.t(rights.ownOnly() ? 'scopeOwn' : 'scopeReadOnly') }}
+      </p>
+    }
 
     <!-- Status tabs with counts -->
     <div class="mb-4 flex gap-2 overflow-x-auto pb-1" role="tablist">
@@ -104,6 +111,7 @@ const PAGE_SIZE = 10;
 })
 export class CrmClientsPage {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
   private router = inject(Router);
 

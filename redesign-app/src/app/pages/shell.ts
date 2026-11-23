@@ -43,6 +43,16 @@ const TITLES: Record<string, I18nKey> = {
   dashboard: 'dashboard', users: 'users', roles: 'roles', menus: 'menus', countries: 'countries', cities: 'cities',
 };
 
+/** Names of the roles created by the backend seed data. */
+const ROLE_KEYS: Record<string, I18nKey> = {
+  ROLE_SUPER_ADMIN: 'roleSuperAdmin',
+  ROLE_ADMIN: 'roleAdmin',
+  ROLE_USER: 'roleUser',
+  ROLE_MANAGER: 'roleManager',
+  ROLE_SALES: 'roleSales',
+  ROLE_VIEWER: 'roleViewer',
+};
+
 @Component({
   selector: 'app-shell',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, NgTemplateOutlet, Icon],
@@ -101,7 +111,7 @@ const TITLES: Record<string, I18nKey> = {
               <span class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand to-brand-2 text-sm font-bold text-white">{{ auth.initials() }}</span>
               <span class="hidden text-start leading-tight md:block">
                 <span class="block text-sm font-semibold text-strong">{{ fullName() }}</span>
-                <span class="block text-xs text-muted">{{ auth.user()?.role }}</span>
+                <span class="block text-xs text-muted">{{ roleLabel() }}</span>
               </span>
               <app-icon name="chevronDown" [size]="16" class="hidden text-muted md:block" />
             </button>
@@ -127,6 +137,12 @@ const TITLES: Record<string, I18nKey> = {
   `,
 })
 export class Shell {
+  /** The role name in the current language (its code when unknown). */
+  protected roleLabel = computed(() => {
+    const role = this.auth.user()?.role ?? '';
+    const key = ROLE_KEYS[role];
+    return key ? this.i18n.t(key) : role;
+  });
   protected i18n = inject(I18n);
   protected theme = inject(Theme);
   protected auth = inject(Auth);

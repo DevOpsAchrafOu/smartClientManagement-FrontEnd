@@ -86,7 +86,10 @@ export const guestGuard: CanActivateFn = () => {
   return auth.token() ? inject(Router).parseUrl('/dashboard') : true;
 };
 
-/** Adds the token to API calls; on 401/403 the session is closed and the user goes back to the login page. */
+/**
+ * Adds the token to API calls. On 401 (missing or expired token) the session is closed and the user goes back to the
+ * login page; a 403 only means "not allowed for this role" and is left to the caller.
+ */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(Auth);
   const router = inject(Router);
@@ -97,7 +100,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authed = token && isApi ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
   return next(authed).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (isApi && token && (err.status === 401 || err.status === 403) && !req.url.includes('/public/')) {
+      if (isApi && token && err.status === 401 && !req.url.includes('/public/')) {
         auth.clear();
         toasts.error(i18n.t('sessionExpired'));
         router.navigateByUrl('/login');
