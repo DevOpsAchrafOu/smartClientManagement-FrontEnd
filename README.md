@@ -4,6 +4,13 @@
 This is the master branch of SmartClientManagement frontEnd.
 This document decribes the steps to follow to build the project in a Debian/Ubuntu architecture or github page.
 
+> 📘 **Documentation (French, with diagrams)**
+>
+> | Document | Contents |
+> |---|---|
+> | [**Architecture et workflow de bout en bout**](documentation/ARCHITECTURE.md) | Hosting (GitHub Pages, Render, Neon), the path of a request from the browser to the database, layers, data model, from code to production, versions |
+> | [**Le workflow métier du CRM**](documentation/WORKFLOW-CRM.md) | From prospect to loyal customer: the 7 steps, the pipeline stages, who does what, the dashboard figures, and an explanation in Arabic with an example |
+
 ## For login
 Url: https://devopsachrafou.github.io/smartClientManagement-FrontEnd/
  
