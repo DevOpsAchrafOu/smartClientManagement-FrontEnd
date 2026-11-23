@@ -5,6 +5,7 @@ import { errorMessage } from '../../core/api';
 import { Crm, CrmRights, Opportunity, OpportunityStage, PipelineSummary, STAGE_COLOR, STAGES, formatMad } from '../../core/crm';
 import { I18n, I18nKey } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
+import { ExportButton } from '../../ui/csv-ui';
 import { Icon } from '../../ui/icon';
 import { OpportunityCard, OpportunityForm, stageKey } from '../../ui/pipeline-ui';
 import { ListState, PageHeader } from '../../ui/states';
@@ -12,13 +13,16 @@ import { ListState, PageHeader } from '../../ui/states';
 /** The sales pipeline: one column per stage; cards move by drag and drop or with their stage menu. */
 @Component({
   selector: 'app-crm-pipeline',
-  imports: [Icon, ListState, PageHeader, OpportunityCard, OpportunityForm],
+  imports: [Icon, ListState, PageHeader, OpportunityCard, OpportunityForm, ExportButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-header [title]="i18n.t('pipeline')" [subtitle]="i18n.t('pipelineSubtitle')">
-      @if (rights.canEdit()) {
-        <button type="button" class="btn btn-primary" (click)="create('NEW')"><app-icon name="plus" />{{ i18n.t('newOpportunity') }}</button>
-      }
+      <div class="flex flex-wrap gap-2">
+        <app-export-button [kinds]="['opportunities']" />
+        @if (rights.canEdit()) {
+          <button type="button" class="btn btn-primary" (click)="create('NEW')"><app-icon name="plus" />{{ i18n.t('newOpportunity') }}</button>
+        }
+      </div>
     </app-page-header>
     @if (rights.ownOnly() || rights.readOnly()) {
       <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">

@@ -6,6 +6,7 @@ import { Activity, ACTIVITY_TYPES, ActivityType, ActivityView, Crm, CrmRights } 
 import { I18n, I18nKey } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem } from '../../ui/crm-ui';
+import { ExportButton } from '../../ui/csv-ui';
 import { Icon } from '../../ui/icon';
 import { ListState, PageHeader } from '../../ui/states';
 
@@ -14,13 +15,16 @@ const VIEWS: ActivityView[] = ['OPEN', 'TODAY', 'LATE', 'DONE', 'ALL'];
 
 @Component({
   selector: 'app-crm-activities',
-  imports: [Icon, ActivityItem, ActivityForm, ListState, PageHeader],
+  imports: [Icon, ActivityItem, ActivityForm, ListState, PageHeader, ExportButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-header [title]="i18n.t('activities')" [subtitle]="i18n.t('activitiesSubtitle')">
-      @if (rights.canEdit()) {
-        <button type="button" class="btn btn-primary" (click)="editing.set(null)"><app-icon name="plus" />{{ i18n.t('newActivity') }}</button>
-      }
+      <div class="flex flex-wrap gap-2">
+        <app-export-button [kinds]="['activities']" />
+        @if (rights.canEdit()) {
+          <button type="button" class="btn btn-primary" (click)="editing.set(null)"><app-icon name="plus" />{{ i18n.t('newActivity') }}</button>
+        }
+      </div>
     </app-page-header>
     @if (rights.ownOnly() || rights.readOnly()) {
       <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">

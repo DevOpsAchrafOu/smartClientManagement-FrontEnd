@@ -157,6 +157,7 @@ Endpoints (same in v1 and v2), under `/api/mng/v1`:
 | **CRM** · contacts | `GET/POST /crm/clients/{id}/contacts` · `PUT/DELETE /crm/contacts/{id}` (one primary contact per client) |
 | **CRM** · activities | `GET /crm/activities?view=OPEN\|TODAY\|LATE\|DONE\|ALL&mine=&clientId=&type=&q=` · `POST` · `PUT /{id}` · `PUT /{id}/done` · `DELETE` |
 | **CRM** · opportunities | `GET /crm/opportunities?clientId=&mine=&stage=&q=` (the board) · `/crm/opportunities/summary` · `POST` · `PUT /{id}` · `PUT /{id}/stage` · `DELETE` |
+| **CRM** · CSV | `GET /crm/export/clients` · `/contacts` · `/activities` · `/opportunities` (Excel-friendly CSV, own records for sales people) · `GET /crm/import/clients/template` · `POST /crm/import/clients?dryRun=` (multipart `file`; check first, then import) |
 | **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner, pipeline figures) |
 | **CRM** · owners | `GET /crm/owners` (active users who can own a client or an activity) |
 

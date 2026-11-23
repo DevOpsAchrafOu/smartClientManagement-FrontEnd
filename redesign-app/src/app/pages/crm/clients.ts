@@ -5,6 +5,7 @@ import { Subject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CLIENT_STATUSES, ClientCounts, ClientDetail, ClientStatus, ClientSummary, Crm, CrmRights } from '../../core/crm';
 import { I18n, I18nKey } from '../../core/i18n';
+import { ExportButton, ImportClientsDialog } from '../../ui/csv-ui';
 import { Icon } from '../../ui/icon';
 import { ClientForm, StatusChip } from '../../ui/crm-ui';
 import { ListState, PageHeader } from '../../ui/states';
@@ -13,14 +14,21 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-crm-clients',
-  imports: [RouterLink, DatePipe, Icon, StatusChip, ClientForm, ListState, PageHeader],
+  imports: [RouterLink, DatePipe, Icon, StatusChip, ClientForm, ListState, PageHeader, ExportButton, ImportClientsDialog],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-header [title]="i18n.t('clients')" [subtitle]="i18n.t('clientsSubtitle')">
-      @if (rights.canEdit()) {
-        <button type="button" class="btn btn-primary" (click)="creating.set(true)"><app-icon name="plus" />{{ i18n.t('newClient') }}</button>
-      }
+      <div class="flex flex-wrap gap-2">
+        <app-export-button [kinds]="['clients', 'contacts']" />
+        @if (rights.canEdit()) {
+          <button type="button" class="btn btn-ghost" (click)="importing.set(true)"><app-icon name="upload" />{{ i18n.t('importCsv') }}</button>
+          <button type="button" class="btn btn-primary" (click)="creating.set(true)"><app-icon name="plus" />{{ i18n.t('newClient') }}</button>
+        }
+      </div>
     </app-page-header>
+    @if (importing()) {
+      <app-import-clients (closed)="importing.set(false)" (imported)="load(); loadCounts()" />
+    }
     @if (rights.ownOnly() || rights.readOnly()) {
       <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">
         <app-icon [name]="rights.ownOnly() ? 'user' : 'eye'" [size]="16" class="shrink-0 text-muted" />{{ i18n.t(rights.ownOnly() ? 'scopeOwn' : 'scopeReadOnly') }}
@@ -124,6 +132,7 @@ export class CrmClientsPage {
   protected sort = signal('-createdAt');
   protected page = signal(0);
   protected creating = signal(false);
+  protected importing = signal(false);
   protected pages = computed(() => Math.max(1, Math.ceil(this.total() / PAGE_SIZE)));
 
   protected tabs = computed(() => {
@@ -162,7 +171,7 @@ export class CrmClientsPage {
     });
   }
 
-  private loadCounts(): void {
+  protected loadCounts(): void {
     this.crm.clientCounts().subscribe({ next: (c) => this.counts.set(c), error: () => {} });
   }
 
