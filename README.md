@@ -34,6 +34,10 @@ $ npx ng build      # writes ../docs/redesign
 
 ## Architecture
 
+> **Detailed documents (French, with diagrams):**
+> - [Architecture et workflow de bout en bout](documentation/ARCHITECTURE.md): hosting, the path of a request from the browser to the database, layers, data model, from code to production, versions.
+> - [Le workflow métier du CRM](documentation/WORKFLOW-CRM.md): from prospect to loyal customer, the pipeline stages, who does what, a typical day, the dashboard figures, and an explanation in Arabic with an example.
+
 SmartClientManagement exists in two versions, old and new, on both sides. Each frontend calls its own API; both APIs share the same database.
 
 ```mermaid
