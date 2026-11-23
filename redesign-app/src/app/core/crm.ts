@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Auth } from './auth';
 import { API, SUPER_ADMIN } from './config';
 
@@ -148,6 +148,37 @@ export interface PipelineSummary {
   stages: { stage: OpportunityStage; count: number; amount: number; weighted: number }[];
 }
 
+/** What can be downloaded as CSV. */
+export type CrmExport = 'clients' | 'contacts' | 'activities' | 'opportunities';
+
+/** Result of a client import; with dryRun nothing was saved. Line 1 of the file is the header. */
+export interface ImportReport {
+  dryRun: boolean;
+  rows: number;
+  created: number;
+  skipped: number;
+  errors: { line: number; message: string }[];
+}
+
+const EXPORT_FILE: Record<CrmExport, string> = {
+  clients: 'clients',
+  contacts: 'contacts',
+  activities: 'activites',
+  opportunities: 'opportunites',
+};
+
+/** Hands a downloaded file to the browser. */
+function saveFile(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export interface ClientCounts {
   total: number;
   prospects: number;
@@ -252,6 +283,24 @@ export class Crm {
   }
   deleteOpportunity(id: number): Observable<unknown> {
     return this.http.delete(`${CRM}/opportunities/${id}`);
+  }
+
+  /** Downloads a CSV export (the API sends only what this user may see). */
+  exportCsv(kind: CrmExport): Observable<void> {
+    const day = new Date().toISOString().slice(0, 10);
+    return this.http
+      .get(`${CRM}/export/${kind}`, { responseType: 'blob' })
+      .pipe(map((blob) => saveFile(blob, `smartclient-${EXPORT_FILE[kind]}-${day}.csv`)));
+  }
+  importTemplate(): Observable<void> {
+    return this.http
+      .get(`${CRM}/import/clients/template`, { responseType: 'blob' })
+      .pipe(map((blob) => saveFile(blob, 'modele-import-clients.csv')));
+  }
+  importClients(file: File, dryRun: boolean): Observable<ImportReport> {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http.post<ImportReport>(`${CRM}/import/clients`, form, { params: { dryRun } });
   }
 
   /** Active users who can own a client or an activity. */
