@@ -1,0 +1,29 @@
+# Keeps API version 2 (used by the redesign) awake during working hours, so visitors don't wait
+# about a minute for the free Render service to start.
+#
+# Only on weekdays, 08:00–19:00 Morocco time (07:00–18:59 UTC): about 240 hours a month, well under
+# the 750 free hours Render gives the whole workspace. Keeping it awake 24/7 would use almost all of them.
+# GitHub may start scheduled runs a few minutes late; that is fine here.
+name: Keep API v2 awake
+
+on:
+  schedule:
+    - cron: "*/10 7-18 * * 1-5"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping the health check
+        run: |
+          for attempt in 1 2 3; do
+            if curl -fsS --max-time 90 https://smartclientmanagement-api-v2.onrender.com/actuator/health; then
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::warning::API v2 did not answer"
