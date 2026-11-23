@@ -1,6 +1,8 @@
 # SmartClientManagement-FrontEnd
 ### _v.0.1_
 
+[![CI](https://github.com/DevOpsAchrafOu/smartClientManagement-FrontEnd/actions/workflows/ci.yml/badge.svg)](https://github.com/DevOpsAchrafOu/smartClientManagement-FrontEnd/actions/workflows/ci.yml)
+
 This is the master branch of SmartClientManagement frontEnd.
 This document decribes the steps to follow to build the project in a Debian/Ubuntu architecture or github page.
 
