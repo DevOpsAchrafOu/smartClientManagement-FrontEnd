@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'crm/clients/:id', loadComponent: () => import('./pages/crm/client-detail').then((m) => m.CrmClientDetailPage) },
       { path: 'crm/activities', loadComponent: () => import('./pages/crm/activities').then((m) => m.CrmActivitiesPage) },
       { path: 'crm/pipeline', loadComponent: () => import('./pages/crm/pipeline').then((m) => m.CrmPipelinePage) },
+      { path: 'crm/history', loadComponent: () => import('./pages/crm/history').then((m) => m.CrmHistoryPage) },
     ],
   },
   { path: '**', redirectTo: '' },

@@ -3,18 +3,19 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { errorMessage } from '../../core/api';
-import { Activity, ClientDetail, Contact, Crm, CrmRights, Opportunity, STAGE_TONE, formatMad } from '../../core/crm';
+import { Activity, ClientDetail, Contact, Crm, CrmRights, HistoryEntry, Opportunity, STAGE_TONE, formatMad } from '../../core/crm';
 import { I18n } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem, ClientForm, StatusChip } from '../../ui/crm-ui';
 import { Icon } from '../../ui/icon';
 import { Modal } from '../../ui/modal';
+import { HistoryList } from '../../ui/history-ui';
 import { OpportunityForm, stageKey } from '../../ui/pipeline-ui';
 import { ListState } from '../../ui/states';
 
 @Component({
   selector: 'app-crm-client-detail',
-  imports: [RouterLink, DatePipe, ReactiveFormsModule, Icon, Modal, StatusChip, ClientForm, ActivityForm, ActivityItem, ListState, OpportunityForm],
+  imports: [RouterLink, DatePipe, ReactiveFormsModule, Icon, Modal, StatusChip, ClientForm, ActivityForm, ActivityItem, ListState, OpportunityForm, HistoryList],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a routerLink="/crm/clients" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-strong">
@@ -138,13 +139,29 @@ import { ListState } from '../../ui/states';
           }
         </ul>
       </section>
+      <!-- History -->
+      <section class="card mt-6 p-5 sm:p-6">
+        <div class="mb-5 flex items-center justify-between gap-2">
+          <h2 class="font-semibold text-strong">{{ i18n.t('history') }} <span class="font-normal text-muted">({{ historyTotal() }})</span></h2>
+          <button type="button" class="icon-btn size-9" (click)="loadHistory(true)" [attr.aria-label]="i18n.t('refresh')"><app-icon name="clock" [size]="16" /></button>
+        </div>
+        @if (historyItems().length) {
+          <app-history-list [items]="historyItems()" [showClient]="false" />
+          @if (historyItems().length < historyTotal()) {
+            <div class="mt-5 text-center"><button type="button" class="btn btn-ghost min-h-9 px-3" (click)="loadHistory(false)">{{ i18n.t('showMore') }}</button></div>
+          }
+        } @else {
+          <p class="py-4 text-center text-muted">{{ i18n.t('noHistory') }}</p>
+        }
+      </section>
+
       @if (opportunityEditing() !== undefined) {
         <app-opportunity-form [opportunity]="opportunityEditing()!" [fixedClient]="c.id" [contacts]="c.contacts"
           (closed)="opportunityEditing.set(undefined)" (saved)="opportunitySaved()" />
       }
 
       @if (editing()) {
-        <app-client-form [client]="c" (closed)="editing.set(false)" (saved)="client.set($event); editing.set(false)" />
+        <app-client-form [client]="c" (closed)="editing.set(false)" (saved)="client.set($event); editing.set(false); loadHistory(true)" />
       }
       @if (activityEditing() !== undefined) {
         <app-activity-form [activity]="activityEditing()!" [fixedClient]="c.id" [contacts]="c.contacts" (closed)="activityEditing.set(undefined)" (saved)="activitySaved()" />
@@ -203,6 +220,9 @@ export class CrmClientDetailPage {
   protected client = signal<ClientDetail | null>(null);
   protected activities = signal<Activity[]>([]);
   protected opportunities = signal<Opportunity[]>([]);
+  protected historyItems = signal<HistoryEntry[]>([]);
+  protected historyTotal = signal(0);
+  private historyPage = 0;
   /** undefined = closed, null = new opportunity. */
   protected opportunityEditing = signal<Opportunity | null | undefined>(undefined);
   protected openAmount = computed(() =>
@@ -244,8 +264,22 @@ export class CrmClientDetailPage {
     });
   }
 
+  /** Activities, and the history that goes with them. */
   private loadActivities(): void {
     this.crm.activities({ clientId: Number(this.id()), size: 100 }).subscribe({ next: (p) => this.activities.set(p.items), error: () => {} });
+    this.loadHistory(true);
+  }
+
+  /** First page (reset) or the next one. */
+  protected loadHistory(reset: boolean): void {
+    this.historyPage = reset ? 0 : this.historyPage + 1;
+    this.crm.clientHistory(Number(this.id()), this.historyPage, 10).subscribe({
+      next: (p) => {
+        this.historyItems.update((list) => (reset ? p.items : [...list, ...p.items]));
+        this.historyTotal.set(p.total);
+      },
+      error: () => {},
+    });
   }
 
   private loadOpportunities(): void {
@@ -261,6 +295,7 @@ export class CrmClientDetailPage {
 
   private reloadClient(): void {
     this.crm.client(Number(this.id())).subscribe({ next: (c) => this.client.set(c), error: () => {} });
+    this.loadHistory(true);
   }
 
   protected initials(name: string): string {
@@ -341,7 +376,10 @@ export class CrmClientDetailPage {
 
   protected toggle(a: Activity): void {
     this.crm.setDone(a.id, !a.done).subscribe({
-      next: (updated) => this.activities.update((list) => list.map((x) => (x.id === updated.id ? updated : x))),
+      next: (updated) => {
+        this.activities.update((list) => list.map((x) => (x.id === updated.id ? updated : x)));
+        this.loadHistory(true);
+      },
       error: (err) => this.toasts.error(errorMessage(err) ?? this.i18n.t('saveError')),
     });
   }
@@ -352,6 +390,7 @@ export class CrmClientDetailPage {
       next: () => {
         this.toasts.success(this.i18n.t('deleted'));
         this.activities.update((list) => list.filter((x) => x.id !== a.id));
+        this.loadHistory(true);
       },
       error: (err) => this.toasts.error(errorMessage(err) ?? this.i18n.t('deleteError')),
     });

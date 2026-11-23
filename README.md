@@ -158,6 +158,7 @@ Endpoints (same in v1 and v2), under `/api/mng/v1`:
 | **CRM** · activities | `GET /crm/activities?view=OPEN\|TODAY\|LATE\|DONE\|ALL&mine=&clientId=&type=&q=` · `POST` · `PUT /{id}` · `PUT /{id}/done` · `DELETE` |
 | **CRM** · opportunities | `GET /crm/opportunities?clientId=&mine=&stage=&q=` (the board) · `/crm/opportunities/summary` · `POST` · `PUT /{id}` · `PUT /{id}/stage` · `DELETE` |
 | **CRM** · CSV | `GET /crm/export/clients` · `/contacts` · `/activities` · `/opportunities` (Excel-friendly CSV, own records for sales people) · `GET /crm/import/clients/template` · `POST /crm/import/clients?dryRun=` (multipart `file`; check first, then import) |
+| **CRM** · history | `GET /crm/history?type=&page=&size=` (journal of changes, own clients for sales people) · `GET /crm/clients/{id}/history` (who changed what on a client, its contacts, activities and opportunities) |
 | **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner, pipeline figures) |
 | **CRM** · owners | `GET /crm/owners` (active users who can own a client or an activity) |
 
@@ -182,6 +183,8 @@ erDiagram
     crm_client ||--o{ crm_contact : "client_id"
     crm_client ||--o{ crm_activity : "client_id"
     crm_client ||--o{ crm_opportunity : "client_id"
+    crm_client ||--o{ crm_history : "client_id"
+    crm_history ||--o{ crm_history_change : "history_id"
     par_ville |o--o{ crm_client : "city_id"
     utilisateur |o--o{ crm_client : "owner_id"
 
@@ -198,7 +201,7 @@ erDiagram
 
 - Passwords are stored as BCrypt hashes. The `token` column of `utilisateur` is used by API v1 only.
 - API v2 manages the schema with Flyway (`backend-v2/src/main/resources/db/migration`): `V1` is the schema API v1 created, recorded as the baseline on Neon; the only table it added is `flyway_schema_history`.
-- CRM tables (`crm_client`, `crm_contact`, `crm_activity`, `crm_opportunity`) come from Flyway `V2`, `V3` and `V4` and are used by API v2 only. Links to cities and users are cleared (not blocked) if API v1 deletes them.
+- CRM tables (`crm_client`, `crm_contact`, `crm_activity`, `crm_opportunity`) and the history (`crm_history`, `crm_history_change`) come from Flyway `V2` to `V5` and are used by API v2 only. Links to cities and users are cleared (not blocked) if API v1 deletes them.
 - Demo data: 3 users, 4 roles, 8 menus, 5 countries, 23 cities; CRM: 8 fictional companies, their contacts, 15 activities and 15 opportunities (in MAD); a fictional sales team of 6 (1 sales manager `y.benali`, 4 sales people such as `s.mansouri`, 1 read-only `l.bouzid`), added once to an existing database too, with the demo password. Demo account: `a.admin` / `123456789`.
 
 ### Security
