@@ -201,6 +201,26 @@ export interface HistoryEntry {
   changes: HistoryChange[];
 }
 
+/** The CRM assistant (Google Gemini). canAct: the user may receive action proposals (not read-only). */
+export interface AssistantStatus {
+  enabled: boolean;
+  model: string;
+  canAct: boolean;
+}
+
+/** An action the assistant suggests; nothing is saved until the user confirms it. */
+export interface AssistantProposal {
+  type: 'CREATE_ACTIVITY' | 'MOVE_OPPORTUNITY';
+  summary: string;
+  payload: Record<string, unknown>;
+}
+
+export interface AssistantReply {
+  reply: string;
+  proposals: AssistantProposal[];
+  toolCalls: number;
+}
+
 export interface ClientCounts {
   total: number;
   prospects: number;
@@ -312,6 +332,13 @@ export class Crm {
   }
   history(filter: { type?: HistoryEntityType | ''; page?: number; size?: number }): Observable<Page<HistoryEntry>> {
     return this.http.get<Page<HistoryEntry>>(`${CRM}/history`, { params: params(filter) });
+  }
+
+  assistantStatus(): Observable<AssistantStatus> {
+    return this.http.get<AssistantStatus>(`${CRM}/assistant/status`);
+  }
+  assistantChat(messages: { role: 'user' | 'assistant'; text: string }[], lang: string): Observable<AssistantReply> {
+    return this.http.post<AssistantReply>(`${CRM}/assistant/chat`, { messages, lang });
   }
 
   /** Downloads a CSV export (the API sends only what this user may see). */
