@@ -8,6 +8,7 @@ import { Auth } from '../core/auth';
 import { I18n, I18nKey } from '../core/i18n';
 import { Menu } from '../core/models';
 import { Theme } from '../core/theme';
+import { AssistantPanel } from '../ui/assistant';
 import { Icon, iconFor } from '../ui/icon';
 
 interface NavItem {
@@ -55,7 +56,7 @@ const ROLE_KEYS: Record<string, I18nKey> = {
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgTemplateOutlet, Icon],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgTemplateOutlet, Icon, AssistantPanel],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '(document:keydown.escape)': 'drawer.set(false); userMenu.set(false)' },
   template: `
@@ -132,7 +133,8 @@ const ROLE_KEYS: Record<string, I18nKey> = {
         </div>
       </header>
 
-      <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-8 sm:py-8"><router-outlet /></main>
+      <main class="mx-auto w-full max-w-7xl px-4 py-6 pb-24 sm:px-8 sm:py-8 sm:pb-24"><router-outlet /></main>
+      <app-assistant />
     </div>
   `,
 })

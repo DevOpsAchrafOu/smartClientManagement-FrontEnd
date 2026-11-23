@@ -159,6 +159,7 @@ Endpoints (same in v1 and v2), under `/api/mng/v1`:
 | **CRM** · opportunities | `GET /crm/opportunities?clientId=&mine=&stage=&q=` (the board) · `/crm/opportunities/summary` · `POST` · `PUT /{id}` · `PUT /{id}/stage` · `DELETE` |
 | **CRM** · CSV | `GET /crm/export/clients` · `/contacts` · `/activities` · `/opportunities` (Excel-friendly CSV, own records for sales people) · `GET /crm/import/clients/template` · `POST /crm/import/clients?dryRun=` (multipart `file`; check first, then import) |
 | **CRM** · history | `GET /crm/history?type=&page=&size=` (journal of changes, own clients for sales people) · `GET /crm/clients/{id}/history` (who changed what on a client, its contacts, activities and opportunities) |
+| **CRM** · AI assistant | `GET /crm/assistant/status` · `POST /crm/assistant/chat` (Google Gemini free tier, `GEMINI_API_KEY`; reads the CRM with the user's rights through tools, drafts texts, proposes actions that the user confirms) |
 | **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner, pipeline figures) |
 | **CRM** · owners | `GET /crm/owners` (active users who can own a client or an activity) |
 
