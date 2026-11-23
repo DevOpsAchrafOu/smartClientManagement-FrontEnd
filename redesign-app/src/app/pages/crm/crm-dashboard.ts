@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { errorMessage } from '../../core/api';
-import { Activity, Crm, CrmDashboard } from '../../core/crm';
+import { Activity, Crm, CrmDashboard, CrmRights } from '../../core/crm';
 import { I18n, I18nKey } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem } from '../../ui/crm-ui';
@@ -16,9 +16,16 @@ import { ListState, PageHeader } from '../../ui/states';
     <app-page-header [title]="i18n.t('crmDashboard')" [subtitle]="i18n.t('crmIntro')">
       <div class="flex gap-2">
         <a routerLink="/crm/clients" class="btn btn-ghost"><app-icon name="building" [size]="16" />{{ i18n.t('clients') }}</a>
+        @if (rights.canEdit()) {
         <button type="button" class="btn btn-primary" (click)="editing.set(null)"><app-icon name="plus" />{{ i18n.t('newActivity') }}</button>
+      }
       </div>
     </app-page-header>
+    @if (rights.ownOnly() || rights.readOnly()) {
+      <p class="mb-4 flex items-center gap-2 rounded-xl border border-line bg-soft/60 px-3.5 py-2.5 text-sm text-body">
+        <app-icon [name]="rights.ownOnly() ? 'user' : 'eye'" [size]="16" class="shrink-0 text-muted" />{{ i18n.t(rights.ownOnly() ? 'scopeOwn' : 'scopeReadOnly') }}
+      </p>
+    }
 
     @if (state() !== 'ready') {
       <div class="card"><app-list-state [state]="state()" (retry)="load()" /></div>
@@ -129,6 +136,7 @@ import { ListState, PageHeader } from '../../ui/states';
 })
 export class CrmDashboardPage {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
   private toasts = inject(Toasts);
   private confirm = inject(Confirm);

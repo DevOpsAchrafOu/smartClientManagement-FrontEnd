@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Api, errorMessage } from '../core/api';
 import {
   ACTIVITY_ICON, ACTIVITY_TONE, ACTIVITY_TYPES, Activity, ActivityType, CLIENT_STATUSES, ClientDetail, ClientStatus, Contact,
-  Crm, Ref, STATUS_TONE, fromLocalInput, toLocalInput,
+  Crm, CrmRights, Ref, STATUS_TONE, fromLocalInput, toLocalInput,
 } from '../core/crm';
 import { I18n, I18nKey } from '../core/i18n';
 import { City } from '../core/models';
@@ -37,6 +37,7 @@ export class StatusChip {
     <div class="group flex items-start gap-3 px-4 py-3 transition hover:bg-soft/60" [class.opacity-60]="a.done">
       <button type="button" class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-lg border-2 transition"
         [class]="a.done ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-line hover:border-emerald-500'"
+        [class.pointer-events-none]="!rights.canEdit()" [disabled]="!rights.canEdit()"
         (click)="toggle.emit(a)" [attr.aria-label]="a.done ? i18n.t('markOpen') : i18n.t('markDone')" [attr.aria-pressed]="a.done">
         @if (a.done) { <app-icon name="check" [size]="14" /> }
       </button>
@@ -57,15 +58,18 @@ export class StatusChip {
         </p>
         @if (a.details) { <p class="mt-1 line-clamp-2 text-sm text-body">{{ a.details }}</p> }
       </div>
-      <div class="flex shrink-0 gap-1 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
-        <button type="button" class="icon-btn size-9" (click)="edit.emit(a)" [attr.aria-label]="i18n.t('edit') + ' ' + a.subject"><app-icon name="edit" [size]="16" /></button>
-        <button type="button" class="icon-btn size-9 hover:!bg-rose-50 hover:!text-rose-600 dark:hover:!bg-rose-500/10" (click)="remove.emit(a)" [attr.aria-label]="i18n.t('delete') + ' ' + a.subject"><app-icon name="trash" [size]="16" /></button>
-      </div>
+      @if (rights.canEdit()) {
+        <div class="flex shrink-0 gap-1 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+          <button type="button" class="icon-btn size-9" (click)="edit.emit(a)" [attr.aria-label]="i18n.t('edit') + ' ' + a.subject"><app-icon name="edit" [size]="16" /></button>
+          <button type="button" class="icon-btn size-9 hover:!bg-rose-50 hover:!text-rose-600 dark:hover:!bg-rose-500/10" (click)="remove.emit(a)" [attr.aria-label]="i18n.t('delete') + ' ' + a.subject"><app-icon name="trash" [size]="16" /></button>
+        </div>
+      }
     </div>
   `,
 })
 export class ActivityItem {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   readonly activity = input.required<Activity>();
   readonly showClient = input(true);
   readonly toggle = output<Activity>();
@@ -123,6 +127,15 @@ export class ActivityItem {
             <label class="label" for="a-due">{{ i18n.t('dueAt') }}</label>
             <input id="a-due" class="input" type="datetime-local" formControlName="dueAt" />
           </div>
+          @if (rights.canAssign()) {
+            <div>
+              <label class="label" for="a-owner">{{ i18n.t('owner') }}</label>
+              <select id="a-owner" class="input" formControlName="ownerId">
+                <option [ngValue]="null">{{ i18n.t('ownerMe') }}</option>
+                @for (o of owners(); track o.id) { <option [ngValue]="o.id">{{ o.label }}</option> }
+              </select>
+            </div>
+          }
         </div>
         <div>
           <label class="label" for="a-details">{{ i18n.t('details') }}</label>
@@ -143,6 +156,7 @@ export class ActivityItem {
 })
 export class ActivityForm {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
   private toasts = inject(Toasts);
 
@@ -159,6 +173,7 @@ export class ActivityForm {
   protected typeKey = (t: ActivityType) => ('type' + t) as I18nKey;
   protected saving = signal(false);
   protected clientOptions = signal<Ref[]>([]);
+  protected owners = signal<Ref[]>([]);
 
   protected form = inject(FormBuilder).group({
     type: ['TASK' as ActivityType, Validators.required],
@@ -168,6 +183,7 @@ export class ActivityForm {
     contactId: [null as number | null],
     dueAt: [''],
     done: [false],
+    ownerId: [null as number | null],
   });
 
   ngOnInit(): void {
@@ -180,7 +196,11 @@ export class ActivityForm {
       contactId: a?.contact?.id ?? null,
       dueAt: toLocalInput(a?.dueAt),
       done: a?.done ?? false,
+      ownerId: a?.owner?.id ?? null,
     });
+    if (this.rights.canAssign()) {
+      this.crm.owners().subscribe({ next: (list) => this.owners.set(list), error: () => {} });
+    }
     if (!this.fixedClient()) {
       this.crm.clients({ size: 100, sort: 'name' }).subscribe({
         next: (p) => this.clientOptions.set(p.items.map((c) => ({ id: c.id, label: c.name }))),
@@ -201,6 +221,7 @@ export class ActivityForm {
       contactId: this.fixedClient() ? v.contactId : null,
       dueAt: fromLocalInput(v.dueAt ?? ''),
       done: !!v.done,
+      ownerId: this.rights.canAssign() ? v.ownerId : null,
     };
     const current = this.activity();
     this.saving.set(true);
@@ -265,6 +286,15 @@ export class ActivityForm {
           <label class="label" for="c-web">{{ i18n.t('website') }}</label>
           <input id="c-web" class="input" formControlName="website" dir="ltr" placeholder="https://" />
         </div>
+        @if (rights.canAssign()) {
+          <div>
+            <label class="label" for="c-owner">{{ i18n.t('owner') }}</label>
+            <select id="c-owner" class="input" formControlName="ownerId">
+              <option [ngValue]="null">{{ i18n.t('ownerMe') }}</option>
+              @for (o of owners(); track o.id) { <option [ngValue]="o.id">{{ o.label }}</option> }
+            </select>
+          </div>
+        }
         <div class="sm:col-span-2">
           <label class="label" for="c-address">{{ i18n.t('address') }}</label>
           <input id="c-address" class="input" formControlName="address" />
@@ -285,6 +315,7 @@ export class ActivityForm {
 })
 export class ClientForm {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
   private api = inject(Api);
   private toasts = inject(Toasts);
@@ -296,6 +327,7 @@ export class ClientForm {
   protected statuses = CLIENT_STATUSES;
   protected statusKey = (s: ClientStatus) => ('status' + s) as I18nKey;
   protected cities = signal<City[]>([]);
+  protected owners = signal<Ref[]>([]);
   protected saving = signal(false);
 
   protected form = inject(FormBuilder).group({
@@ -308,6 +340,7 @@ export class ClientForm {
     address: [''],
     cityId: [null as number | null],
     notes: [''],
+    ownerId: [null as number | null],
   });
 
   ngOnInit(): void {
@@ -322,7 +355,11 @@ export class ClientForm {
       address: c?.address ?? '',
       cityId: c?.city?.id ?? null,
       notes: c?.notes ?? '',
+      ownerId: c?.owner?.id ?? null,
     });
+    if (this.rights.canAssign()) {
+      this.crm.owners().subscribe({ next: (list) => this.owners.set(list), error: () => {} });
+    }
     this.api.cities.list().subscribe({
       next: (list) => this.cities.set([...list].sort((a, b) => this.i18n.label(a).localeCompare(this.i18n.label(b)))),
       error: () => {},
@@ -343,6 +380,7 @@ export class ClientForm {
       address: v.address?.trim() || null,
       cityId: v.cityId,
       notes: v.notes?.trim() || null,
+      ownerId: this.rights.canAssign() ? v.ownerId : null,
     };
     const current = this.client();
     this.saving.set(true);

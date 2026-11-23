@@ -140,10 +140,21 @@ Endpoints (same in v1 and v2), under `/api/mng/v1`:
 | Roles | `GET /roles` · `/roles/{id}` · `/roles/utilisateur/count/{id}` · `POST /roles` · `PUT /roles/{id}` · `DELETE /roles/{id}` |
 | Menus | `GET /menus` · `/menus/role` · `/menus/parent` · `/menus/userConnected` · `/menus/{id}` · `POST` · `PUT` · `DELETE` |
 | Countries / cities | `/pays` · `/pays/{id}` · `/villes` · `/villes/{id}` · `/villes/pays/{id}` (full CRUD) |
-| **CRM (v2 only)** · clients | `GET /crm/clients?q=&status=&sort=&page=&size=` · `/crm/clients/counts` · `/crm/clients/{id}` · `POST` · `PUT` · `DELETE` (admins) |
+| **CRM (v2 only)** · clients | `GET /crm/clients?q=&status=&sort=&page=&size=` · `/crm/clients/counts` · `/crm/clients/{id}` · `POST` · `PUT` · `DELETE` (admins and sales managers) |
 | **CRM** · contacts | `GET/POST /crm/clients/{id}/contacts` · `PUT/DELETE /crm/contacts/{id}` (one primary contact per client) |
 | **CRM** · activities | `GET /crm/activities?view=OPEN\|TODAY\|LATE\|DONE\|ALL&mine=&clientId=&type=&q=` · `POST` · `PUT /{id}` · `PUT /{id}/done` · `DELETE` |
 | **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner) |
+| **CRM** · owners | `GET /crm/owners` (active users who can own a client or an activity) |
+
+**CRM roles (API v2)**
+
+| Role | Code | In the CRM |
+|---|---|---|
+| Super Admin / Administrateur | `ROLE_SUPER_ADMIN` / `ROLE_ADMIN` | Everything, chooses owners, deletes clients |
+| Manager commercial | `ROLE_MANAGER` | The whole CRM, chooses owners, deletes clients |
+| Commercial | `ROLE_SALES` | Only their own clients, contacts and activities; owner of what they create |
+| Lecture seule | `ROLE_VIEWER` | Reads the whole CRM, changes nothing |
+| Utilisateur | `ROLE_USER` | The whole CRM, cannot delete clients |
 
 ### Database
 
@@ -171,7 +182,7 @@ erDiagram
 - Passwords are stored as BCrypt hashes. The `token` column of `utilisateur` is used by API v1 only.
 - API v2 manages the schema with Flyway (`backend-v2/src/main/resources/db/migration`): `V1` is the schema API v1 created, recorded as the baseline on Neon; the only table it added is `flyway_schema_history`.
 - CRM tables (`crm_client`, `crm_contact`, `crm_activity`) come from Flyway `V2` and `V3` and are used by API v2 only. Links to cities and users are cleared (not blocked) if API v1 deletes them.
-- Demo data: 3 users, 4 roles, 8 menus, 5 countries, 23 cities; CRM: 8 fictional companies, their contacts and 15 activities. Demo account: `a.admin` / `123456789`.
+- Demo data: 3 users, 4 roles, 8 menus, 5 countries, 23 cities; CRM: 8 fictional companies, their contacts and 15 activities; a fictional sales team of 6 (1 sales manager `y.benali`, 4 sales people such as `s.mansouri`, 1 read-only `l.bouzid`), added once to an existing database too, with the demo password. Demo account: `a.admin` / `123456789`.
 
 ### Security
 

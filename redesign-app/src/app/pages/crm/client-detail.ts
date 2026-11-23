@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { errorMessage } from '../../core/api';
-import { Auth } from '../../core/auth';
-import { Activity, ClientDetail, Contact, Crm } from '../../core/crm';
+import { Activity, ClientDetail, Contact, Crm, CrmRights } from '../../core/crm';
 import { I18n } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem, ClientForm, StatusChip } from '../../ui/crm-ui';
@@ -41,8 +40,10 @@ import { ListState } from '../../ui/states';
             </div>
           </div>
           <div class="flex gap-2">
-            <button type="button" class="btn btn-primary" (click)="editing.set(true)"><app-icon name="edit" [size]="16" />{{ i18n.t('edit') }}</button>
-            @if (isAdmin()) {
+            @if (rights.canEdit()) {
+              <button type="button" class="btn btn-primary" (click)="editing.set(true)"><app-icon name="edit" [size]="16" />{{ i18n.t('edit') }}</button>
+            }
+            @if (rights.canDeleteClient()) {
               <button type="button" class="icon-btn border border-line hover:!bg-rose-50 hover:!text-rose-600 dark:hover:!bg-rose-500/10" (click)="remove(c)" [attr.aria-label]="i18n.t('delete') + ' ' + c.name"><app-icon name="trash" /></button>
             }
           </div>
@@ -62,7 +63,9 @@ import { ListState } from '../../ui/states';
         <section class="card self-start">
           <div class="flex items-center justify-between px-5 pt-5 pb-3">
             <h2 class="font-semibold text-strong">{{ i18n.t('contacts') }} <span class="font-normal text-muted">({{ c.contacts.length }})</span></h2>
-            <button type="button" class="btn btn-ghost min-h-9 px-3" (click)="openContact(null)"><app-icon name="plus" [size]="16" />{{ i18n.t('add') }}</button>
+            @if (rights.canEdit()) {
+        <button type="button" class="btn btn-ghost min-h-9 px-3" (click)="openContact(null)"><app-icon name="plus" [size]="16" />{{ i18n.t('add') }}</button>
+      }
           </div>
           <ul class="px-2 pb-2">
             @for (p of c.contacts; track p.id) {
@@ -79,8 +82,10 @@ import { ListState } from '../../ui/states';
                   </p>
                 </div>
                 <div class="flex shrink-0 gap-1 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+                  @if (rights.canEdit()) {
                   <button type="button" class="icon-btn size-9" (click)="openContact(p)" [attr.aria-label]="i18n.t('edit') + ' ' + p.lastName"><app-icon name="edit" [size]="16" /></button>
                   <button type="button" class="icon-btn size-9 hover:!bg-rose-50 hover:!text-rose-600 dark:hover:!bg-rose-500/10" (click)="removeContact(p)" [attr.aria-label]="i18n.t('delete') + ' ' + p.lastName"><app-icon name="trash" [size]="16" /></button>
+                  }
                 </div>
               </li>
             } @empty {
@@ -93,7 +98,9 @@ import { ListState } from '../../ui/states';
         <section class="card self-start overflow-hidden">
           <div class="flex items-center justify-between px-5 pt-5 pb-3">
             <h2 class="font-semibold text-strong">{{ i18n.t('activities') }} <span class="font-normal text-muted">({{ activities().length }})</span></h2>
-            <button type="button" class="btn btn-primary min-h-9 px-3" (click)="openActivity(null)"><app-icon name="plus" [size]="16" />{{ i18n.t('newActivity') }}</button>
+            @if (rights.canEdit()) {
+        <button type="button" class="btn btn-primary min-h-9 px-3" (click)="openActivity(null)"><app-icon name="plus" [size]="16" />{{ i18n.t('newActivity') }}</button>
+      }
           </div>
           <div class="divide-y divide-line border-t border-line">
             @for (a of activities(); track a.id) {
@@ -153,8 +160,8 @@ import { ListState } from '../../ui/states';
 })
 export class CrmClientDetailPage {
   protected i18n = inject(I18n);
+  protected rights = inject(CrmRights);
   private crm = inject(Crm);
-  private auth = inject(Auth);
   private router = inject(Router);
   private toasts = inject(Toasts);
   private confirm = inject(Confirm);
@@ -169,7 +176,6 @@ export class CrmClientDetailPage {
   protected activityEditing = signal<Activity | null | undefined>(undefined);
   protected contactEditing = signal<Contact | null | undefined>(undefined);
   protected saving = signal(false);
-  protected isAdmin = computed(() => ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'].includes(this.auth.user()?.role ?? ''));
 
   protected contactForm = inject(FormBuilder).nonNullable.group({
     firstName: [''],

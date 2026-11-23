@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from './config';
+import { Auth } from './auth';
+import { API, SUPER_ADMIN } from './config';
 
 /** CRM (API v2 only): types and calls. */
 
@@ -67,6 +68,8 @@ export interface ClientRequest {
   address?: string | null;
   cityId?: number | null;
   notes?: string | null;
+  /** Only admins and sales managers can choose it; otherwise the API keeps the current owner. */
+  ownerId?: number | null;
 }
 
 export type ContactRequest = Omit<Contact, 'id' | 'clientId'>;
@@ -94,6 +97,7 @@ export interface ActivityRequest {
   contactId?: number | null;
   dueAt?: string | null;
   done?: boolean;
+  ownerId?: number | null;
 }
 
 export interface ClientCounts {
@@ -182,6 +186,26 @@ export class Crm {
   dashboard(): Observable<CrmDashboard> {
     return this.http.get<CrmDashboard>(`${CRM}/dashboard`);
   }
+  /** Active users who can own a client or an activity. */
+  owners(): Observable<Ref[]> {
+    return this.http.get<Ref[]>(`${CRM}/owners`);
+  }
+}
+
+/**
+ * What the connected user may do in the CRM (the API checks it again):
+ * sales people (ROLE_SALES) only see their own records, read-only users (ROLE_VIEWER) change nothing,
+ * admins and sales managers (ROLE_MANAGER) choose owners and delete clients.
+ */
+@Injectable({ providedIn: 'root' })
+export class CrmRights {
+  private auth = inject(Auth);
+  private role = computed(() => this.auth.user()?.role ?? '');
+  readonly canEdit = computed(() => this.role() !== 'ROLE_VIEWER');
+  readonly canAssign = computed(() => [SUPER_ADMIN, 'ROLE_ADMIN', 'ROLE_MANAGER'].includes(this.role()));
+  readonly canDeleteClient = this.canAssign;
+  readonly ownOnly = computed(() => this.role() === 'ROLE_SALES');
+  readonly readOnly = computed(() => this.role() === 'ROLE_VIEWER');
 }
 
 /** Icon and colours of each activity type and client status. */
