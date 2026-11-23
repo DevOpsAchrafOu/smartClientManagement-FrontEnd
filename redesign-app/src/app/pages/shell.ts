@@ -37,6 +37,8 @@ const FALLBACK: { key: I18nKey; icon: string; route: string | null; children?: {
   },
 ];
 
+const CRM_TITLES: Record<string, I18nKey> = { '': 'crmDashboard', clients: 'clients', activities: 'activities' };
+
 const TITLES: Record<string, I18nKey> = {
   dashboard: 'dashboard', users: 'users', roles: 'roles', menus: 'menus', countries: 'countries', cities: 'cities',
 };
@@ -71,7 +73,7 @@ const TITLES: Record<string, I18nKey> = {
           }
           <ng-template #link let-item>
             @if (item.route) {
-              <a [routerLink]="item.route" routerLinkActive="!bg-brand/10 !text-brand dark:!bg-brand/20 dark:!text-indigo-300" (click)="drawer.set(false)"
+              <a [routerLink]="item.route" routerLinkActive="!bg-brand/10 !text-brand dark:!bg-brand/20 dark:!text-indigo-300" [routerLinkActiveOptions]="{ exact: item.route === '/crm' }" (click)="drawer.set(false)"
                 class="mb-0.5 flex min-h-11 items-center gap-3 rounded-xl px-3 text-[15px] font-medium text-body transition hover:bg-soft hover:text-strong">
                 <app-icon [name]="item.icon" />{{ item.label }}
               </a>
@@ -140,7 +142,8 @@ export class Shell {
     { initialValue: this.router.url },
   );
   protected title = computed(() => {
-    const key = TITLES[this.url().split(/[/?#]/).filter(Boolean)[0] ?? 'dashboard'];
+    const parts = this.url().split(/[/?#]/).filter(Boolean);
+    const key = parts[0] === 'crm' ? CRM_TITLES[parts[1] ?? ''] : TITLES[parts[0] ?? 'dashboard'];
     return key ? this.i18n.t(key) : '';
   });
   protected fullName = computed(() => {
@@ -149,7 +152,24 @@ export class Shell {
   });
 
   /** Sidebar built from the menus the backend gives to the connected user's role. */
-  protected nav = computed<NavItem[]>(() => {
+  protected nav = computed<NavItem[]>(() => this.withCrm(this.adminNav()));
+
+  /** The CRM group (version 2 only, not stored in the shared menus table), placed after the first entry. */
+  private withCrm(items: NavItem[]): NavItem[] {
+    const crm: NavItem = {
+      label: this.i18n.t("crm"),
+      icon: "briefcase",
+      route: null,
+      children: [
+        { label: this.i18n.t("crmDashboard"), icon: "chart", route: "/crm", children: [] },
+        { label: this.i18n.t("clients"), icon: "building", route: "/crm/clients", children: [] },
+        { label: this.i18n.t("activities"), icon: "calendar", route: "/crm/activities", children: [] },
+      ],
+    };
+    return [...items.slice(0, 1), crm, ...items.slice(1)];
+  }
+
+  private adminNav(): NavItem[] {
     const menus = this.backendMenus();
     if (menus?.length) {
       const items = menuTree(menus).map((m) => ({
@@ -166,7 +186,7 @@ export class Shell {
       route: f.route,
       children: (f.children ?? []).map((c) => ({ label: this.i18n.t(c.key), icon: c.icon, route: c.route, children: [] })),
     }));
-  });
+  }
 
   constructor() {
     this.api.myMenus().subscribe({ next: (m) => this.backendMenus.set(m), error: () => this.backendMenus.set([]) });
