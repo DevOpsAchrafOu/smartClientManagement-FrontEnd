@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { errorMessage } from '../../core/api';
-import { Activity, Crm, CrmDashboard, CrmRights } from '../../core/crm';
+import { Activity, Crm, CrmDashboard, CrmRights, STAGE_COLOR, formatMad } from '../../core/crm';
+import { stageKey } from '../../ui/pipeline-ui';
 import { I18n, I18nKey } from '../../core/i18n';
 import { Confirm, Toasts } from '../../core/toast';
 import { ActivityForm, ActivityItem } from '../../ui/crm-ui';
@@ -117,6 +118,35 @@ import { ListState, PageHeader } from '../../ui/states';
           </ul>
         </section>
 
+        <!-- Sales pipeline -->
+        <section class="card p-6 lg:col-span-3">
+          <div class="mb-5 flex flex-wrap items-center justify-between gap-2">
+            <h2 class="font-semibold text-strong">{{ i18n.t('salesPipeline') }}</h2>
+            <a routerLink="/crm/pipeline" class="text-sm font-medium text-brand hover:underline dark:text-indigo-300">{{ i18n.t('seePipeline') }}</a>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            @for (k of pipelineKpis(); track k.key) {
+              <div class="rounded-2xl bg-soft p-4">
+                <p class="text-sm text-muted">{{ i18n.t(k.key) }}</p>
+                <p class="mt-1 text-xl font-bold text-strong tabular-nums">{{ k.value }}</p>
+                @if (k.hint) { <p class="text-xs text-muted">{{ k.hint }}</p> }
+              </div>
+            }
+          </div>
+          <div class="mt-5 flex h-3 overflow-hidden rounded-full bg-soft" role="img" [attr.aria-label]="i18n.t('salesPipeline')">
+            @for (b of stageBars(); track b.stage) { <div class="h-full transition-[width] duration-700" [style.width.%]="b.pct" [style.background]="b.color"></div> }
+          </div>
+          <ul class="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+            @for (b of stageBars(); track b.stage) {
+              <li class="flex items-center gap-2.5">
+                <span class="size-2.5 shrink-0 rounded-full" [style.background]="b.color"></span>
+                <span class="flex-1 text-body">{{ i18n.t(b.key) }} <span class="text-muted">({{ b.count }})</span></span>
+                <span class="font-semibold text-strong tabular-nums">{{ b.amount }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+
         <!-- Recent -->
         <section class="card overflow-hidden lg:col-span-3">
           <div class="px-5 pt-5 pb-3"><h2 class="font-semibold text-strong">{{ i18n.t('recentActivities') }}</h2></div>
@@ -154,6 +184,33 @@ export class CrmDashboardPage {
       { key: 'openTasks' as I18nKey, icon: 'task', value: d.openActivities, route: '/crm/activities', tone: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300', hint: `${d.myOpenActivities} · ${this.i18n.t('myOpenTasks').toLowerCase()}`, badge: d.lateActivities ? `${d.lateActivities} ${this.i18n.t('lateTasks').toLowerCase()}` : '' },
       { key: 'dueToday' as I18nKey, icon: 'calendar', value: d.dueToday, route: '/crm/activities', tone: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300', hint: `${d.doneThisWeek} ${this.i18n.t('doneThisWeek').toLowerCase()}` },
     ] as { key: I18nKey; icon: string; value: number; route: string; tone: string; hint?: string; badge?: string; query?: Record<string, string> }[];
+  });
+
+  protected pipelineKpis = computed(() => {
+    const p = this.data()?.pipeline;
+    if (!p) return [];
+    const money = (v: number) => formatMad(v, this.i18n.lang());
+    return [
+      { key: 'openPipeline' as I18nKey, value: money(p.openAmount), hint: this.i18n.t('openDeals', { n: '' + p.openCount }) },
+      { key: 'forecast' as I18nKey, value: money(p.weightedAmount), hint: this.i18n.t('forecastHint') },
+      { key: 'wonThisMonth' as I18nKey, value: money(p.wonThisMonth), hint: '' },
+      { key: 'winRate' as I18nKey, value: p.winRate === null ? '—' : p.winRate + '%', hint: p.overdue ? this.i18n.t('overdueDeals', { n: '' + p.overdue }) : '' },
+    ];
+  });
+
+  /** Amount per stage, as a share of the whole pipeline (won and lost included). */
+  protected stageBars = computed(() => {
+    const p = this.data()?.pipeline;
+    if (!p) return [];
+    const total = p.stages.reduce((sum, s) => sum + s.amount, 0) || 1;
+    return p.stages.map((s) => ({
+      stage: s.stage,
+      key: stageKey(s.stage),
+      count: s.count,
+      color: STAGE_COLOR[s.stage],
+      pct: Math.round((100 * s.amount) / total),
+      amount: formatMad(s.amount, this.i18n.lang(), true),
+    }));
   });
 
   protected statusBars = computed(() => {

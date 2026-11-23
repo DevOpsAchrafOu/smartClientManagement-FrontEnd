@@ -20,6 +20,7 @@ export const routes: Routes = [
       { path: 'crm/clients', loadComponent: () => import('./pages/crm/clients').then((m) => m.CrmClientsPage) },
       { path: 'crm/clients/:id', loadComponent: () => import('./pages/crm/client-detail').then((m) => m.CrmClientDetailPage) },
       { path: 'crm/activities', loadComponent: () => import('./pages/crm/activities').then((m) => m.CrmActivitiesPage) },
+      { path: 'crm/pipeline', loadComponent: () => import('./pages/crm/pipeline').then((m) => m.CrmPipelinePage) },
     ],
   },
   { path: '**', redirectTo: '' },

@@ -88,7 +88,7 @@ flowchart LR
 | Routing | Path URLs | Hash URLs (work on GitHub Pages), view transitions, lazy-loaded pages |
 | Build | Node 16 | Node 22, Angular CLI 22.3 |
 | Calls | API v1 | API v2 |
-| CRM | – | Clients and contacts, activities and tasks, CRM dashboard (`/crm`) |
+| CRM | – | Clients and contacts, sales pipeline (`/crm/pipeline`, drag and drop), activities and tasks, CRM dashboard (`/crm`) |
 
 Frontend v2 layout:
 
@@ -143,7 +143,8 @@ Endpoints (same in v1 and v2), under `/api/mng/v1`:
 | **CRM (v2 only)** · clients | `GET /crm/clients?q=&status=&sort=&page=&size=` · `/crm/clients/counts` · `/crm/clients/{id}` · `POST` · `PUT` · `DELETE` (admins and sales managers) |
 | **CRM** · contacts | `GET/POST /crm/clients/{id}/contacts` · `PUT/DELETE /crm/contacts/{id}` (one primary contact per client) |
 | **CRM** · activities | `GET /crm/activities?view=OPEN\|TODAY\|LATE\|DONE\|ALL&mine=&clientId=&type=&q=` · `POST` · `PUT /{id}` · `PUT /{id}/done` · `DELETE` |
-| **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner) |
+| **CRM** · opportunities | `GET /crm/opportunities?clientId=&mine=&stage=&q=` (the board) · `/crm/opportunities/summary` · `POST` · `PUT /{id}` · `PUT /{id}/stage` · `DELETE` |
+| **CRM** · dashboard | `GET /crm/dashboard` (clients per status, conversion rate, open / late / today tasks, per sector, city and owner, pipeline figures) |
 | **CRM** · owners | `GET /crm/owners` (active users who can own a client or an activity) |
 
 **CRM roles (API v2)**
@@ -166,6 +167,7 @@ erDiagram
     par_pays ||--o{ par_ville : "pays_id"
     crm_client ||--o{ crm_contact : "client_id"
     crm_client ||--o{ crm_activity : "client_id"
+    crm_client ||--o{ crm_opportunity : "client_id"
     par_ville |o--o{ crm_client : "city_id"
     utilisateur |o--o{ crm_client : "owner_id"
 
@@ -177,12 +179,13 @@ erDiagram
     crm_client { bigint id string name string sector string status string email string phone bigint city_id bigint owner_id }
     crm_contact { bigint id bigint client_id string first_name string last_name string job_title boolean is_primary }
     crm_activity { bigint id string type string subject bigint client_id bigint contact_id bigint owner_id timestamp due_at boolean done }
+    crm_opportunity { bigint id string title bigint client_id bigint owner_id string stage numeric amount int probability date expected_close }
 ```
 
 - Passwords are stored as BCrypt hashes. The `token` column of `utilisateur` is used by API v1 only.
 - API v2 manages the schema with Flyway (`backend-v2/src/main/resources/db/migration`): `V1` is the schema API v1 created, recorded as the baseline on Neon; the only table it added is `flyway_schema_history`.
-- CRM tables (`crm_client`, `crm_contact`, `crm_activity`) come from Flyway `V2` and `V3` and are used by API v2 only. Links to cities and users are cleared (not blocked) if API v1 deletes them.
-- Demo data: 3 users, 4 roles, 8 menus, 5 countries, 23 cities; CRM: 8 fictional companies, their contacts and 15 activities; a fictional sales team of 6 (1 sales manager `y.benali`, 4 sales people such as `s.mansouri`, 1 read-only `l.bouzid`), added once to an existing database too, with the demo password. Demo account: `a.admin` / `123456789`.
+- CRM tables (`crm_client`, `crm_contact`, `crm_activity`, `crm_opportunity`) come from Flyway `V2`, `V3` and `V4` and are used by API v2 only. Links to cities and users are cleared (not blocked) if API v1 deletes them.
+- Demo data: 3 users, 4 roles, 8 menus, 5 countries, 23 cities; CRM: 8 fictional companies, their contacts, 15 activities and 15 opportunities (in MAD); a fictional sales team of 6 (1 sales manager `y.benali`, 4 sales people such as `s.mansouri`, 1 read-only `l.bouzid`), added once to an existing database too, with the demo password. Demo account: `a.admin` / `123456789`.
 
 ### Security
 
