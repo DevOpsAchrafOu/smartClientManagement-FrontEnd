@@ -179,6 +179,28 @@ function saveFile(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+export type HistoryEntityType = 'CLIENT' | 'CONTACT' | 'ACTIVITY' | 'OPPORTUNITY';
+
+/** One changed field: values as people read them (names, codes, ISO dates). */
+export interface HistoryChange {
+  field: string;
+  from: string | null;
+  to: string | null;
+}
+
+/** One line of the CRM history. user is null for changes made at start-up (demo data). */
+export interface HistoryEntry {
+  id: number;
+  entityType: HistoryEntityType;
+  entityId: number;
+  client: Ref | null;
+  action: 'CREATED' | 'UPDATED' | 'DELETED';
+  summary: string;
+  user: { id: number | null; label: string } | null;
+  createdAt: string;
+  changes: HistoryChange[];
+}
+
 export interface ClientCounts {
   total: number;
   prospects: number;
@@ -283,6 +305,13 @@ export class Crm {
   }
   deleteOpportunity(id: number): Observable<unknown> {
     return this.http.delete(`${CRM}/opportunities/${id}`);
+  }
+
+  clientHistory(clientId: number, page = 0, size = 10): Observable<Page<HistoryEntry>> {
+    return this.http.get<Page<HistoryEntry>>(`${CRM}/clients/${clientId}/history`, { params: params({ page, size }) });
+  }
+  history(filter: { type?: HistoryEntityType | ''; page?: number; size?: number }): Observable<Page<HistoryEntry>> {
+    return this.http.get<Page<HistoryEntry>>(`${CRM}/history`, { params: params(filter) });
   }
 
   /** Downloads a CSV export (the API sends only what this user may see). */
