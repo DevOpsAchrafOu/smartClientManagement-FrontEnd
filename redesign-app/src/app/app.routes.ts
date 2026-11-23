@@ -15,6 +15,11 @@ export const routes: Routes = [
       { path: 'menus', loadComponent: () => import('./pages/menus').then((m) => m.MenusPage) },
       { path: 'countries', loadComponent: () => import('./pages/countries').then((m) => m.CountriesPage) },
       { path: 'cities', loadComponent: () => import('./pages/cities').then((m) => m.CitiesPage) },
+      // CRM (version 2 only)
+      { path: 'crm', loadComponent: () => import('./pages/crm/crm-dashboard').then((m) => m.CrmDashboardPage) },
+      { path: 'crm/clients', loadComponent: () => import('./pages/crm/clients').then((m) => m.CrmClientsPage) },
+      { path: 'crm/clients/:id', loadComponent: () => import('./pages/crm/client-detail').then((m) => m.CrmClientDetailPage) },
+      { path: 'crm/activities', loadComponent: () => import('./pages/crm/activities').then((m) => m.CrmActivitiesPage) },
     ],
   },
   { path: '**', redirectTo: '' },
