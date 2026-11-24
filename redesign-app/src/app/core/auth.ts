@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/commo
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Observable, catchError, firstValueFrom, map, tap, throwError } from 'rxjs';
-import { API, API_ORIGIN, SUPER_ADMIN } from './config';
+import { AI_API, API, API_ORIGIN, SUPER_ADMIN } from './config';
 import { I18n } from './i18n';
 import { User } from './models';
 import { Toasts } from './toast';
@@ -96,7 +96,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const toasts = inject(Toasts);
   const i18n = inject(I18n);
   const token = auth.token();
-  const isApi = req.url.startsWith(API);
+  // The AI service checks the same token with API v2, so it gets it too.
+  const isApi = req.url.startsWith(API) || req.url.startsWith(AI_API);
   const authed = token && isApi ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
   return next(authed).pipe(
     catchError((err: HttpErrorResponse) => {

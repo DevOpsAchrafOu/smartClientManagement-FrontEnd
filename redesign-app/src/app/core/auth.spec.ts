@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { Auth, authInterceptor } from './auth';
-import { API } from './config';
+import { AI_API, API } from './config';
 
 describe('authInterceptor', () => {
   let http: HttpClient;
@@ -28,9 +28,11 @@ describe('authInterceptor', () => {
     auth.clear();
   });
 
-  it('adds the token to API calls only', () => {
+  it('adds the token to API calls only (API v2 and the AI service)', () => {
     http.get(`${API}/crm/clients`).subscribe();
     expect(backend.expectOne(`${API}/crm/clients`).request.headers.get('Authorization')).toBe('Bearer token-123');
+    http.get(`${AI_API}/assistant/status`).subscribe();
+    expect(backend.expectOne(`${AI_API}/assistant/status`).request.headers.get('Authorization')).toBe('Bearer token-123');
     http.get('https://example.com/other').subscribe();
     expect(backend.expectOne('https://example.com/other').request.headers.has('Authorization')).toBe(false);
   });
