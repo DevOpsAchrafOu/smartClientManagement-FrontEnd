@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Auth } from './auth';
-import { API, SUPER_ADMIN } from './config';
+import { AI_API, API, SUPER_ADMIN } from './config';
 
 /** CRM (API v2 only): types and calls. */
 
@@ -201,7 +201,7 @@ export interface HistoryEntry {
   changes: HistoryChange[];
 }
 
-/** The CRM assistant (Google Gemini). canAct: the user may receive action proposals (not read-only). */
+/** The CRM assistant (AI service: Spring AI + Google Gemini). canAct: the user may receive action proposals (not read-only). */
 export interface AssistantStatus {
   enabled: boolean;
   model: string;
@@ -335,10 +335,10 @@ export class Crm {
   }
 
   assistantStatus(): Observable<AssistantStatus> {
-    return this.http.get<AssistantStatus>(`${CRM}/assistant/status`);
+    return this.http.get<AssistantStatus>(`${AI_API}/assistant/status`);
   }
   assistantChat(messages: { role: 'user' | 'assistant'; text: string }[], lang: string): Observable<AssistantReply> {
-    return this.http.post<AssistantReply>(`${CRM}/assistant/chat`, { messages, lang });
+    return this.http.post<AssistantReply>(`${AI_API}/assistant/chat`, { messages, lang });
   }
 
   /** Downloads a CSV export (the API sends only what this user may see). */
