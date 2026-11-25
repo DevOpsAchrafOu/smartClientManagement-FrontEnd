@@ -10,7 +10,7 @@ smartClientManagement/
 ```
 
 ```text
-Front  http://localhost:4200 ──► API v2      http://localhost:8090 ──► PostgreSQL localhost:5432 / smartclient
+Front  http://localhost:4200 ──► API v2      http://localhost:8090 ──► PostgreSQL localhost:5433 / smartclient
                              └─► AI service  http://localhost:8091 ──► API v2 (user's JWT) and Gemini
 ```
 
@@ -18,7 +18,7 @@ On `localhost`, the redesign calls the local services (`redesign-app/src/app/cor
 
 ## Needs
 
-- Java 21, Node 22, Git, PostgreSQL (any recent version) running on port 5432.
+- Java 21, Node 22, Git, PostgreSQL (any recent version; here PostgreSQL 18 on port 5433).
 - Optional: `GEMINI_API_KEY` in your Windows environment (free key from https://aistudio.google.com). Without it, everything works except the assistant.
 
 ## 1. Clone
@@ -45,7 +45,7 @@ These values are for a local database only. API v2 creates the tables (Flyway mi
 ```powershell
 # API v2
 cd smartClientManagement-BackEnd\backend-v2
-.\mvnw.cmd spring-boot:run "-Dspring-boot.run.arguments=--server.port=8090 --spring.datasource.url=jdbc:postgresql://localhost:5432/smartclient --spring.datasource.username=smartclient --spring.datasource.password=smartclient --app.jwt.secret=local-dev-secret-only-for-this-pc-0123456789"
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.arguments=--server.port=8090 --spring.datasource.url=jdbc:postgresql://localhost:5433/smartclient --spring.datasource.username=smartclient --spring.datasource.password=smartclient --app.jwt.secret=local-dev-secret-only-for-this-pc-0123456789"
 
 # AI service (another window)
 cd smartClientManagement-AI-Service
