@@ -265,6 +265,10 @@ SmartClientManagement frontEnd uses a number of open source projects to work pro
 
 ## Setup & Getting started
 
+**Run everything on your PC (redesign + API v2 + AI service + local PostgreSQL): see [LOCAL.md](LOCAL.md).**
+
+The steps below are for the first version (Angular 12).
+
 1. Install [NodeJS](http://nodejs.org/) (If you done have)
 
 2. If you have not installed angular yet,
