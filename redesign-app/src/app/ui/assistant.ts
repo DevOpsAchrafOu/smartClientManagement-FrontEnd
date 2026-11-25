@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription, filter, map } from 'rxjs';
 import { errorMessage } from '../core/api';
 import { ActivityType, AssistantProposal, AssistantStatus, Crm, OpportunityStage } from '../core/crm';
 import { I18n, I18nKey } from '../core/i18n';
@@ -10,14 +13,23 @@ interface Line {
   text: string;
   proposals?: (AssistantProposal & { state: 'open' | 'saving' | 'done' | 'dismissed' })[];
   error?: boolean;
+  /** The reply is still being written. */
+  streaming?: boolean;
 }
 
 const SUGGESTIONS: I18nKey[] = ['aiSuggest1', 'aiSuggest2', 'aiSuggest3', 'aiSuggest4'];
 
+/** The client id of a "#/crm/clients/12" page, or null. */
+export function clientIdOf(url: string): number | null {
+  const m = /\/crm\/clients\/(\d+)/.exec(url);
+  return m ? Number(m[1]) : null;
+}
+
 /**
- * The CRM assistant (Google Gemini, free tier): a floating button and a chat panel. It answers from the CRM data with
- * the user's rights, drafts texts to copy, and proposes actions shown as cards; nothing changes until the user
- * clicks "Confirm", which calls the normal CRM endpoints.
+ * The CRM assistant (AI service: Spring AI + Google Gemini, free tier): a floating button and a chat panel. The reply
+ * is shown as it is written (streaming). On a client page the assistant knows which client "this client" is. "My
+ * brief" sums up the day. Actions come as cards; nothing changes until the user clicks "Confirm", which calls the
+ * normal CRM endpoints.
  */
 @Component({
   selector: 'app-assistant',
@@ -38,6 +50,9 @@ const SUGGESTIONS: I18nKey[] = ['aiSuggest1', 'aiSuggest2', 'aiSuggest3', 'aiSug
             <h2 class="font-semibold text-strong">{{ i18n.t('aiTitle') }}</h2>
             <p class="truncate text-xs text-muted">{{ status()?.enabled ? i18n.t('aiSubtitle') : i18n.t('aiOff') }}</p>
           </div>
+          @if (status()?.enabled && lines().length) {
+            <button type="button" class="icon-btn size-9" (click)="brief()" [disabled]="busy()" [attr.aria-label]="i18n.t('aiBrief')" [title]="i18n.t('aiBrief')"><app-icon name="calendar" [size]="16" /></button>
+          }
           @if (lines().length) {
             <button type="button" class="icon-btn size-9" (click)="clear()" [attr.aria-label]="i18n.t('aiNew')"><app-icon name="plus" [size]="16" /></button>
           }
@@ -48,6 +63,10 @@ const SUGGESTIONS: I18nKey[] = ['aiSuggest1', 'aiSuggest2', 'aiSuggest3', 'aiSug
           @if (!lines().length) {
             <p class="text-sm text-body">{{ i18n.t('aiHello') }}</p>
             @if (status()?.enabled) {
+              <button type="button" class="flex w-full items-center gap-3 rounded-xl bg-gradient-to-br from-brand to-brand-2 px-3.5 py-3 text-start text-white shadow-lg shadow-brand/20 transition hover:-translate-y-0.5" (click)="brief()">
+                <app-icon name="calendar" [size]="18" />
+                <span class="min-w-0"><span class="block font-semibold">{{ i18n.t('aiBrief') }}</span><span class="block text-xs text-white/80">{{ i18n.t('aiBriefHint') }}</span></span>
+              </button>
               <div class="flex flex-col gap-2">
                 @for (s of suggestions; track s) {
                   <button type="button" class="rounded-xl border border-line px-3 py-2 text-start text-sm text-body transition hover:border-brand hover:text-strong" (click)="send(i18n.t(s))">{{ i18n.t(s) }}</button>
@@ -59,11 +78,11 @@ const SUGGESTIONS: I18nKey[] = ['aiSuggest1', 'aiSuggest2', 'aiSuggest3', 'aiSug
           @for (l of lines(); track $index) {
             @if (l.role === 'user') {
               <p class="ms-10 rounded-2xl rounded-ee-md bg-brand px-3.5 py-2 text-sm whitespace-pre-wrap text-white">{{ l.text }}</p>
-            } @else {
+            } @else if (l.text || !l.streaming) {
               <div class="me-6 space-y-2">
                 <div class="group relative rounded-2xl rounded-es-md px-3.5 py-2 text-sm whitespace-pre-wrap"
-                  [class]="l.error ? 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300' : 'bg-soft text-body'">{{ l.text }}
-                  @if (!l.error) {
+                  [class]="l.error ? 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300' : 'bg-soft text-body'">{{ l.text }}@if (l.streaming) {<span class="ms-0.5 inline-block h-3.5 w-1.5 animate-pulse rounded-sm bg-brand align-middle"></span>}
+                  @if (!l.error && !l.streaming) {
                     <button type="button" class="absolute -end-8 top-1 icon-btn size-7 opacity-60 hover:opacity-100" (click)="copy(l.text)" [attr.aria-label]="i18n.t('aiCopy')"><app-icon name="note" [size]="13" /></button>
                   }
                 </div>
@@ -86,11 +105,14 @@ const SUGGESTIONS: I18nKey[] = ['aiSuggest1', 'aiSuggest2', 'aiSuggest3', 'aiSug
               </div>
             }
           }
-          @if (busy()) {
+          @if (thinking()) {
             <p class="inline-flex items-center gap-2 text-sm text-muted"><app-icon name="loader" class="animate-spin" [size]="14" />{{ i18n.t('aiThinking') }}</p>
           }
         </div>
 
+        @if (clientId() && status()?.enabled) {
+          <p class="flex items-center gap-1.5 border-t border-line bg-soft/60 px-4 py-1.5 text-xs text-muted"><app-icon name="building" [size]="12" />{{ i18n.t('aiContextClient') }}</p>
+        }
         <form class="flex items-end gap-2 border-t border-line p-3" (submit)="$event.preventDefault(); send(input.value); input.value = ''">
           <textarea #input rows="1" class="input max-h-32 min-h-11 flex-1 resize-none py-2.5" [placeholder]="i18n.t('aiPlaceholder')" [attr.aria-label]="i18n.t('aiPlaceholder')"
             [disabled]="!status()?.enabled" maxlength="2000"
@@ -105,13 +127,30 @@ export class AssistantPanel {
   protected i18n = inject(I18n);
   private crm = inject(Crm);
   private toasts = inject(Toasts);
+  private router = inject(Router);
   private scroller = viewChild<ElementRef<HTMLElement>>('scroller');
+  private running?: Subscription;
 
   protected suggestions = SUGGESTIONS;
   protected open = signal(false);
   protected busy = signal(false);
   protected status = signal<AssistantStatus | null>(null);
   protected lines = signal<Line[]>([]);
+
+  /** The client page open behind the panel, if any. */
+  protected clientId = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => clientIdOf(e.urlAfterRedirects)),
+    ),
+    { initialValue: clientIdOf(this.router.url) },
+  );
+
+  /** Waiting for the first word of the reply. */
+  protected thinking = computed(() => {
+    const last = this.lines().at(-1);
+    return this.busy() && (!last || last.role === 'user' || (last.streaming === true && !last.text));
+  });
 
   constructor() {
     // Keep the newest message in view.
@@ -131,10 +170,12 @@ export class AssistantPanel {
   }
 
   protected clear(): void {
+    this.running?.unsubscribe();
+    this.busy.set(false);
     this.lines.set([]);
   }
 
-  /** Re-renders after a proposal card changed state. */
+  /** Re-renders after a line or a proposal card changed. */
   protected touch(): void {
     this.lines.update((l) => [...l]);
   }
@@ -151,19 +192,48 @@ export class AssistantPanel {
     const text = raw.trim();
     if (!text || this.busy() || !this.status()?.enabled) return;
     this.lines.update((l) => [...l, { role: 'user', text }]);
-    this.busy.set(true);
-    const history = this.lines()
-      .filter((l) => !l.error)
+    this.ask(false);
+  }
+
+  /** The daily brief: late work, today's agenda and deals to watch, read with the user's rights. */
+  brief(): void {
+    if (this.busy() || !this.status()?.enabled) return;
+    const history = this.history();
+    this.lines.update((l) => [...l, { role: 'user', text: this.i18n.t('aiBrief') }]);
+    this.ask(true, history);
+  }
+
+  /** The conversation the server sees: no error lines, the last 20 messages. */
+  private history(): { role: 'user' | 'assistant'; text: string }[] {
+    return this.lines()
+      .filter((l) => !l.error && l.text)
       .slice(-20)
       .map((l) => ({ role: l.role, text: l.text.slice(0, 4000) }));
-    this.crm.assistantChat(history, this.i18n.lang()).subscribe({
-      next: (r) => {
-        this.busy.set(false);
-        this.lines.update((l) => [...l, { role: 'assistant', text: r.reply, proposals: r.proposals.map((p) => ({ ...p, state: 'open' as const })) }]);
+  }
+
+  private ask(brief: boolean, history = this.history()): void {
+    this.busy.set(true);
+    const reply: Line = { role: 'assistant', text: '', streaming: true };
+    this.lines.update((l) => [...l, reply]);
+    const finish = (patch: Partial<Line>) => {
+      Object.assign(reply, { streaming: false }, patch);
+      this.busy.set(false);
+      this.touch();
+    };
+    this.running = this.crm.assistantStream({ messages: history, lang: this.i18n.lang(), clientId: this.clientId(), brief }).subscribe({
+      next: (event) => {
+        if (event.type === 'delta') {
+          reply.text += event.text;
+          this.touch();
+        } else if (event.type === 'done') {
+          finish({ proposals: event.proposals.map((p) => ({ ...p, state: 'open' as const })) });
+        } else {
+          finish(reply.text ? { text: `${reply.text}\n\n${event.message}` } : { text: event.message || this.i18n.t('aiError'), error: true });
+        }
       },
-      error: (err) => {
-        this.busy.set(false);
-        this.lines.update((l) => [...l, { role: 'assistant', text: errorMessage(err) ?? this.i18n.t('aiError'), error: true }]);
+      error: (err) => finish({ text: errorMessage(err) ?? this.i18n.t('aiError'), error: true }),
+      complete: () => {
+        if (reply.streaming) finish(reply.text ? {} : { text: this.i18n.t('aiError'), error: true });
       },
     });
   }
