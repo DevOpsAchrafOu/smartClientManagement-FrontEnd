@@ -221,6 +221,40 @@ export interface AssistantReply {
   toolCalls: number;
 }
 
+/** clientId: the client page the user has open (the assistant then knows "this client"); brief: the daily brief. */
+export interface AssistantStreamRequest {
+  messages: { role: 'user' | 'assistant'; text: string }[];
+  lang: string;
+  clientId?: number | null;
+  brief?: boolean;
+}
+
+export type AssistantEvent =
+  | { type: 'delta'; text: string }
+  | { type: 'done'; proposals: AssistantProposal[]; toolCalls: number }
+  | { type: 'error'; message: string };
+
+/** One Server-Sent Event ("event:name" and "data:{json}" lines) → an AssistantEvent, or null if it is not one. */
+export function parseSse(block: string): AssistantEvent | null {
+  let name = '';
+  let data = '';
+  for (const line of block.split('\n')) {
+    if (line.startsWith('event:')) name = line.slice(6).trim();
+    else if (line.startsWith('data:')) data += line.slice(5).trimStart();
+  }
+  if (!data) return null;
+  try {
+    const payload = JSON.parse(data);
+    const type = name || payload.type;
+    if (type === 'delta') return { type, text: String(payload.text ?? '') };
+    if (type === 'done') return { type, proposals: payload.proposals ?? [], toolCalls: payload.toolCalls ?? 0 };
+    if (type === 'error') return { type, message: String(payload.message ?? '') };
+  } catch {
+    // not JSON: ignore
+  }
+  return null;
+}
+
 export interface ClientCounts {
   total: number;
   prospects: number;
@@ -259,6 +293,7 @@ function params(values: Record<string, string | number | boolean | null | undefi
 @Injectable({ providedIn: 'root' })
 export class Crm {
   private http = inject(HttpClient);
+  private auth = inject(Auth);
 
   clients(filter: { q?: string; status?: ClientStatus | ''; page?: number; size?: number; sort?: string }): Observable<Page<ClientSummary>> {
     return this.http.get<Page<ClientSummary>>(`${CRM}/clients`, { params: params(filter) });
@@ -339,6 +374,49 @@ export class Crm {
   }
   assistantChat(messages: { role: 'user' | 'assistant'; text: string }[], lang: string): Observable<AssistantReply> {
     return this.http.post<AssistantReply>(`${AI_API}/assistant/chat`, { messages, lang });
+  }
+
+  /**
+   * The reply as it is written (Server-Sent Events): "delta" pieces of text, then "done" with the proposals, or
+   * "error". Uses fetch because EventSource cannot POST nor send the token. HTTP errors (quota, sign-in) come as
+   * errors shaped like HttpClient's, so errorMessage() reads them.
+   */
+  assistantStream(request: AssistantStreamRequest): Observable<AssistantEvent> {
+    return new Observable<AssistantEvent>((sub) => {
+      const abort = new AbortController();
+      const token = this.auth.token();
+      fetch(`${AI_API}/assistant/chat/stream`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify(request),
+        signal: abort.signal,
+      })
+        .then(async (res) => {
+          if (!res.ok || !res.body) {
+            const error = await res.json().catch(() => ({}));
+            sub.error({ status: res.status, error });
+            return;
+          }
+          const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+          let buffer = '';
+          for (;;) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buffer += value.replace(/\r/g, '');
+            let end: number;
+            while ((end = buffer.indexOf('\n\n')) >= 0) {
+              const event = parseSse(buffer.slice(0, end));
+              buffer = buffer.slice(end + 2);
+              if (event) sub.next(event);
+            }
+          }
+          sub.complete();
+        })
+        .catch((err) => {
+          if (!abort.signal.aborted) sub.error(err);
+        });
+      return () => abort.abort();
+    });
   }
 
   /** Downloads a CSV export (the API sends only what this user may see). */
